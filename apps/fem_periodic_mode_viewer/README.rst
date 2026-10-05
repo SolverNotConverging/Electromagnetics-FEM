@@ -1,10 +1,9 @@
 FEM Periodic Mode Viewer
 ========================
 
-Windows x64 / Python 3.12 users can install this app with all solvers using the
-`single FDFD release wheel <../../README.md#installation>`_. Launch it with
-``python -m fem periodic-viewer``; no C++ build is needed. The build instructions
-below are for source installations, including Linux and macOS.
+Build the app with the solvers using the `project setup <../../README.md>`_,
+then launch it with ``python -m fem periodic-viewer``. Standalone build instructions
+for Windows, Linux, and macOS follow below.
 
 FEM Periodic Mode Viewer is a standalone C++20 desktop application for inspecting ``fem-periodic-modes`` HDF5 results. It does not import or link the Python solver, NumPy, h5py, Matplotlib, or the repository's FEM Waveguide Scattering viewer.
 
@@ -231,7 +230,7 @@ Launch the GUI with or without an initial file:
 
 Use **Open directory…** to populate the in-window **File** selector with every readable ``.h5`` and ``.hdf5`` file in that directory. Opening one file directly populates the same selector from its parent directory. Supplying a directory on the command line scans it and loads the first valid result in name order; an invalid earlier file does not hide valid siblings from the selector.
 
-The complete Windows FDFD wheel includes this viewer. Python ``result.show()``
+The FEM native application bundle includes this viewer. Python ``result.show()``
 finds the bundled executable before repository builds, ``PATH``, and local
 installations. Set ``FEM_PERIODIC_MODE_VIEWER_EXECUTABLE`` to an absolute
 executable path to override that search.

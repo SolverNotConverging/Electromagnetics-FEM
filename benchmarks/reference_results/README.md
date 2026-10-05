@@ -21,7 +21,7 @@ overwrite these references.
 
 ## Rectangular PEC waveguide
 
-[Data](rectangular_waveguide_modes/comparison.csv): FDFD/FEM TE10 effective index
+[Data](rectangular_waveguide_modes/comparison.csv): FEM TE10 effective index
 against theory. FEM uses independent, nonnested meshes.
 
 ![Rectangular waveguide convergence](rectangular_waveguide_modes/convergence.png)

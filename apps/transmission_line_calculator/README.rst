@@ -1,10 +1,9 @@
 Transmission Line Calculator
 ============================
 
-Windows x64 / Python 3.12 users can install this app with all solvers using the
-`single FDFD release wheel <../../README.md#installation>`_. Launch it with
-``python -m fem calculator``; no C++ build is needed. The build instructions
-below are for source installations, including Linux and macOS.
+Build the app with the solvers using the `project setup <../../README.md>`_,
+then launch it with ``python -m fem calculator``. Standalone build instructions
+for Windows, Linux, and macOS follow below.
 
 Transmission Line Calculator is a native C++20 application for fast quasi-TEM extraction of coaxial, microstrip, stripline, and coplanar-waveguide cross-sections. It provides a Qt 6 desktop GUI and an FTXUI terminal interface. It is a standalone rewrite of the Python calculator: both front ends, the mesher, sparse finite-element solve, field plots, and repeated benchmarks run without Python, NumPy, SciPy, scikit-fem, or Matplotlib. Geometry and conforming triangular meshing use the native Gmsh 4 C++ API.
 

@@ -1,10 +1,9 @@
 FEM Waveguide Scattering Viewer
 =================================
 
-Windows x64 / Python 3.12 users can install this app with all solvers using the
-`single FDFD release wheel <../../README.md#installation>`_. Launch it with
-``python -m fem scattering-viewer``; no C++ build is needed. The build instructions
-below are for source installations, including Linux and macOS.
+Build the app with the solvers using the `project setup <../../README.md>`_,
+then launch it with ``python -m fem scattering-viewer``. Standalone build instructions
+for Windows, Linux, and macOS follow below.
 
 FEM Waveguide Scattering Viewer is a native C++20/Qt 6 desktop application for inspecting FEM Waveguide Scattering schema-v1 HDF5 results. It is independent of the Python solver and does not import FEM Waveguide Scattering, NumPy, h5py, Tk, or Matplotlib.
 
