@@ -1,4 +1,5 @@
 #include "main_window.hpp"
+#include "../../../cmake/ViewerResults.hpp"
 #include "path_qt.hpp"
 
 #include <QApplication>
@@ -50,6 +51,10 @@ int main(int argc, char* argv[]) {
             return EXIT_FAILURE;
         }
     }
+    if (pathArgument.isEmpty()) {
+        pathArgument = femviewer::defaultResultsDirectory(QStringLiteral("fem_periodic_modes"));
+    }
+
     if (smoke && pathArgument.isEmpty()) {
         qCritical() << "Smoke-test mode requires an HDF5 path.";
         return EXIT_FAILURE;

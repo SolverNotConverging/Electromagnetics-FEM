@@ -160,7 +160,7 @@ Standalone commands in the following sections run from the repository root.
 Windows: MSVC and vcpkg
 -----------------------
 
-Follow the `root Windows build instructions <../../README.md#windows-msvc-and-vcpkg-step-by-step>`_
+Follow the `Windows build instructions <../native_build.md#windows-msvc-and-vcpkg>`_
 for MSVC, Ninja, and the ``x64-windows`` dependencies in ``C:\opt\vcpkg``.
 MinGW is not supported. The root build compiles all three apps.
 

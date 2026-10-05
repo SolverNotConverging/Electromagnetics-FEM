@@ -9,7 +9,7 @@ the electric-field magnitude with Matplotlib.
 
 from __future__ import annotations
 
-# Run directly from the checkout without installing solver packages.
+# Run directly from the downloaded repository without installing solver packages.
 import sys as _sys
 from pathlib import Path as _Path
 _ROOT = next(parent for parent in _Path(__file__).resolve().parents
@@ -23,7 +23,7 @@ from pathlib import Path
 
 import fem_waveguide_scattering as scattering
 
-OUTPUT_DIR = _ROOT / "outputs/fem_waveguide_scattering/examples" / Path(
+OUTPUT_DIR = _ROOT / "fem_waveguide_scattering/outputs" / Path(
     __file__,
 ).stem
 

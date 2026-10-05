@@ -223,3 +223,7 @@ mode_data.*
 /.viewer_install_test/
 /.native_wheel_test/
 /build*/
+
+# Results belong to their solver family
+/fem_*/outputs/*
+!/fem_*/outputs/.gitkeep

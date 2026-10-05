@@ -75,7 +75,7 @@ tl_enable_warnings(tl-core)
 option(TL_BUILD_EXAMPLES "Build the fixed-mesh native FEM examples" OFF)
 if(TL_BUILD_EXAMPLES)
     add_executable(tl-line-comparison
-        examples/line_comparison.cpp
+        examples/2d_line_comparison.cpp
         native/field_plot.cpp
         native/field_view.cpp
     )

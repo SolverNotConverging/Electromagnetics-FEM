@@ -7,7 +7,7 @@ leaks into the air/PML region above the periodically repeated patches.
 
 from __future__ import annotations
 
-# Run directly from the checkout without installing solver packages.
+# Run directly from the downloaded repository without installing solver packages.
 import sys as _sys
 from pathlib import Path as _Path
 _ROOT = next(parent for parent in _Path(__file__).resolve().parents
@@ -21,6 +21,9 @@ from fem_periodic_modes import PeriodicModeSolver2D
 
 
 MM = 1.0e-3
+
+
+OUTPUT_DIR = _Path(__file__).resolve().parents[1] / "outputs" / _Path(__file__).stem
 
 
 def main() -> None:
@@ -42,6 +45,8 @@ def main() -> None:
     print("neff:", modes.neff)
     print("PML energy fractions:", [mode.pml_fraction for mode in modes])
 
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    solver.result.save(OUTPUT_DIR / "results.h5")
     solver.show()
 
 

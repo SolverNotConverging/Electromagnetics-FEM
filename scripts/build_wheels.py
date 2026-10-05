@@ -21,8 +21,8 @@ SOURCE_ROOTS = tuple(ROOT / name for name in ('fem', 'cem_common', 'fem_adaptivi
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, default=ROOT / "outputs/dist")
-    parser.add_argument("--native-bundle", type=Path, default=ROOT / "outputs/native-release-1.1.0/FEM-1.1.0-windows-x64")
+    parser.add_argument("--output", type=Path, default=ROOT / "build/dist")
+    parser.add_argument("--native-bundle", type=Path, default=ROOT / "build/native-release-1.1.0/FEM-1.1.0-windows-x64")
     args = parser.parse_args()
     if sys.platform != "win32" or sys.version_info[:2] != (3, 12):
         parser.error("The complete 1.1.0 release wheel targets Windows x64 / CPython 3.12.")

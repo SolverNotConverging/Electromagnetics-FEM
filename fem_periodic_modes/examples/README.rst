@@ -16,11 +16,11 @@ Runtime depends on hardware and mesh size. Single solves are the starting point;
 dispersion and band-structure scripts perform many eigenproblems and can take
 substantially longer. 3D cases also require more memory.
 
-1. `uniform_cell_2d.py <uniform_cell_2d.py>`_ — TEM effective index in a uniform 2D cell. Single solve.
-2. `uniform_cell_3d.py <uniform_cell_3d.py>`_ — TE10 effective index in a uniform 3D cell. Single solve.
-3. `leaky_wave_antenna_2d.py <leaky_wave_antenna_2d.py>`_ — A leaky-wave cell with an outgoing PML. Single solve.
-4. `iris_loaded_waveguide_filter_3d.py <iris_loaded_waveguide_filter_3d.py>`_ — An iris-loaded rectangular waveguide cell. Single solve.
+1. `2d_uniform_cell.py <2d_uniform_cell.py>`_ — TEM effective index in a uniform 2D cell. Single solve.
+2. `3d_uniform_cell.py <3d_uniform_cell.py>`_ — TE10 effective index in a uniform 3D cell. Single solve.
+3. `2d_leaky_wave_antenna.py <2d_leaky_wave_antenna.py>`_ — A leaky-wave cell with an outgoing PML. Single solve.
+4. `3d_iris_loaded_waveguide_filter.py <3d_iris_loaded_waveguide_filter.py>`_ — An iris-loaded rectangular waveguide cell. Single solve.
 
 Run a script from this directory, or pass its path from the repository root.
 Scripts that save results use
-``outputs/fem_periodic_modes/examples/<example>/`` in the checkout.
+``fem_periodic_modes/outputs/<example>/`` in the downloaded repository.

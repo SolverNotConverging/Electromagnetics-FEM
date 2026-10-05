@@ -1,4 +1,4 @@
-"""Import or run checkout examples without installing solver packages."""
+"""Import or run direct examples without installing solver packages."""
 from pathlib import Path
 import argparse
 import os
@@ -25,7 +25,7 @@ def main():
     for path in examples:
         subprocess.run([sys.executable, "-c", runner, str(path)], cwd=ROOT,
                        env={**os.environ, "MPLBACKEND": "Agg", "CEM_EXAMPLE_QUALIFICATION": "1"}, check=True)
-    print(f"Validated {len(examples)} checkout examples.")
+    print(f"Validated {len(examples)} direct examples.")
 
 if __name__ == "__main__":
     main()

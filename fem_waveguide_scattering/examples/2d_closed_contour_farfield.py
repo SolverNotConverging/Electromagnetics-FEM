@@ -4,7 +4,7 @@ Writes an HDF5 result, numerical pattern, and PNG without opening a viewer.
 Use build_simulation(matched_ports=False) for a longitudinal-PML comparison.
 """
 
-# Run directly from the checkout without installing solver packages.
+# Run directly from the downloaded repository without installing solver packages.
 import sys as _sys
 from pathlib import Path as _Path
 _ROOT = next(parent for parent in _Path(__file__).resolve().parents
@@ -17,10 +17,11 @@ from pathlib import Path
 import numpy as np
 from matplotlib.figure import Figure
 
-from fem_waveguide_scattering.examples.grounded_slab_slot_2d import build_simulation
+from importlib import import_module
+build_simulation = import_module("fem_waveguide_scattering.examples.2d_grounded_slab_slot").build_simulation
 
 
-OUTPUT_DIR = _ROOT / "outputs/fem_waveguide_scattering/examples/closed_contour_farfield_2d"
+OUTPUT_DIR = _ROOT / "fem_waveguide_scattering/outputs/2d_closed_contour_farfield"
 
 
 def solve_example():

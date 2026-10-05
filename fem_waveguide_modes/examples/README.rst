@@ -16,12 +16,12 @@ Runtime depends on hardware and mesh size. Single solves are the starting point;
 dispersion and band-structure scripts perform many eigenproblems and can take
 substantially longer. 3D cases also require more memory.
 
-1. `parallel_plate_waveguide_1d.py <parallel_plate_waveguide_1d.py>`_ — 1D modes and analytic cutoff checks. Single solve.
-2. `rectangular_waveguide_2d.py <rectangular_waveguide_2d.py>`_ — Second-order vector elements and the TE10 cutoff. Single solve.
-3. `dielectric_slab_1d.py <dielectric_slab_1d.py>`_ — Guided modes in a dielectric slab. Single solve.
-4. `ridge_waveguide_2d.py <ridge_waveguide_2d.py>`_ — A ridge waveguide cross section. Single solve.
-5. `microstrip_2d_surface_impedance.py <microstrip_2d_surface_impedance.py>`_ — A copper microstrip with a surface-impedance boundary. Single solve.
+1. `1d_parallel_plate_waveguide.py <1d_parallel_plate_waveguide.py>`_ — 1D modes and analytic cutoff checks. Single solve.
+2. `2d_rectangular_waveguide.py <2d_rectangular_waveguide.py>`_ — Second-order vector elements and the TE10 cutoff. Single solve.
+3. `1d_dielectric_slab.py <1d_dielectric_slab.py>`_ — Guided modes in a dielectric slab. Single solve.
+4. `2d_ridge_waveguide.py <2d_ridge_waveguide.py>`_ — A ridge waveguide cross section. Single solve.
+5. `2d_microstrip_surface_impedance.py <2d_microstrip_surface_impedance.py>`_ — A copper microstrip with a surface-impedance boundary. Single solve.
 
 Run a script from this directory, or pass its path from the repository root.
 Scripts that save results use
-``outputs/fem_waveguide_modes/examples/<example>/`` in the checkout.
+``fem_waveguide_modes/outputs/<example>/`` in the downloaded repository.

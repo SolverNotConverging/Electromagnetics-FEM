@@ -1,4 +1,5 @@
 #include "main_window.hpp"
+#include "../../../cmake/ViewerResults.hpp"
 
 #include "field_plot_2d.hpp"
 #include "h5_reader.hpp"
@@ -233,6 +234,7 @@ void MainWindow::chooseFile() {
         this, QStringLiteral("Open FEM periodic HDF5 result"), QString(),
         QStringLiteral("HDF5 files (*.h5 *.hdf5);;All files (*)"));
     if (!path.isEmpty()) {
+        resultsDirectory_.clear();
         loadPath(pathFromQString(path));
     }
 }
@@ -246,12 +248,11 @@ void MainWindow::chooseDirectory() {
 }
 
 void MainWindow::loadDirectory(const std::filesystem::path& directoryPath) {
+    resultsDirectory_ = qStringFromPath(std::filesystem::absolute(directoryPath));
     ++loadGeneration_;
     directoryScanIndex_.reset();
     QDir directory(qStringFromPath(std::filesystem::absolute(directoryPath)));
-    const auto entries = directory.entryInfoList(
-        {QStringLiteral("*.h5"), QStringLiteral("*.hdf5")},
-        QDir::Files | QDir::Readable, QDir::Name | QDir::IgnoreCase);
+    const auto entries = femviewer::resultFiles(directory);
     if (entries.isEmpty()) {
         fileCombo_->blockSignals(true);
         fileCombo_->clear();
@@ -274,16 +275,14 @@ void MainWindow::loadDirectory(const std::filesystem::path& directoryPath) {
 
 void MainWindow::refreshFileChoices(const std::filesystem::path& selectedPath) {
     const QFileInfo selectedFile(qStringFromPath(std::filesystem::absolute(selectedPath)));
-    QDir directory(selectedFile.absolutePath());
-    const auto entries = directory.entryInfoList(
-        {QStringLiteral("*.h5"), QStringLiteral("*.hdf5")},
-        QDir::Files | QDir::Readable, QDir::Name | QDir::IgnoreCase);
+    QDir directory(resultsDirectory_.isEmpty() ? selectedFile.absolutePath() : resultsDirectory_);
+    const auto entries = femviewer::resultFiles(directory);
     fileCombo_->blockSignals(true);
     fileCombo_->clear();
     int selectedIndex = -1;
     for (const auto& entry : entries) {
         const auto absolutePath = entry.absoluteFilePath();
-        fileCombo_->addItem(entry.fileName(), absolutePath);
+        fileCombo_->addItem(directory.relativeFilePath(absolutePath), absolutePath);
         if (absolutePath.compare(selectedFile.absoluteFilePath(), Qt::CaseInsensitive) == 0) {
             selectedIndex = fileCombo_->count() - 1;
         }

@@ -1,4 +1,5 @@
 #include "main_window.hpp"
+#include "../../../cmake/ViewerResults.hpp"
 
 #include "h5_reader.hpp"
 #include "plot_widget.hpp"
@@ -291,6 +292,7 @@ void MainWindow::chooseFile() {
         this, QStringLiteral("Open FEM Waveguide Scattering HDF5 result"), QString(),
         QStringLiteral("HDF5 files (*.h5 *.hdf5);;All files (*)"));
     if (!path.isEmpty()) {
+        resultsDirectory_.clear();
         loadPath(path);
     }
 }
@@ -306,10 +308,9 @@ void MainWindow::chooseDirectory() {
 }
 
 void MainWindow::loadDirectory(const QString& directoryPath) {
+    resultsDirectory_ = QFileInfo(directoryPath).absoluteFilePath();
     QDir selectedDirectory(directoryPath);
-    const auto entries = selectedDirectory.entryInfoList(
-        {QStringLiteral("*.h5"), QStringLiteral("*.hdf5")},
-        QDir::Files | QDir::Readable, QDir::Name | QDir::IgnoreCase);
+    const auto entries = femviewer::resultFiles(selectedDirectory);
     if (entries.isEmpty()) {
         fileCombo_->blockSignals(true);
         fileCombo_->clear();
@@ -326,16 +327,14 @@ void MainWindow::loadDirectory(const QString& directoryPath) {
 
 void MainWindow::refreshFileChoices(const QString& selectedPath) {
     const QFileInfo selectedFile(selectedPath);
-    QDir directory(selectedFile.absolutePath());
-    const auto entries = directory.entryInfoList(
-        {QStringLiteral("*.h5"), QStringLiteral("*.hdf5")},
-        QDir::Files | QDir::Readable, QDir::Name | QDir::IgnoreCase);
+    QDir directory(resultsDirectory_.isEmpty() ? selectedFile.absolutePath() : resultsDirectory_);
+    const auto entries = femviewer::resultFiles(directory);
     fileCombo_->blockSignals(true);
     fileCombo_->clear();
     int selectedIndex = -1;
     for (const auto& entry : entries) {
         const auto absolutePath = entry.absoluteFilePath();
-        fileCombo_->addItem(entry.fileName(), absolutePath);
+        fileCombo_->addItem(directory.relativeFilePath(absolutePath), absolutePath);
         if (absolutePath.compare(selectedFile.absoluteFilePath(), Qt::CaseInsensitive) == 0) {
             selectedIndex = fileCombo_->count() - 1;
         }

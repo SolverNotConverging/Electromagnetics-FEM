@@ -1,6 +1,6 @@
 """Layered 1D capacitor compared with the analytic dielectric energy."""
 
-# Run directly from the checkout without installing solver packages.
+# Run directly from the downloaded repository without installing solver packages.
 import sys as _sys
 from pathlib import Path as _Path
 _ROOT = next(parent for parent in _Path(__file__).resolve().parents
@@ -14,6 +14,9 @@ from fem_electrostatics import ElectrostaticSolver
 from scipy.constants import epsilon_0 as EPSILON_0
 
 
+OUTPUT_DIR = _Path(__file__).resolve().parents[1] / "outputs" / _Path(__file__).stem
+
+
 def main():
     dielectric = Material(name="upper dielectric", epsilon=4.0)
     capacitor = ElectrostaticSolver(dim=1, outer_potential=None, x_range=(0.0, 1.0))
@@ -25,6 +28,8 @@ def main():
     print("Layered capacitor energy:", dielectric.energy)
     print("Expected energy:", .5 * EPSILON_0 / (.5 + .5 / 4.))
 
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    capacitor.result.save(OUTPUT_DIR / "results.h5")
     capacitor.show()
     return dielectric
 

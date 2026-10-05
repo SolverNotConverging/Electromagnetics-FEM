@@ -13,24 +13,25 @@ import argparse
 import os
 from pathlib import Path
 import subprocess
+import shutil
 
 ROOT=Path(__file__).resolve().parents[1]
 
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--build',type=Path,default=ROOT/'outputs/build')
-    parser.add_argument('--output',type=Path,default=ROOT/'outputs/native-qualification')
+    parser.add_argument('--build',type=Path,default=ROOT/'build/native-release')
+    parser.add_argument('--output',type=Path,default=ROOT/'build/native-qualification')
     args=parser.parse_args()
     output=args.output.resolve()
     output.mkdir(parents=True,exist_ok=True)
-    def run(executable,*arguments):
+    def run(executable,*arguments,cwd=None):
         name=executable+('.exe' if os.name=='nt' else '')
         matches=[path for path in args.build.resolve().rglob(name) if path.is_file()]
         if len(matches)!=1:raise RuntimeError(f'Expected one {name} in {args.build}; found {len(matches)}.')
         from fem_periodic_modes.persistence import _build_runtime_environment
         environment=dict(_build_runtime_environment(matches[0]) or os.environ, QT_QPA_PLATFORM='minimal' if os.name=='nt' else 'offscreen')
-        subprocess.run([str(matches[0]),*map(str,arguments)],env=environment,check=True,timeout=45,
+        subprocess.run([str(matches[0]),*map(str,arguments)],cwd=cwd,env=environment,check=True,timeout=45,
             **({'creationflags':subprocess.CREATE_NO_WINDOW} if os.name=='nt' else {}))
     from fem_periodic_modes import PeriodicModeSolver2D,PeriodicModeSolver3D,PeriodicSweepResult
     periodic=[]
@@ -63,7 +64,17 @@ def main():
     sweep.save(path)
     run('fem-waveguide-scattering-viewer-inspect',path,'1')
     run('fem-waveguide-scattering-viewer','--smoke-test',path)
-    print('Native readers and offscreen viewers accepted Python single/sweep archives.')
+    # Launch with no file argument from isolated solver-output layouts.
+    auto_root = output / 'auto-load'
+    for family, executable, sample in (
+        ('fem_periodic_modes', 'fem-periodic-mode-viewer', 'periodic-2d.h5'),
+        ('fem_waveguide_scattering', 'fem-waveguide-scattering-viewer', 'scattering.h5'),
+    ):
+        case = auto_root / family / 'outputs' / '2d_example'
+        case.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(output / sample, case / 'results.h5')
+        run(executable, '--smoke-test', cwd=auto_root / family)
+    print('Native readers, recursive output discovery, and offscreen viewers: PASS.')
 
 
 if __name__=='__main__':main()

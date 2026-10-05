@@ -11,7 +11,7 @@ First example
 With the Python dependencies installed as described in the `project setup <../../README.md>`_,
 run this example from the repository root::
 
-    python fem_periodic_modes/examples/uniform_cell_2d.py
+    python fem_periodic_modes/examples/2d_uniform_cell.py
 
 The computed TEM effective index should be close to 1.5. The FEM Periodic Mode Viewer opens the completed result.
 
@@ -19,13 +19,13 @@ This example uses the `native periodic viewer <../../apps/fem_periodic_mode_view
 For numerical runs without windows, omit ``show()`` or the plotting call;
 FEM results also offer ``plot()`` for static figures.
 
-Open the `first example <../examples/uniform_cell_2d.py>`_ to change
+Open the `first example <../examples/2d_uniform_cell.py>`_ to change
 geometry and controls. The `example index <../examples/README.rst>`_
 provides a learning order and more physical problems. Scripts run from any working
 directory using the checkout and its Python dependencies.
 
 Scripts that save results write to
-``outputs/fem_periodic_modes/examples/<example>/`` relative to the checkout.
+``fem_periodic_modes/outputs/<example>/`` relative to the checkout.
 The first example may only display results; see its code for explicit save calls.
 
 Working with the solver

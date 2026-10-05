@@ -116,7 +116,7 @@ def entry(name, obj, returned):
 
 
 def main():
-    inventory = json.loads((ROOT/'doc/public_api.json').read_text())
+    inventory = json.loads((ROOT/'tests/public_api.json').read_text())
     for package, spec in inventory.items():
         module = import_module(package)
         out = section(package+" user API", "=")

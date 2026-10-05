@@ -32,6 +32,7 @@ public:
     [[nodiscard]] bool verifySliceRenderingForTest();
 
 private:
+    QString resultsDirectory_;
     struct IndexOutcome {
         std::size_t generation{};
         FileIndexPtr index;

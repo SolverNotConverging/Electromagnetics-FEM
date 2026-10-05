@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-INVENTORY = json.loads((ROOT / 'doc/public_api.json').read_text())
+INVENTORY = json.loads((ROOT / 'tests/public_api.json').read_text())
 
 
 @pytest.mark.parametrize('package', INVENTORY)

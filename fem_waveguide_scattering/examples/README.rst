@@ -16,13 +16,13 @@ Runtime depends on hardware and mesh size. Single solves are the starting point;
 dispersion and band-structure scripts perform many eigenproblems and can take
 substantially longer. 3D cases also require more memory.
 
-1. `uniform_waveguide_2d.py <uniform_waveguide_2d.py>`_ — Port modes and transmission through a uniform guide. Single solve.
-2. `dielectric_insert_2d.py <dielectric_insert_2d.py>`_ — Reflection, transmission, and power balance for a weak insert. Single solve.
-3. `dielectric_insert_2d_frequency_sweep.py <dielectric_insert_2d_frequency_sweep.py>`_ — A frequency sweep saved as a multi-case HDF5 archive. Frequency sweep.
-4. `slab_waveguide_2d_oblique_incidence.py <slab_waveguide_2d_oblique_incidence.py>`_ — Oblique incidence with nonzero invariant-direction wavenumber. Single solve.
-5. `grounded_slab_slot_2d.py <grounded_slab_slot_2d.py>`_ — A PEC slot in a grounded slab. Single solve.
-6. `closed_contour_farfield_2d.py <closed_contour_farfield_2d.py>`_ — Matched modal ports and a closed four-sided NF2FF contour through the layered guide. Saves a complex radiation pattern, polar PNG, and reloadable HDF5 contour without opening a window.
+1. `2d_uniform_waveguide.py <2d_uniform_waveguide.py>`_ — Port modes and transmission through a uniform guide. Single solve.
+2. `2d_dielectric_insert.py <2d_dielectric_insert.py>`_ — Reflection, transmission, and power balance for a weak insert. Single solve.
+3. `2d_dielectric_insert_frequency_sweep.py <2d_dielectric_insert_frequency_sweep.py>`_ — A frequency sweep saved as a multi-case HDF5 archive. Frequency sweep.
+4. `2d_slab_waveguide_oblique_incidence.py <2d_slab_waveguide_oblique_incidence.py>`_ — Oblique incidence with nonzero invariant-direction wavenumber. Single solve.
+5. `2d_grounded_slab_slot.py <2d_grounded_slab_slot.py>`_ — A PEC slot in a grounded slab. Single solve.
+6. `2d_closed_contour_farfield.py <2d_closed_contour_farfield.py>`_ — Matched modal ports and a closed four-sided NF2FF contour through the layered guide. Saves a complex radiation pattern, polar PNG, and reloadable HDF5 contour without opening a window.
 
 Run a script from this directory, or pass its path from the repository root.
 Scripts that save results use
-``outputs/fem_waveguide_scattering/examples/<example>/`` in the checkout.
+``fem_waveguide_scattering/outputs/<example>/`` in the downloaded repository.

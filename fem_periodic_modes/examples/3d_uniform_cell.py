@@ -1,6 +1,6 @@
 """Uniform 3D periodic cell compared with the analytic TE10 effective index."""
 
-# Run directly from the checkout without installing solver packages.
+# Run directly from the downloaded repository without installing solver packages.
 import sys as _sys
 from pathlib import Path as _Path
 _ROOT = next(parent for parent in _Path(__file__).resolve().parents
@@ -14,6 +14,9 @@ from fem_periodic_modes import PeriodicModeSolver3D
 from cem_common import Material
 
 
+OUTPUT_DIR = _Path(__file__).resolve().parents[1] / "outputs" / _Path(__file__).stem
+
+
 def main():
     dielectric = Material(name="uniform dielectric", epsilon=2.25)
     common = dict(frequency=10e9, x_range=.02, z_range=.005,
@@ -25,6 +28,8 @@ def main():
     expected = np.sqrt(2.25 - (np.pi / (.02 * vector.k0))**2)
     print("3D TE10 effective index:", te10[0].neff)
     print("Analytic TE10 effective index:", expected)
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    vector.result.save(OUTPUT_DIR / "results.h5")
     vector.show()
     return te10
 

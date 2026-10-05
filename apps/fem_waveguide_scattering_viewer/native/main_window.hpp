@@ -23,6 +23,7 @@ public:
     [[nodiscard]] bool hasLoadedResult() const noexcept { return static_cast<bool>(result_); }
 
 private:
+    QString resultsDirectory_;
     struct ModalControls {
         QComboBox* mode{};
         QComboBox* component{};

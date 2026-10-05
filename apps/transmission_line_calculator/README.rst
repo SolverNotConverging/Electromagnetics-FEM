@@ -34,7 +34,7 @@ the library and interface defaults remain adaptive. For the same single-mesh
 tutorial in the GUI/TUI, choose Coaxial, set **Max adaptive refinements** to
 **0**, then calculate.
 
-``examples/line_comparison.cpp`` compares all four geometry templates and opens
+``examples/2d_line_comparison.cpp`` compares all four geometry templates and opens
 a Qt window with one tab per geometry, showing electric and magnetic fields
 with mesh overlays. Build
 it from the repository root after installing the dependencies below:
@@ -88,7 +88,7 @@ Keep every dependency built for the same compiler, architecture, and runtime as 
 Windows: MSVC and vcpkg
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Follow the `root Windows build instructions <../../README.md#windows-msvc-and-vcpkg-step-by-step>`_
+Follow the `Windows build instructions <../native_build.md#windows-msvc-and-vcpkg>`_
 for MSVC, Ninja, and the ``x64-windows`` dependencies in ``C:\opt\vcpkg``.
 MinGW is not supported. The root build compiles all three apps.
 

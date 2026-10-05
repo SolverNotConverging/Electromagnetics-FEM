@@ -10,7 +10,7 @@ def launch(name, arguments=None):
     executable = bundled_executable(name)
     if executable is None:
         raise SystemExit("Native applications are absent from this source installation. "
-                         "Build from source with uv sync and the native dependencies "
+                         "Install from source with python -m pip install . and the native dependencies "
                          "as described in README.md.")
     try:
         return subprocess.call([str(executable), *(sys.argv[1:] if arguments is None else arguments)],

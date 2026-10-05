@@ -7,7 +7,7 @@ is generated inside the metal.
 
 from __future__ import annotations
 
-# Run directly from the checkout without installing solver packages.
+# Run directly from the downloaded repository without installing solver packages.
 import sys as _sys
 from pathlib import Path as _Path
 _ROOT = next(parent for parent in _Path(__file__).resolve().parents
@@ -49,6 +49,9 @@ def build_solver() -> ModeSolver2D:
     return solver
 
 
+OUTPUT_DIR = _Path(__file__).resolve().parents[1] / "outputs" / _Path(__file__).stem
+
+
 def main() -> None:
     solver = build_solver()
     mesh = solver.mesh(**MESH_OPTIONS)
@@ -64,6 +67,8 @@ def main() -> None:
         f"alpha={mode.alpha:.4g} 1/m, residual={mode.residual:.3e}"
     )
 
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    solver.result.save(OUTPUT_DIR / "results.h5")
     solver.show()
 
 

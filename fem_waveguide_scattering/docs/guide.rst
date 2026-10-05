@@ -11,7 +11,7 @@ First example
 With the Python dependencies installed as described in the `project setup <../../README.md>`_,
 run this example from the repository root::
 
-    python fem_waveguide_scattering/examples/uniform_waveguide_2d.py
+    python fem_waveguide_scattering/examples/2d_uniform_waveguide.py
 
 The uniform guide should have effective index near 1, reflection near 0, and transmission near 1. The FEM Waveguide Scattering Viewer opens the result.
 
@@ -19,13 +19,13 @@ This example uses the `native scattering viewer <../../apps/fem_waveguide_scatte
 For numerical runs without windows, omit ``show()`` or the plotting call;
 FEM results also offer ``plot()`` for static figures.
 
-Open the `first example <../examples/uniform_waveguide_2d.py>`_ to change
+Open the `first example <../examples/2d_uniform_waveguide.py>`_ to change
 geometry and controls. The `example index <../examples/README.rst>`_
 provides a learning order and more physical problems. Scripts run from any working
 directory using the checkout and its Python dependencies.
 
 Scripts that save results write to
-``outputs/fem_waveguide_scattering/examples/<example>/`` relative to the checkout.
+``fem_waveguide_scattering/outputs/<example>/`` relative to the checkout.
 The first example may only display results; see its code for explicit save calls.
 
 Working with the solver

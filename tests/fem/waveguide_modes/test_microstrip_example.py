@@ -7,16 +7,16 @@ import pytest
 
 from fem_waveguide_modes.geometry import Rectangle
 from cem_common import materials
-from fem_waveguide_modes.examples.microstrip_2d_surface_impedance import (
-    COPPER_THICKNESS,
-    DOMAIN_X,
-    FREQUENCY,
-    MESH_OPTIONS,
-    STRIP_WIDTH,
-    SUBSTRATE_EPSILON,
-    SUBSTRATE_HEIGHT,
-    build_solver,
-)
+from importlib import import_module
+_example = import_module("fem_waveguide_modes.examples.2d_microstrip_surface_impedance")
+COPPER_THICKNESS = _example.COPPER_THICKNESS
+DOMAIN_X = _example.DOMAIN_X
+FREQUENCY = _example.FREQUENCY
+MESH_OPTIONS = _example.MESH_OPTIONS
+STRIP_WIDTH = _example.STRIP_WIDTH
+SUBSTRATE_EPSILON = _example.SUBSTRATE_EPSILON
+SUBSTRATE_HEIGHT = _example.SUBSTRATE_HEIGHT
+build_solver = _example.build_solver
 
 
 def test_microstrip_builder_places_dielectric_and_copper() -> None:

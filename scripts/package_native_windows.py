@@ -144,7 +144,9 @@ def stage(args):
             raise RuntimeError(f"Missing dependency provenance: {sbom}")
         target = bundle / "licenses" / name
         shutil.copytree(share, target)
-        recipe = ROOT / "vcpkg-ports" / name
+        recipe = args.recipe_root / name if args.recipe_root else ROOT / "vcpkg-ports" / name
+        if not recipe.is_dir():
+            recipe = ROOT / "vcpkg-ports" / name
         if not recipe.is_dir():
             recipe = args.vcpkg_root / "ports" / name
         if recipe.is_dir():
@@ -246,7 +248,7 @@ No additional restrictions are imposed. This software comes without warranty.
 
 SOURCE_INDEX.md provides exact dependency source/build-recipe downloads and hashes.
 Current Windows rebuild instructions are in the FEM repository:
-https://github.com/SolverNotConverging/Electromagnetics-FEM/blob/main/doc/development/native_dependency_sources.md
+https://github.com/SolverNotConverging/Electromagnetics-FEM/blob/main/apps/native_build.md
 Application source and packaging scripts are in the FEM repository; the release
 notes identify the corresponding source commit. Only the wheel is needed to run.
 """, encoding="utf-8")
@@ -255,9 +257,10 @@ notes identify the corresponding source commit. Only the wheel is needed to run.
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--phase", required=True, choices=("stage", "finish"))
-    parser.add_argument("--build", type=Path, default=ROOT / "outputs/build-msvc")
-    parser.add_argument("--samples", type=Path, default=ROOT / "outputs/native-qualification")
-    parser.add_argument("--output", type=Path, default=ROOT / "outputs/native-release-1.1.0")
+    parser.add_argument("--build", type=Path, default=ROOT / "build/native-release")
+    parser.add_argument("--samples", type=Path, default=ROOT / "build/native-qualification")
+    parser.add_argument("--output", type=Path, default=ROOT / "build/native-release-1.1.0")
+    parser.add_argument("--recipe-root", type=Path, help="Archived hash-verified recipes for installed dependencies.")
     parser.add_argument("--vcpkg-root", type=Path, default=Path("C:/opt/vcpkg"))
     args = parser.parse_args()
     for name in ("build", "samples", "output", "vcpkg_root"):

@@ -1,6 +1,6 @@
 """Uniform 2D periodic cell with the analytic TEM effective index."""
 
-# Run directly from the checkout without installing solver packages.
+# Run directly from the downloaded repository without installing solver packages.
 import sys as _sys
 from pathlib import Path as _Path
 _ROOT = next(parent for parent in _Path(__file__).resolve().parents
@@ -13,6 +13,9 @@ from fem_periodic_modes import PeriodicModeSolver2D
 from cem_common import Material
 
 
+OUTPUT_DIR = _Path(__file__).resolve().parents[1] / "outputs" / _Path(__file__).stem
+
+
 def main():
     dielectric = Material(name="uniform dielectric", epsilon=2.25)
     common = dict(frequency=10e9, x_range=.02, z_range=.005,
@@ -22,6 +25,8 @@ def main():
     tem = scalar.solve(num_modes=1, max_refinements=0, neff_guess=1.5)
     print("2D TEM effective index (exact 1.5):", tem[0].neff)
 
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    scalar.result.save(OUTPUT_DIR / "results.h5")
     scalar.show()
     return tem
 

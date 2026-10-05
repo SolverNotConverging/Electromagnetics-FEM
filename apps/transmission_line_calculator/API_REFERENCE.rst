@@ -421,7 +421,7 @@ FTXUI at configuration time because it also builds both front ends.
      - CMake boolean
      - CTest switch controlling the regression/smoke test targets.
 
-``examples/line_comparison.cpp`` shows all four templates with
+``examples/2d_line_comparison.cpp`` shows all four templates with
 ``maxRefinements = 0``, prints neff and characteristic impedance, and opens
 electric/magnetic field plots in a Qt tab for each geometry. Pass
 ``--smoke-test`` to render every tab and exit automatically for GUI validation.

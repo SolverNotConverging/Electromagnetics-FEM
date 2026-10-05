@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-# Run directly from the checkout without installing solver packages.
+# Run directly from the downloaded repository without installing solver packages.
 import sys as _sys
 from pathlib import Path as _Path
 _ROOT = next(parent for parent in _Path(__file__).resolve().parents
@@ -13,6 +13,9 @@ if str(_ROOT) not in _sys.path:
 from cem_common import Material, materials
 
 from fem_waveguide_modes import ModeSolver2D
+
+
+OUTPUT_DIR = _Path(__file__).resolve().parents[1] / "outputs" / _Path(__file__).stem
 
 
 def main() -> None:
@@ -33,6 +36,8 @@ def main() -> None:
             f"divergence={mode.divergence_residual:.3e}"
         )
 
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    solver.result.save(OUTPUT_DIR / "results.h5")
     solver.show()
 
 

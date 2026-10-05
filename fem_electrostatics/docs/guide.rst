@@ -11,7 +11,7 @@ First example
 With the Python dependencies installed as described in the `project setup <../../README.md>`_,
 run this example from the repository root::
 
-    python fem_electrostatics/examples/parallel_plate_capacitor_1d.py
+    python fem_electrostatics/examples/1d_parallel_plate_capacitor.py
 
 The script prints node count and electrostatic energy, then opens an interactive potential, field, and mesh viewer.
 
@@ -19,13 +19,13 @@ A Matplotlib GUI backend is needed to display the figures.
 For numerical runs without windows, omit ``show()`` or the plotting call;
 FEM results also offer ``plot()`` for static figures.
 
-Open the `first example <../examples/parallel_plate_capacitor_1d.py>`_ to change
+Open the `first example <../examples/1d_parallel_plate_capacitor.py>`_ to change
 geometry and controls. The `example index <../examples/README.rst>`_
 provides a learning order and more physical problems. Scripts run from any working
 directory using the checkout and its Python dependencies.
 
 Scripts that save results write to
-``outputs/fem_electrostatics/examples/<example>/`` relative to the checkout.
+``fem_electrostatics/outputs/<example>/`` relative to the checkout.
 The first example may only display results; see its code for explicit save calls.
 
 Working with the solver

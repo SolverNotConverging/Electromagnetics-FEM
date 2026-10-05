@@ -145,7 +145,7 @@ print('Bundled native applications and installed command entry points: PASS')
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--dist', type=Path, default=ROOT/'outputs/dist')
+    parser.add_argument('--dist', type=Path, default=ROOT/'build/dist')
     parser.add_argument('--fresh', action='store_true', help='Download dependencies into a clean environment.')
     args = parser.parse_args()
     wheels = sorted(args.dist.resolve().glob('*.whl'))
@@ -171,6 +171,16 @@ def main():
         subprocess.run([str(python), '-I', '-m', 'pip', 'check'], cwd=work, check=True)
         subprocess.run([str(python), '-I', '-c', SMOKE], cwd=work, check=True)
         subprocess.run([str(python), '-I', '-c', NATIVE_SMOKE], cwd=work, check=True)
+        source_smoke = (
+            f"import sys; sys.path.insert(0, {str(ROOT)!r}); "
+            "import periodic_eigensolver; "
+            "assert periodic_eigensolver.native_backend_available(); "
+            "from cem_common._native import bundled_executable; "
+            "assert bundled_executable('fem-periodic-mode-viewer').is_file(); "
+            "print('Direct source examples find installed native runtime and kernel: PASS')"
+        )
+        subprocess.run([str(python), '-I', '-c', source_smoke], cwd=work, check=True)
+
     print('Wheel qualification passed outside the checkout.')
 
 

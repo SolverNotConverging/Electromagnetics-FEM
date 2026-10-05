@@ -1,4 +1,5 @@
 #include "main_window.hpp"
+#include "../../../cmake/ViewerResults.hpp"
 
 #include <QApplication>
 #include <QFileInfo>
@@ -17,11 +18,16 @@ int main(int argc, char* argv[]) {
     const auto arguments = application.arguments();
     const bool radiationScreenshot = arguments.size() == 4
         && arguments.at(1) == QStringLiteral("--smoke-test-radiation");
-    const bool smokeTest = radiationScreenshot || (arguments.size() > 2
+    const bool smokeTest = radiationScreenshot || (arguments.size() > 1
         && arguments.at(1) == QStringLiteral("--smoke-test"));
     const int pathIndex = smokeTest ? 2 : 1;
     if (arguments.size() > pathIndex) {
         window.loadPath(QFileInfo(arguments.at(pathIndex)).absoluteFilePath());
+    } else {
+        const auto directory = femviewer::defaultResultsDirectory(QStringLiteral("fem_waveguide_scattering"));
+        if (!directory.isEmpty()) {
+            window.loadPath(directory);
+        }
     }
     if (smokeTest) {
         QTimer::singleShot(1800, &application, [&application, &window, radiationScreenshot,

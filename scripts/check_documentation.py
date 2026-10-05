@@ -25,7 +25,7 @@ def main():
         for link in links:
             if '://' in link or link.startswith(('mailto:','#')):continue
             if not (path.parent/link.split('#')[0]).exists():errors.append(f'{path}: broken local link {link}')
-    for path in [ROOT/'README.md', ROOT/'benchmarks/README.md', *(ROOT/'doc').rglob('*.md')]:
+    for path in [ROOT/'README.md', ROOT/'benchmarks/README.md', *(ROOT/'apps').rglob('*.md')]:
         for link in re.findall(r'\[[^\]\n]+\]\(([^)\n]+)\)', path.read_text(encoding='utf-8')):
             if '://' in link or link.startswith(('mailto:','#')):continue
             if not (path.parent/link.split('#')[0]).exists():errors.append(f'{path}: broken local link {link}')

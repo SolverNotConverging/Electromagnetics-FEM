@@ -1,6 +1,6 @@
 """Fixed-mesh full-vector lead modes and second-order uniform scattering."""
 
-# Run directly from the checkout without installing solver packages.
+# Run directly from the downloaded repository without installing solver packages.
 import sys as _sys
 from pathlib import Path as _Path
 _ROOT = next(parent for parent in _Path(__file__).resolve().parents
@@ -11,6 +11,9 @@ if str(_ROOT) not in _sys.path:
 from cem_common import materials
 
 import fem_waveguide_scattering as scattering
+
+
+OUTPUT_DIR = _Path(__file__).resolve().parents[1] / "outputs" / _Path(__file__).stem
 
 
 def main():
@@ -26,6 +29,8 @@ def main():
     print("TEM effective index (exact 1):", modes[0].neff)
     print("Reflection (exact 0):", result.reflection)
     print("Transmission (exact 1):", result.transmission)
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    result.save(OUTPUT_DIR / "results.h5")
     result.show()
     return modes, result
 
