@@ -7,7 +7,7 @@ import pytest
 
 from fem_waveguide_modes.geometry import Rectangle
 from cem_common import materials
-from examples.fem.waveguide_modes.microstrip_2d_surface_impedance import (
+from fem_waveguide_modes.examples.microstrip_2d_surface_impedance import (
     COPPER_THICKNESS,
     DOMAIN_X,
     FREQUENCY,

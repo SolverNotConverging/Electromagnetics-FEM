@@ -3,6 +3,15 @@
 Ordinary benchmark runs write to ignored outputs/. Run this script explicitly
 when updating the reviewed reference PNG/CSV files under benchmarks/.
 """
+
+# Run directly from the checkout without installing solver packages.
+import sys as _sys
+from pathlib import Path as _Path
+_ROOT = next(parent for parent in _Path(__file__).resolve().parents
+             if (parent / "cem_common" / "__init__.py").is_file())
+if str(_ROOT) not in _sys.path:
+    _sys.path.insert(0, str(_ROOT))
+
 from datetime import datetime, timezone
 import hashlib
 from importlib.metadata import version
@@ -42,7 +51,7 @@ def main():
             artifacts[f'{case}/{filename}'] = hashlib.sha256(source.read_bytes()).hexdigest()
     source_hash = hashlib.sha256()
     sources = list((ROOT / 'benchmarks/analytical').glob('*.py'))
-    for parent in ('solvers', 'libraries'):
+    for parent in ('cem_common', 'fem_adaptivity', 'fem_electrostatics', 'fem_periodic_modes', 'fem_waveguide_modes', 'fem_waveguide_scattering', 'periodic_eigensolver'):
         sources.extend(p for p in (ROOT / parent).rglob('*')
                        if 'src' in p.parts and p.suffix in ('.py', '.cpp', '.h', '.hpp'))
     for source in sorted(sources):
@@ -54,7 +63,7 @@ def main():
         generated_utc=datetime.now(timezone.utc).isoformat(),
         base_git_revision=revision, working_tree_modified=dirty,
         source_sha256=source_hash.hexdigest(),
-        source_hash_definition='Sorted benchmark .py and solver/library src .py/.cpp/.h/.hpp; relative POSIX path, NUL, bytes, NUL.',
+        source_hash_definition='Sorted benchmark .py and root package src .py/.cpp/.h/.hpp; relative POSIX path, NUL, bytes, NUL.',
         python=platform.python_version(), platform=platform.platform(),
         dependencies={name: version(name) for name in (
             'numpy', 'scipy', 'matplotlib', 'scikit-fem', 'gmsh', 'h5py')},

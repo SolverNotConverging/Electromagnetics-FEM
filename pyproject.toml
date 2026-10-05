@@ -47,40 +47,22 @@ fem-waveguide-scattering-viewer = "fem._apps:scattering_viewer"
 fem-waveguide-scattering-viewer-inspect = "fem._apps:scattering_inspector"
 
 [tool.uv]
-package = true
+package = false
 default-groups = ["dev"]
 cache-keys = [
   { file = "pyproject.toml" },
-  { file = "CMakeLists.txt" },
-  { file = "cmake/**/*.cmake" },
-  { file = "cmake/**/*.in" },
-  { file = "apps/**/CMakeLists.txt" },
-  { file = "apps/**/native/**/*.cpp" },
-  { file = "apps/**/native/**/*.hpp" },
-  { file = "apps/**/native/**/*.c" },
-  { file = "apps/**/native/**/*.h" },
-  { file = "libraries/**/src/**/*.py" },
-  { file = "libraries/**/src/**/*.pyx" },
-  { file = "libraries/**/src/**/*.pxd" },
-  { file = "solvers/**/src/**/*.py" },
-  { file = "src/**/*.py" },
+  { file = "setup.py" },
+  { file = "setup_cython.py" },
+  { file = "**/src/*.py" },
+  { file = "**/src/*.pyx" },
 ]
 
 [tool.scikit-build]
 minimum-version = "build-system.requires"
 build-dir = "build/{wheel_tag}"
 cmake.build-type = "Release"
-wheel.packages = [
-  "src/fem",
-  "libraries/cem_common/src/cem_common",
-  "libraries/fem_adaptivity/src/fem_adaptivity",
-  "libraries/periodic_eigensolver/src/periodic_eigensolver",
-  "solvers/fem/electrostatics/src/fem_electrostatics",
-  "solvers/fem/periodic_modes/src/fem_periodic_modes",
-  "solvers/fem/waveguide_modes/src/fem_waveguide_modes",
-  "solvers/fem/waveguide_scattering/src/fem_waveguide_scattering",
-]
-wheel.exclude = ["**/*.pyx", "**/__pycache__/**"]
+wheel.packages = ["fem", "cem_common", "fem_adaptivity", "fem_electrostatics", "fem_periodic_modes", "fem_waveguide_modes", "fem_waveguide_scattering", "periodic_eigensolver"]
+wheel.exclude = ["**/*.pyx", "**/__pycache__/**", "**/docs/**", "**/examples/**", "**/scripts/**"]
 sdist.exclude = [".idea", "outputs", "examples", "**/__pycache__", "**/build"]
 
 # Keep Windows caches separate from the former MinGW build directory.

@@ -11,7 +11,7 @@ ROOT=Path(__file__).resolve().parents[1]
 def main():
     errors=[]
     files=[]
-    for directory in ('solvers','libraries','apps','doc','examples','tests','benchmarks'):
+    for directory in ('cem_common', 'fem_adaptivity', 'fem_electrostatics', 'fem_periodic_modes', 'fem_waveguide_modes', 'fem_waveguide_scattering', 'periodic_eigensolver', 'apps', 'doc', 'tests', 'benchmarks'):
         files.extend((ROOT/directory).rglob('*.rst'))
     for path in files:
         if any(part in ('build','dist') or part.endswith('.egg-info') for part in path.parts):continue

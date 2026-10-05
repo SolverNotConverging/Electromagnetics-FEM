@@ -4,7 +4,7 @@ import fem_waveguide_scattering as package
 
 
 def test_reference_covers_selected_user_api():
-    reference = (Path(__file__).resolve().parents[3] / 'doc/solvers/fem/waveguide_scattering/API_REFERENCE.rst').read_text(encoding='utf-8')
+    reference = (Path(__file__).resolve().parents[3] / 'fem_waveguide_scattering/docs/API_REFERENCE.rst').read_text(encoding='utf-8')
     for name in package.__all__:
         assert f'``{name}``' in reference
     assert 'H5ResultData' not in reference

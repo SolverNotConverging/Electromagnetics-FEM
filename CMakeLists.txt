@@ -50,7 +50,7 @@ if(FEM_BUILD_PYTHON)
     include(UseCython)
 
     set(FEM_CYTHON_SOURCE
-        "${CMAKE_CURRENT_SOURCE_DIR}/libraries/periodic_eigensolver/src/periodic_eigensolver/_cython_kernels.pyx")
+        "${CMAKE_CURRENT_SOURCE_DIR}/periodic_eigensolver/src/_cython_kernels.pyx")
     cython_transpile(
         "${FEM_CYTHON_SOURCE}"
         LANGUAGE C

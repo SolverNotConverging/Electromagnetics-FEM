@@ -1,9 +1,9 @@
 {
-  "generated_utc": "2026-10-05T18:46:48.146773+00:00",
-  "base_git_revision": "5130d14fab1b1c6fc8486cf24ebd2abbb0f025ba",
+  "generated_utc": "2026-10-05T19:05:29.544899+00:00",
+  "base_git_revision": "477bc5ebc92bfdbdc7eb963177c5d39413dc1b1c",
   "working_tree_modified": true,
-  "source_sha256": "fd38c585d1ca2be8c49cd70ea9ed7296f9742da202ffedd83ff34107c2b2c539",
-  "source_hash_definition": "Sorted benchmark .py and solver/library src .py/.cpp/.h/.hpp; relative POSIX path, NUL, bytes, NUL.",
+  "source_sha256": "18d2bd73f40f3eaca6af74a91a7577253c03c3558657cc352e36ef3c3f0fe56b",
+  "source_hash_definition": "Sorted benchmark .py and root package src .py/.cpp/.h/.hpp; relative POSIX path, NUL, bytes, NUL.",
   "python": "3.12.14",
   "platform": "Windows-11-10.0.26200-SP0",
   "dependencies": {
@@ -22,14 +22,14 @@
   ],
   "checks": "All four commands exited successfully with --check.",
   "artifact_sha256": {
-    "rectangular_waveguide_modes/comparison.csv": "01d5bda7310ef4a4acbfbfed3e083e32b5e759747ec88b02e6f1178b24eaccd6",
+    "rectangular_waveguide_modes/comparison.csv": "88c62df70b07265871970e3a455aeb779dc259e09808d62cba56c8494168c8e7",
     "rectangular_waveguide_modes/convergence.png": "ac714f27ed2e4b3935c1c7852f17eef2d8cbf030414f791bbe92d17d452f53c0",
     "parallel_plate_electrostatics/comparison.csv": "06c95e8c0e25d799538879d4580a9c593045f1bdfef2e5bdf5c5e8f7f9e2a289",
     "parallel_plate_electrostatics/potential.csv": "4014d83a28381cc385fe17c869404aa246b3b8a8783960179c26803028c5a29e",
     "parallel_plate_electrostatics/comparison.png": "4ab9019c4528e4e6e62cd3510f03f40d2a35d580950ebf5fbb31a09af849f476",
     "uniform_periodic_medium/comparison.csv": "b1f89c0c3dfe40b7adc394201f16762dacf3cba7145fbedaf0ec0a2e2627bbd8",
     "uniform_periodic_medium/comparison.png": "ca7a3a61c33e019eef3e614e442ca090f098a0d687c93c24b3f7682f70f9ad34",
-    "coaxial_waveguide_adaptivity/comparison.csv": "a27fc7bf48606e4b3616e9173ebddf63b825380bbe0105adf9c23dd3ddc8bbdf",
+    "coaxial_waveguide_adaptivity/comparison.csv": "a825a8a42a48456df18013ad11985fca2e8f79ecfc50d9070e08e6bec6fe9f0e",
     "coaxial_waveguide_adaptivity/adaptive_history.csv": "9a8d41fd9f8387f8b23489aa213eafa8cf1eee545e46eb48016e0dabf2f78a23",
     "coaxial_waveguide_adaptivity/convergence.png": "e479ca5e326570984fd927ab11030e5e483560a2a2adf847fe0b74bc499dd0ab",
     "coaxial_waveguide_adaptivity/meshes.png": "e93d06534444694d2e6ceccce25d86851c41ba58c68bd60bf2700a341ffe5ec2"

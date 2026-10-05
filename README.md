@@ -1,67 +1,49 @@
 # FEM
 
-Electromagnetic solvers using the finite element method.
+Electromagnetic solvers. Each root solver folder contains its own `src/`, `docs/`, and `examples/`.
 
-Shared materials, shapes, persistence, and periodic eigensolver libraries are included.
+| Solver | Import | Documentation | Examples |
+|---|---|---|---|
+| electrostatics | `fem_electrostatics` | [Guide](fem_electrostatics/docs/guide.rst) | [Examples](fem_electrostatics/examples/README.rst) |
+| periodic modes | `fem_periodic_modes` | [Guide](fem_periodic_modes/docs/guide.rst) | [Examples](fem_periodic_modes/examples/README.rst) |
+| waveguide modes | `fem_waveguide_modes` | [Guide](fem_waveguide_modes/docs/guide.rst) | [Examples](fem_waveguide_modes/examples/README.rst) |
+| waveguide scattering | `fem_waveguide_scattering` | [Guide](fem_waveguide_scattering/docs/guide.rst) | [Examples](fem_waveguide_scattering/examples/README.rst) |
 
-| Solver | Python package | Documentation |
-|---|---|---|
-| electrostatics | `fem_electrostatics` | [Guide](doc/solvers/fem/electrostatics/guide.rst) |
-| periodic modes | `fem_periodic_modes` | [Guide](doc/solvers/fem/periodic_modes/guide.rst) |
-| waveguide modes | `fem_waveguide_modes` | [Guide](doc/solvers/fem/waveguide_modes/guide.rst) |
-| waveguide scattering | `fem_waveguide_scattering` | [Guide](doc/solvers/fem/waveguide_scattering/guide.rst) |
+## Run from the checkout
 
-## Install from source
-
-Python 3.11–3.13 is supported; `.python-version` selects Python 3.12.
-Install uv, clone this repository, and build from the repository root:
+Install the Python dependencies, then run an example. No solver package installation is needed.
 
 ```sh
-git clone https://github.com/SolverNotConverging/Electromagnetics-FEM.git FEM
-cd FEM
-uv sync
-uv run python -m fem info
-uv run python examples/fem/waveguide_modes/rectangular_waveguide_2d.py
+python -m pip install -r requirements.txt
+python fem_waveguide_modes/examples/parallel_plate_waveguide_1d.py
 ```
 
-
-Native applications include the FEM Periodic Mode Viewer, FEM Waveguide Scattering
-Viewer, and Transmission Line Calculator. Build instructions are in each app's
-README under `apps/`. Windows builds use MSVC and vcpkg:
-
-```powershell
-. ./scripts/setup_msvc_windows.ps1
-uv sync
-uv run python -m fem info
-uv run python -m fem calculator
-uv run python -m fem periodic-viewer
-uv run python -m fem scattering-viewer
-```
-
-Install vcpkg dependencies first:
-
-```powershell
-& C:/opt/vcpkg/vcpkg.exe install "qtbase[core,concurrent,widgets,opengl,png]" "hdf5[core,hl,zlib]" eigen3 "gmsh[occ]" ftxui "vtk[core,qt,opengl]" --triplet x64-windows --overlay-ports=./vcpkg-ports
-```
-
-For a Python-only build, disable the three native applications:
+You can also run examples as modules from the root:
 
 ```sh
-uv sync --config-setting=cmake.define.CEM_BUILD_TRANSMISSION_LINE_CALCULATOR=OFF --config-setting=cmake.define.CEM_BUILD_FEM_PERIODIC_MODE_VIEWER=OFF --config-setting=cmake.define.CEM_BUILD_FEM_WAVEGUIDE_SCATTERING_VIEWER=OFF
+python -m fem_waveguide_modes.examples.parallel_plate_waveguide_1d
 ```
 
-The source is MIT licensed; bundled dependencies retain their own licenses.
-See [native dependency provenance](doc/development/native_dependency_sources.md).
-
-## Examples and checks
-
-See [examples](examples/README.rst), [documentation](doc/README.rst), and
-[benchmarks](benchmarks/README.md). Electromagnetic solvers use `exp(+i*omega*t)`;
-passive permittivity has nonpositive imaginary part.
+Shared materials and geometry live in `cem_common/`; `periodic_eigensolver/` provides
+the NumPy eigensolver and an optional Cython kernel. To compile the kernel in place:
 
 ```sh
-uv run python -m pytest
-uv run python scripts/check_documentation.py
+python -m pip install "Cython>=3,<4" "setuptools>=77,<83"
+python setup_cython.py build_ext --inplace
 ```
 
-Original source is available under the [MIT license](LICENSE).
+Without the compiled kernel, the default backend uses NumPy. A C compiler is needed only for this optional build.
+
+Native FEM applications live under `apps/`; their README files describe standalone builds.
+
+## Checks
+
+```sh
+python -m pip install -r requirements-dev.txt
+python -m pytest
+python scripts/check_documentation.py
+python scripts/qualify_examples.py --import-only
+```
+
+`uv sync` can also create a dependency environment without installing the solvers.
+Generated results are saved under ignored `outputs/`. Source is [MIT licensed](LICENSE).

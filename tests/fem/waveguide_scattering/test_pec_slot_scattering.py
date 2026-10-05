@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 
 import fem_waveguide_scattering as wf
-from examples.fem.waveguide_scattering.grounded_slab_slot_2d import MM, build_simulation
+from fem_waveguide_scattering.examples.grounded_slab_slot_2d import MM, build_simulation
 
 
 def test_grounded_pec_slot_is_preserved_in_modes_and_frequency_clones() -> None:

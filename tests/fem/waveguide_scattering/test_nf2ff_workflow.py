@@ -3,7 +3,7 @@ import pytest
 
 from fem_waveguide_scattering import load_result, ConfigurationError
 from fem_waveguide_scattering.nf2ff import capture_contour
-from examples.fem.waveguide_scattering.grounded_slab_slot_2d import build_simulation
+from fem_waveguide_scattering.examples.grounded_slab_slot_2d import build_simulation
 
 
 @pytest.mark.gmsh
