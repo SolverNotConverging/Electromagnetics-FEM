@@ -4,7 +4,7 @@
 import sys as _sys
 from pathlib import Path as _Path
 _ROOT = next(parent for parent in _Path(__file__).resolve().parents
-             if (parent / "cem_common" / "__init__.py").is_file())
+             if (parent / "fem_common" / "__init__.py").is_file())
 if str(_ROOT) not in _sys.path:
     _sys.path.insert(0, str(_ROOT))
 
@@ -16,7 +16,7 @@ import sys
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE_ROOTS = tuple(ROOT / name for name in ('fem', 'cem_common', 'fem_adaptivity', 'fem_electrostatics', 'fem_periodic_modes', 'fem_waveguide_modes', 'fem_waveguide_scattering', 'periodic_eigensolver'))
+SOURCE_ROOTS = tuple(ROOT / name for name in ('fem', 'fem_common', 'fem_adaptivity', 'fem_electrostatics', 'fem_periodic_modes', 'fem_waveguide_modes', 'fem_waveguide_scattering', 'periodic_eigensolver'))
 
 
 def main():
@@ -49,7 +49,7 @@ def main():
         members = set(archive.namelist())
         expected = set()
         for source in SOURCE_ROOTS:
-            expected.update(path.relative_to(ROOT).as_posix() for path in source.rglob("*.py") if path.relative_to(ROOT).parts[0] in ('fem', 'cem_common', 'fem_adaptivity', 'fem_electrostatics', 'fem_periodic_modes', 'fem_waveguide_modes', 'fem_waveguide_scattering', 'periodic_eigensolver') and not any(part in ("examples", "scripts", "docs", "__pycache__") for part in path.relative_to(ROOT).parts))
+            expected.update(path.relative_to(ROOT).as_posix() for path in source.rglob("*.py") if path.relative_to(ROOT).parts[0] in ('fem', 'fem_common', 'fem_adaptivity', 'fem_electrostatics', 'fem_periodic_modes', 'fem_waveguide_modes', 'fem_waveguide_scattering', 'periodic_eigensolver') and not any(part in ("examples", "scripts", "docs", "__pycache__") for part in path.relative_to(ROOT).parts))
         packaged = {name for name in members if name.endswith(".py") and not name.startswith("fem/native/")}
         if packaged != expected:
             raise SystemExit(f"Wheel source mismatch: {packaged ^ expected}")

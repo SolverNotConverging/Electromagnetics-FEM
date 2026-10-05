@@ -51,7 +51,7 @@ Workflow
 
 .. code-block:: python
 
-    from cem_common import Material
+    from fem_periodic_modes import Material
     from fem_periodic_modes import PeriodicModeSolver2D, load_result
 
     dielectric = Material(name="uniform dielectric", epsilon=2.25)

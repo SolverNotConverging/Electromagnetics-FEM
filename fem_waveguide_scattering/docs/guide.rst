@@ -50,7 +50,7 @@ Workflow
 
 .. code-block:: python
 
-    from cem_common import materials
+    from fem_waveguide_scattering import materials
     from fem_waveguide_scattering import WaveguideScatteringSolver2D, load_result
 
     solver = WaveguideScatteringSolver2D(frequency=10e9, x_range=.04,

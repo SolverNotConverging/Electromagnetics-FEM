@@ -8,7 +8,7 @@ import numpy as np
 import pytest
 
 from fem_periodic_modes import PeriodicMode, PeriodicModeSet, PeriodicSampledFields
-from cem_common.errors import PersistenceError
+from fem_common.errors import PersistenceError
 from fem_periodic_modes.persistence import load_periodic_h5, open_periodic_h5, save_periodic_h5, save_periodic_sweep_h5, validate_periodic_h5
 from fem_periodic_modes import persistence
 from fem_periodic_modes import visualization

@@ -1,9 +1,9 @@
 """Material-first geometry API for the periodic FEM implementations."""
 from dataclasses import replace
-from cem_common import materials, shapes
-from cem_common.errors import BackendCapabilityError, ConfigurationError, GeometryError
-from cem_common.scene import SceneMixin
-from cem_common._shape_adapter import native_shape
+from fem_common import materials, shapes
+from fem_common.errors import BackendCapabilityError, ConfigurationError, GeometryError
+from fem_common.scene import SceneMixin
+from fem_common._shape_adapter import native_shape
 from . import geometry as native
 from .materials import Material as NativeMaterial
 

@@ -1,11 +1,11 @@
 """Geometry-first 1D/2D finite-element electrostatic solver."""
 
 from __future__ import annotations
-from cem_common import materials
+from fem_common import materials
 from .scene import ElectrostaticSceneMixin, static_epsilon
 
-from cem_common.contracts import SolverMixin
-from cem_common.contracts import bounds
+from fem_common.contracts import SolverMixin
+from fem_common.contracts import bounds
 
 from collections.abc import Sequence
 from dataclasses import replace

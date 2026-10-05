@@ -3,7 +3,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from cem_common.errors import GeometryError, MeshError
+from fem_common.errors import GeometryError, MeshError
 from fem_waveguide_modes.geometry import (
     Circle,
     GeometryModel1D,

@@ -5,7 +5,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from cem_common.errors import MeshError
+from fem_common.errors import MeshError
 from fem_waveguide_modes.geometry import Circle, GeometryModel2D, Rectangle
 from fem_waveguide_modes.materials import Material
 from fem_waveguide_modes.meshing import FEMMesh2D, discretize_2d

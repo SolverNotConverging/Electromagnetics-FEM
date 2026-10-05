@@ -59,7 +59,7 @@ native applications and compiled kernel. Installation also lets you import FEM
 from anywhere in the same Python environment:
 
 ```python
-from fem_waveguide_modes import ModeSolver2D
+from fem_waveguide_modes import ModeSolver2D, Material, materials, shapes
 ```
 
 Each example writes to `<solver>/outputs/<example>/`. For example,

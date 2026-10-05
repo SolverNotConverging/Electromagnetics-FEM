@@ -1,14 +1,14 @@
 """Focused validation of the standalone full-vector 2D FEM mode solver."""
 
 from __future__ import annotations
-from cem_common import Material, SurfaceImpedance, materials, shapes
+from fem_common import Material, SurfaceImpedance, materials, shapes
 
 import numpy as np
 import pytest
 
 from fem_waveguide_modes.constants import C_0
 from fem_waveguide_modes.exceptions import NotDiscretizedError
-from cem_common.errors import ConfigurationError
+from fem_common.errors import ConfigurationError
 from fem_waveguide_modes.geometry import Rectangle
 from fem_waveguide_modes.materials import Material
 from fem_waveguide_modes.results import ModeSet

@@ -10,7 +10,7 @@ matplotlib.use("Agg", force=True)
 
 import fem_waveguide_modes as fem
 from fem_waveguide_modes.visualization import visualize
-from cem_common import NoResultError
+from fem_common import NoResultError
 
 
 def test_top_level_api_and_results_are_read_only() -> None:
@@ -23,7 +23,8 @@ def test_top_level_api_and_results_are_read_only() -> None:
         "load_result",
     }
     assert expected_exports <= set(fem.__all__)
-    assert "Material" not in fem.__all__
+    assert "Material" in fem.__all__
+    assert fem.Material is fem.materials.Material
     assert "good_conductor_surface_impedance" not in fem.__all__
 
     solver = fem.ModeSolver1D(frequency=20000000000.0, x_range=0.02)

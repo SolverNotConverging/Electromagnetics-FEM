@@ -1,9 +1,9 @@
 """Public lifecycle across the modal FEM implementations."""
-from cem_common import Material, SurfaceImpedance, materials, shapes
+from fem_common import Material, SurfaceImpedance, materials, shapes
 import numpy as np
 import pytest
 
-from cem_common import NoResultError
+from fem_common import NoResultError
 from fem_waveguide_modes import ModeSolver1D, ModeSolver2D
 from fem_periodic_modes import PeriodicModeSolver2D, PeriodicModeSolver3D
 

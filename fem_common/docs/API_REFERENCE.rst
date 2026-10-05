@@ -1,4 +1,4 @@
-cem_common user API
+fem_common user API
 ===================
 
 This reference lists the deliberately supported shared values for version 1.1.0.
@@ -89,3 +89,10 @@ Errors and mesh snapshots
 ``MeshSnapshot`` exposes read-only ``coordinates``, zero-based ``elements``,
 physical ``axes``, ``info``, and ``metadata`` on stored FEM results. Users
 normally receive it through ``result.mesh_data`` rather than constructing it.
+
+Physical constants
+------------------
+
+``EPSILON_0`` is vacuum permittivity, ``MU_0`` vacuum permeability, and
+``C_0`` the vacuum speed of light, all in SI units. These are also exported
+by each solver family.

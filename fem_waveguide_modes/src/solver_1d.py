@@ -13,10 +13,10 @@ number per polarization.
 """
 
 from __future__ import annotations
-from cem_common import materials
+from fem_common import materials
 from .scene import WaveguideScene1D
 
-from cem_common.contracts import ElectromagneticSolverMixin
+from fem_common.contracts import ElectromagneticSolverMixin
 
 from dataclasses import dataclass
 from typing import Literal, Sequence

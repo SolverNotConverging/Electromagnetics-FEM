@@ -8,11 +8,11 @@ passive epsilon has negative imaginary part and alpha = -Im(k0 * neff).
 import sys as _sys
 from pathlib import Path as _Path
 _ROOT = next(parent for parent in _Path(__file__).resolve().parents
-             if (parent / "cem_common" / "__init__.py").is_file())
+             if (parent / "fem_common" / "__init__.py").is_file())
 if str(_ROOT) not in _sys.path:
     _sys.path.insert(0, str(_ROOT))
 
-from cem_common import Material, materials
+from fem_common import Material, materials
 import argparse
 import csv
 from pathlib import Path

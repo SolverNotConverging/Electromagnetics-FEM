@@ -1,4 +1,4 @@
-from cem_common import Material, SurfaceImpedance, materials, shapes
+from fem_common import Material, SurfaceImpedance, materials, shapes
 import pytest
 
 from fem_waveguide_scattering.scattering import WaveguideScatteringSolver2D

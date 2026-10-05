@@ -10,10 +10,10 @@ forward passive mode has ``Im(beta) <= 0`` and attenuation ``-Im(beta)``.
 """
 
 from __future__ import annotations
-from cem_common import materials
+from fem_common import materials
 from .scene import WaveguideScene2D
 
-from cem_common.contracts import ElectromagneticSolverMixin
+from fem_common.contracts import ElectromagneticSolverMixin
 
 from collections.abc import Sequence
 from dataclasses import asdict

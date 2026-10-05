@@ -4,7 +4,7 @@
 import sys as _sys
 from pathlib import Path as _Path
 _ROOT = next(parent for parent in _Path(__file__).resolve().parents
-             if (parent / "cem_common" / "__init__.py").is_file())
+             if (parent / "fem_common" / "__init__.py").is_file())
 if str(_ROOT) not in _sys.path:
     _sys.path.insert(0, str(_ROOT))
 
@@ -27,9 +27,9 @@ import os
 import sys
 import numpy as np
 import scipy.sparse as sp
-from cem_common import Material, materials, shapes
+from fem_common import Material, materials, shapes
 
-packages = ('cem_common', 'fem_adaptivity', 'periodic_eigensolver',
+packages = ('fem_common', 'fem_adaptivity', 'periodic_eigensolver',
     'fem_waveguide_modes', 'fem_periodic_modes', 'fem_waveguide_scattering', 'fem_electrostatics')
 for name in packages:
     module = import_module(name)
@@ -43,7 +43,7 @@ result = solve_generalized(sp.diags(np.arange(1., 21.), format='csc'), sp.eye(20
 assert np.max(result.residuals) < 1e-8
 
 import importlib.util
-assert importlib.util.find_spec('fem_common') is None
+assert importlib.util.find_spec('cem_common') is None
 
 from fem_waveguide_modes import ModeSolver1D, ModeSolver2D, load_result
 for solver in (ModeSolver1D(frequency=10e9, x_range=.02),
@@ -96,8 +96,8 @@ import fem
 from importlib.metadata import distribution
 assert Path(fem.__file__).is_relative_to(Path(sys.prefix))
 installed = distribution('electromagnetics-fem')
-assert not any(requirement.startswith(('cem-common', 'fem-', 'fdfd-', 'periodic-eigensolver')) for requirement in installed.requires)
-from cem_common._native import bundled_executable
+assert not any(requirement.startswith(('fem-common', 'fem-', 'fdfd-', 'periodic-eigensolver')) for requirement in installed.requires)
+from fem_common._native import bundled_executable
 from fem_waveguide_scattering.viewer import find_viewer_executable
 from fem_periodic_modes.persistence import _viewer_candidates
 assert find_viewer_executable() == bundled_executable(
@@ -111,7 +111,7 @@ import os
 import subprocess
 from pathlib import Path
 import sys
-from cem_common._native import bundled_executable, bundled_environment
+from fem_common._native import bundled_executable, bundled_environment
 
 periodic = Path.cwd() / 'periodic.h5'
 scattering = Path.cwd() / 'scattering.h5'
@@ -161,7 +161,7 @@ def main():
     with zipfile.ZipFile(native) as archive:
         if not any(name.endswith(('.pyd', '.so')) for name in archive.namelist()):
             raise SystemExit('The periodic eigensolver wheel lacks its compiled extension.')
-    with tempfile.TemporaryDirectory(prefix='fdfd-wheel-qualification-') as temporary:
+    with tempfile.TemporaryDirectory(prefix='fem-wheel-qualification-') as temporary:
         work = Path(temporary)
         venv.EnvBuilder(with_pip=True, system_site_packages=not args.fresh).create(work/'env')
         python = work/'env'/('Scripts/python.exe' if os.name=='nt' else 'bin/python')
@@ -175,7 +175,7 @@ def main():
             f"import sys; sys.path.insert(0, {str(ROOT)!r}); "
             "import periodic_eigensolver; "
             "assert periodic_eigensolver.native_backend_available(); "
-            "from cem_common._native import bundled_executable; "
+            "from fem_common._native import bundled_executable; "
             "assert bundled_executable('fem-periodic-mode-viewer').is_file(); "
             "print('Direct source examples find installed native runtime and kernel: PASS')"
         )

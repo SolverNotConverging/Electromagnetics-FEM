@@ -1,5 +1,5 @@
 from __future__ import annotations
-from cem_common import Material, SurfaceImpedance, materials, shapes
+from fem_common import Material, SurfaceImpedance, materials, shapes
 
 from dataclasses import replace
 from pathlib import Path
@@ -9,8 +9,8 @@ import pytest
 import h5py
 
 from fem_periodic_modes import PeriodicModeSolver2D, PeriodicModeSolver3D
-from cem_common.shapes import Box, Cylinder, Sphere
-from cem_common.errors import SolverError
+from fem_common.shapes import Box, Cylinder, Sphere
+from fem_common.errors import SolverError
 from fem_periodic_modes.exceptions import NotDiscretizedError
 from fem_periodic_modes.geometry import GeometryModel3D
 from fem_periodic_modes.materials import Material
@@ -53,7 +53,7 @@ def test_geometry_changes_clear_all_modal_arrays():
 
 @pytest.mark.parametrize("invalid", [True, np.nan, np.inf, 1.5, [], "3"])
 def test_invalid_3d_integer_controls_raise_configuration_error(invalid):
-    from cem_common.errors import ConfigurationError
+    from fem_common.errors import ConfigurationError
     with pytest.raises(ConfigurationError, match="num_modes"):
         PeriodicModeSolver3D(frequency=FREQUENCY, x_range=WIDTH, y_range=HEIGHT, z_range=PERIOD).solve(num_modes=invalid, max_refinements=0)
 

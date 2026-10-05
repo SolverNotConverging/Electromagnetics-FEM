@@ -15,7 +15,15 @@
       "SolverError",
       "NoResultError",
       "PersistenceError",
-      "load_result"
+      "load_result",
+      "Material",
+      "GoodConductor",
+      "SurfaceImpedance",
+      "materials",
+      "shapes",
+      "EPSILON_0",
+      "MU_0",
+      "C_0"
     ],
     "solvers": {
       "ModeSolver1D": [
@@ -78,7 +86,15 @@
       "PersistenceError",
       "SolverError",
       "NoResultError",
-      "load_result"
+      "load_result",
+      "Material",
+      "GoodConductor",
+      "SurfaceImpedance",
+      "materials",
+      "shapes",
+      "EPSILON_0",
+      "MU_0",
+      "C_0"
     ],
     "solvers": {
       "PeriodicModeSolver2D": [
@@ -158,7 +174,15 @@
       "load_result",
       "ClosedContourFields",
       "LayeredExterior",
-      "FarFieldResult"
+      "FarFieldResult",
+      "Material",
+      "GoodConductor",
+      "SurfaceImpedance",
+      "materials",
+      "shapes",
+      "EPSILON_0",
+      "MU_0",
+      "C_0"
     ],
     "solvers": {
       "WaveguideScatteringSolver2D": [
@@ -215,7 +239,15 @@
       "SolverError",
       "NoResultError",
       "PersistenceError",
-      "load_result"
+      "load_result",
+      "Material",
+      "GoodConductor",
+      "SurfaceImpedance",
+      "materials",
+      "shapes",
+      "EPSILON_0",
+      "MU_0",
+      "C_0"
     ],
     "solvers": {
       "ElectrostaticSolver": [

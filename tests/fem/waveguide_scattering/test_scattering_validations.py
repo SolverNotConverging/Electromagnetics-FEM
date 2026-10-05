@@ -1,5 +1,5 @@
 from __future__ import annotations
-from cem_common import Material, SurfaceImpedance, materials, shapes
+from fem_common import Material, SurfaceImpedance, materials, shapes
 
 from collections.abc import Sequence
 

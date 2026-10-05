@@ -3,7 +3,7 @@
 The fixture was captured before the sign migration. Inputs represent the same
 real-time device and excitation, with conjugated loss and source amplitude.
 """
-from cem_common import Material, SurfaceImpedance, materials, shapes
+from fem_common import Material, SurfaceImpedance, materials, shapes
 from pathlib import Path
 
 import numpy as np

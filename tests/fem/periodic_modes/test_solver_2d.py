@@ -1,12 +1,12 @@
 from __future__ import annotations
-from cem_common import Material, SurfaceImpedance, materials, shapes
+from fem_common import Material, SurfaceImpedance, materials, shapes
 
 import numpy as np
 import pytest
 
 from fem_periodic_modes.exceptions import NotDiscretizedError
 from fem_periodic_modes import PeriodicModeSolver2D
-from cem_common.errors import SolverError
+from fem_common.errors import SolverError
 from fem_periodic_modes.constants import C_0
 
 

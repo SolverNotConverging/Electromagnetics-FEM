@@ -10,7 +10,7 @@ import subprocess
 from typing import Any
 
 from .exceptions import ViewerError
-from cem_common._native import (
+from fem_common._native import (
     bundled_executable,
     bundled_environment,
     source_build_environment,

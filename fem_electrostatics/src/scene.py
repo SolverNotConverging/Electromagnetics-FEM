@@ -1,10 +1,10 @@
 """Material-first static geometry and explicit conductor potentials."""
 from dataclasses import dataclass
 import numpy as np
-from cem_common import materials, shapes
-from cem_common.errors import BackendCapabilityError, ConfigurationError, GeometryError
-from cem_common.scene import SceneMixin, GeometryHandle
-from cem_common._shape_adapter import native_shape
+from fem_common import materials, shapes
+from fem_common.errors import BackendCapabilityError, ConfigurationError, GeometryError
+from fem_common.scene import SceneMixin, GeometryHandle
+from fem_common._shape_adapter import native_shape
 from . import geometry as native
 
 

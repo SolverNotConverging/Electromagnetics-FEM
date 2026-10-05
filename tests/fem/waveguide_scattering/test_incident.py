@@ -5,7 +5,7 @@ from dataclasses import replace
 import numpy as np
 import pytest
 
-from cem_common.errors import ConfigurationError
+from fem_common.errors import ConfigurationError
 from fem_waveguide_scattering.incident import IncidentMode
 from fem_waveguide_scattering.materials import Material
 from fem_waveguide_scattering.modes import CrossSection, Mode, ModeSolver

@@ -4,7 +4,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from cem_common import _native
+from fem_common import _native
 
 
 def test_local_windows_install_uses_its_own_plugins(tmp_path, monkeypatch):

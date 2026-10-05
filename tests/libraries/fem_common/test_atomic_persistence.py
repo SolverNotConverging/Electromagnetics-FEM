@@ -2,8 +2,8 @@
 import h5py
 import pytest
 
-from cem_common import PersistenceError
-from cem_common.persistence import atomic_h5, write_value
+from fem_common import PersistenceError
+from fem_common.persistence import atomic_h5, write_value
 
 
 def test_failed_write_preserves_archive_and_removes_temporary_file(tmp_path):

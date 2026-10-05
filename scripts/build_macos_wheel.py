@@ -6,7 +6,7 @@ from __future__ import annotations
 import sys as _sys
 from pathlib import Path as _Path
 _ROOT = next(parent for parent in _Path(__file__).resolve().parents
-             if (parent / "cem_common" / "__init__.py").is_file())
+             if (parent / "fem_common" / "__init__.py").is_file())
 if str(_ROOT) not in _sys.path:
     _sys.path.insert(0, str(_ROOT))
 
@@ -39,7 +39,7 @@ EXECUTABLES = (
     "fem-periodic-mode-inspect",
     "fem-waveguide-scattering-viewer-inspect",
 )
-SOURCE_ROOTS = tuple(ROOT / name for name in ('fem', 'cem_common', 'fem_adaptivity', 'fem_electrostatics', 'fem_periodic_modes', 'fem_waveguide_modes', 'fem_waveguide_scattering', 'periodic_eigensolver'))
+SOURCE_ROOTS = tuple(ROOT / name for name in ('fem', 'fem_common', 'fem_adaptivity', 'fem_electrostatics', 'fem_periodic_modes', 'fem_waveguide_modes', 'fem_waveguide_scattering', 'periodic_eigensolver'))
 
 
 def extract_preserving_modes(wheel: Path, destination: Path) -> None:
@@ -116,7 +116,7 @@ def validate_wheel(wheel: Path) -> None:
         expected_sources = {
             path.relative_to(ROOT).as_posix()
             for source in SOURCE_ROOTS
-            for path in source.rglob("*.py") if path.relative_to(ROOT).parts[0] in ('fem', 'cem_common', 'fem_adaptivity', 'fem_electrostatics', 'fem_periodic_modes', 'fem_waveguide_modes', 'fem_waveguide_scattering', 'periodic_eigensolver') and not any(part in ("examples", "scripts", "docs", "__pycache__") for part in path.relative_to(ROOT).parts)
+            for path in source.rglob("*.py") if path.relative_to(ROOT).parts[0] in ('fem', 'fem_common', 'fem_adaptivity', 'fem_electrostatics', 'fem_periodic_modes', 'fem_waveguide_modes', 'fem_waveguide_scattering', 'periodic_eigensolver') and not any(part in ("examples", "scripts", "docs", "__pycache__") for part in path.relative_to(ROOT).parts)
         }
         packaged_sources = {name for name in members if name.endswith(".py")}
         if packaged_sources != expected_sources:

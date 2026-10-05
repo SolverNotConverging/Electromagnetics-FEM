@@ -3,7 +3,7 @@ import pytest
 from skfem import MeshTri
 
 from fem_waveguide_scattering.constants import ETA_0
-from cem_common.errors import ConfigurationError
+from fem_common.errors import ConfigurationError
 from fem_waveguide_scattering.fem import MaxwellParameters, assemble_mixed_system
 from fem_waveguide_scattering.sources import (
     assemble_equivalent_source,

@@ -7,13 +7,13 @@ field hyperslabs are read only when a case or mode is requested.
 
 from __future__ import annotations
 
-from cem_common import MeshSnapshot
-from cem_common._native import (
+from fem_common import MeshSnapshot
+from fem_common._native import (
     bundled_executable,
     bundled_environment,
     source_build_environment,
 )
-from cem_common.persistence import write_envelope, validate_envelope, write_value, read_value
+from fem_common.persistence import write_envelope, validate_envelope, write_value, read_value
 
 from collections.abc import Iterable, Sequence
 from dataclasses import dataclass

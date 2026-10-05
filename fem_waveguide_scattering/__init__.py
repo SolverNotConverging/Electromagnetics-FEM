@@ -12,18 +12,22 @@ from .modes import Mode
 from .modes import ModeSet
 from .results import Diagnostic
 from .results import DiagnosticReport
-from cem_common.errors import BackendCapabilityError, ConfigurationError, GeometryError
+from fem_common.errors import BackendCapabilityError, ConfigurationError, GeometryError
 from .exceptions import MaterialError
-from cem_common.errors import MeshError
+from fem_common.errors import MeshError
 from .exceptions import ModeProjectionError
 from .exceptions import ModeSolverError
-from cem_common.errors import SolverError
-from cem_common.errors import ViewerError
+from fem_common.errors import SolverError
+from fem_common.errors import ViewerError
 from .result_api import load_result
-from cem_common import NoResultError
-from cem_common import PersistenceError
+from fem_common import NoResultError
+from fem_common import PersistenceError
 
 __version__ = "1.1.0"
 _FARFIELD_EXPORTS = ["ClosedContourFields", "LayeredExterior", "FarFieldResult"]
 __all__ = ['WaveguideScatteringSolver2D', 'ScatteringResult', 'FrequencySweepResult', 'IncidentMode', 'Mode', 'ModeSet', 'Diagnostic', 'DiagnosticReport', 'BackendCapabilityError', 'ConfigurationError', 'GeometryError', 'MaterialError', 'MeshError', 'ModeProjectionError', 'ModeSolverError', 'SolverError', 'ViewerError', 'load_result', 'NoResultError', 'PersistenceError']
 __all__ += _FARFIELD_EXPORTS
+
+# Shared construction tools are available directly from the solver family.
+from fem_common import Material, GoodConductor, SurfaceImpedance, materials, shapes, EPSILON_0, MU_0, C_0
+__all__ += ['Material', 'GoodConductor', 'SurfaceImpedance', 'materials', 'shapes', 'EPSILON_0', 'MU_0', 'C_0']

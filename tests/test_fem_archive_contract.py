@@ -1,10 +1,10 @@
 """Result envelopes and lazy sweep behavior across FEM families."""
-from cem_common import Material, SurfaceImpedance, materials, shapes
+from fem_common import Material, SurfaceImpedance, materials, shapes
 import h5py
 import numpy as np
 import pytest
 
-from cem_common import PersistenceError
+from fem_common import PersistenceError
 
 
 @pytest.mark.parametrize('package', ['fem_waveguide_modes', 'fem_periodic_modes', 'fem_waveguide_scattering', 'fem_electrostatics'])

@@ -3,7 +3,7 @@ from pathlib import Path
 import subprocess
 import sys
 
-from cem_common._native import bundled_executable, bundled_environment, source_build_environment
+from fem_common._native import bundled_executable, bundled_environment, source_build_environment
 
 
 def launch(name, arguments=None):

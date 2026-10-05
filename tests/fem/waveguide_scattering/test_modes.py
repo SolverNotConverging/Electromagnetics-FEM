@@ -5,7 +5,7 @@ from scipy.sparse import diags
 from scipy.sparse.linalg import norm as sparse_norm
 
 from fem_waveguide_scattering.constants import ETA_0
-from cem_common.errors import ConfigurationError
+from fem_common.errors import ConfigurationError
 from fem_waveguide_scattering.materials import Material
 from fem_waveguide_scattering.modes import CrossSection, ModeSolver, PECBoundary
 

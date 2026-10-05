@@ -1,11 +1,11 @@
 from __future__ import annotations
-from cem_common import Material, SurfaceImpedance, materials, shapes
+from fem_common import Material, SurfaceImpedance, materials, shapes
 
 import numpy as np
 import pytest
 
 from fem_electrostatics import ElectrostaticSolver
-from cem_common.shapes import Circle, Interval
+from fem_common.shapes import Circle, Interval
 
 
 pytestmark = pytest.mark.gmsh

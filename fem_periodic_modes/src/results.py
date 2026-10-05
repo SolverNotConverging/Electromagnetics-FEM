@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from cem_common.contracts import ResultMixin
+from fem_common.contracts import ResultMixin
 
 from collections.abc import Iterator, Mapping, Sequence
 from dataclasses import dataclass, field

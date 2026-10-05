@@ -1,5 +1,5 @@
 """Public exception hierarchy for :mod:`fem_periodic_modes`."""
-from cem_common import errors as _common
+from fem_common import errors as _common
 
 
 
@@ -35,7 +35,7 @@ class BackendCapabilityError(FEMPeriodicSolverError, _common.BackendCapabilityEr
     """A requested feature is intentionally unavailable in this backend."""
 
 
-from cem_common.errors import PersistenceError as _PersistenceError
+from fem_common.errors import PersistenceError as _PersistenceError
 
 
 class PersistenceError(FEMPeriodicSolverError, _PersistenceError):

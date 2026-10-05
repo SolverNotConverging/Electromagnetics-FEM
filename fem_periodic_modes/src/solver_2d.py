@@ -1,10 +1,10 @@
 """Public fixed-frequency 2D periodic finite-element mode solver."""
 
 from __future__ import annotations
-from cem_common import materials
+from fem_common import materials
 from .scene import PeriodicScene2D
 
-from cem_common.contracts import ElectromagneticSolverMixin
+from fem_common.contracts import ElectromagneticSolverMixin
 
 from collections.abc import Sequence
 from typing import Any, Literal, TypeAlias

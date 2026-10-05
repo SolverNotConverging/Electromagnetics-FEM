@@ -8,7 +8,7 @@ from skfem import BilinearForm, FacetBasis, MeshTri, asm
 
 from fem_waveguide_modes.assembly import assemble_mode_system_2d
 from fem_waveguide_modes.constants import C_0, ETA_0
-from cem_common.errors import ConfigurationError
+from fem_common.errors import ConfigurationError
 
 
 def _vacuum(x: np.ndarray, y: np.ndarray) -> tuple[np.ndarray, np.ndarray]:

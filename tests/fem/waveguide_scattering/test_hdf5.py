@@ -8,7 +8,7 @@ import numpy as np
 import pytest
 
 from fem_waveguide_scattering.constants import C0
-from cem_common.errors import ConfigurationError
+from fem_common.errors import ConfigurationError
 from fem_waveguide_scattering.hdf5 import (
     H5FileData,
     SCHEMA_NAME,

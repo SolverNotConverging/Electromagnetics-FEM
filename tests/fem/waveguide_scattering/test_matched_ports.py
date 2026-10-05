@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from cem_common import materials
+from fem_common import materials
 from fem_waveguide_scattering import WaveguideScatteringSolver2D
 
 

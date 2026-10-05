@@ -10,7 +10,7 @@ from __future__ import annotations
 import sys as _sys
 from pathlib import Path as _Path
 _ROOT = next(parent for parent in _Path(__file__).resolve().parents
-             if (parent / "cem_common" / "__init__.py").is_file())
+             if (parent / "fem_common" / "__init__.py").is_file())
 if str(_ROOT) not in _sys.path:
     _sys.path.insert(0, str(_ROOT))
 
@@ -193,7 +193,7 @@ def finish(args):
                 continue
             checksums = {entry["algorithm"]: entry["checksumValue"].lower() for entry in resource.get("checksums", [])}
             expected = checksums.get("SHA512")
-            if "${" in str(resource) or not expected or not re.fullmatch(r"[0-9a-f]{128}", expected):
+            if not expected or not re.fullmatch(r"[0-9a-f]{128}", expected):
                 if "${" not in str(resource):
                     raise RuntimeError(f"Source resource needs manual archival: {resource}")
                 # Some installed vcpkg SPDX records contain unexpanded port-template
@@ -211,11 +211,41 @@ def finish(args):
                 if hashes[archive] == expected:
                     match = archive
                     break
+            if match is None and package["name"] == "libpng" and "${LIBPNG_APNG_PATCH_NAME}" in resource["name"]:
+                abi = (bundle / "licenses/libpng/vcpkg_abi_info.txt").read_text()
+                features = next(line.split(maxsplit=1)[1] for line in abi.splitlines() if line.startswith("features "))
+                if "apng" not in features.split(";"):
+                    index.append("- libpng APNG patch: not used; the installed features exclude apng.")
+                    continue
             if match is None:
                 raise RuntimeError(f"Missing cached source archive for {resource['name']}; restore vcpkg downloads before finishing.")
             shutil.copy2(match, sources / match.name)
             index.extend([f"- {package['name']}: {match.name}",
                           f"  Source: {resource['downloadLocation']}", f"  SHA512: `{expected}`"])
+    # Qt's shared port helpers leave template variables in SPDX resources.
+    # Preserve each installed Qt module's archive from its verified port data.
+    for package in manifest["packages"]:
+        name = package["name"]
+        recipe = bundle / "recipes" / name / "port.data.cmake"
+        if not name.startswith("qt") or not recipe.is_file():
+            continue
+        data = recipe.read_text(encoding="utf-8")
+        def setting(suffix):
+            match = re.search(r'set\(' + re.escape(name + "_" + suffix) + r'\s+"([^"\n]+)"\)', data)
+            if match is None:
+                raise RuntimeError(f"Missing Qt {suffix} in verified recipe: {recipe}")
+            return match.group(1)
+        expected = setting("HASH").lower()
+        archive = args.vcpkg_root / "downloads" / setting("FILENAME")
+        if not archive.is_file():
+            raise RuntimeError(f"Missing cached Qt source archive: {archive}")
+        with archive.open("rb") as stream:
+            actual = hashlib.file_digest(stream, "sha512").hexdigest()
+        if actual != expected:
+            raise RuntimeError(f"Qt source archive differs from the installed recipe: {archive}")
+        shutil.copy2(archive, sources / archive.name)
+        index.extend([f"- {name}: {archive.name}",
+                      f"  Source: {setting('URL').split(';')[0]}", f"  SHA512: `{expected}`"])
     (bundle / "SOURCE_INDEX.md").write_text("\n".join(index) + "\n", encoding="utf-8")
     shutil.copy2(bundle / "SOURCE_INDEX.md", sources / "SOURCE_INDEX.md")
     write_bundle_readme(bundle)

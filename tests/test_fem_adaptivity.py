@@ -1,5 +1,5 @@
 """Adaptive API contracts and coarse-start integration for every FEM backend."""
-from cem_common import Material, SurfaceImpedance, materials, shapes
+from fem_common import Material, SurfaceImpedance, materials, shapes
 
 from dataclasses import dataclass
 from types import SimpleNamespace
@@ -14,7 +14,7 @@ from fem_periodic_modes import PeriodicModeSolver2D, PeriodicModeSolver3D
 from fem_waveguide_scattering.materials import Material
 from fem_waveguide_scattering.modes import CrossSection, ModeSolver
 from fem_waveguide_scattering.scattering import WaveguideScatteringSolver2D
-from cem_common.errors import ConfigurationError as WaveConfigurationError
+from fem_common.errors import ConfigurationError as WaveConfigurationError
 
 
 def modal_case(kind):

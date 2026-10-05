@@ -117,7 +117,7 @@ Assign a predefined material to a continuous shape in metres.
      - ``array-like or scalar``
      - Required
      - ``—``
-     - A predefined cem_common.shapes object in metres.
+     - A predefined fem_common.shapes object in metres.
    * - ``material``
      - ``array-like or scalar``
      - Required
@@ -321,7 +321,7 @@ Replace a shape in metres and invalidate mesh/result.
      - ``array-like or scalar``
      - Required
      - ``—``
-     - A predefined cem_common.shapes object in metres.
+     - A predefined fem_common.shapes object in metres.
 
 Returns: the configured geometry/excitation handle, or None for in-place configuration.
 
@@ -371,7 +371,7 @@ Returns: the configured geometry/excitation handle, or None for in-place configu
      - ``Shape2D``
      - Required
      - ``—``
-     - A predefined cem_common.shapes object in metres.
+     - A predefined fem_common.shapes object in metres.
    * - ``max_element_size``
      - ``float``
      - Required
@@ -698,7 +698,7 @@ Assign a predefined material to a continuous shape in metres.
      - ``array-like or scalar``
      - Required
      - ``—``
-     - A predefined cem_common.shapes object in metres.
+     - A predefined fem_common.shapes object in metres.
    * - ``material``
      - ``array-like or scalar``
      - Required
@@ -917,7 +917,7 @@ Replace a shape in metres and invalidate mesh/result.
      - ``array-like or scalar``
      - Required
      - ``—``
-     - A predefined cem_common.shapes object in metres.
+     - A predefined fem_common.shapes object in metres.
 
 Returns: the configured geometry/excitation handle, or None for in-place configuration.
 
@@ -967,7 +967,7 @@ Returns: the configured geometry/excitation handle, or None for in-place configu
      - ``Shape3D``
      - Required
      - ``—``
-     - A predefined cem_common.shapes object in metres.
+     - A predefined fem_common.shapes object in metres.
    * - ``max_element_size``
      - ``float``
      - Required
@@ -1511,12 +1511,12 @@ Loaded multi-case archives index cases lazily.
 Geometry and material values
 ----------------------------
 
-Define reusable materials and shapes with ``cem_common`` before assigning them.
+Define reusable materials and shapes with ``fem_common`` before assigning them.
 Use ``Material(name=..., epsilon=..., mu=...)`` for bulk media,
 ``materials.PEC`` or ``materials.PMC`` for ideal boundaries, and the
 documented ``materials.copper``-style presets where SIBC is supported.
 Continuous primitives and Boolean/transformed shapes live in
-``cem_common.shapes``. Solver packages do not re-export these shared values.
+``fem_common.shapes``. Solver packages do not re-export these shared values.
 
 ``load_result``
 ~~~~~~~~~~~~~~~
@@ -1551,3 +1551,10 @@ Mesh and numerical failures raise the corresponding ``MeshError`` or
 ``PersistenceError`` identifies an incompatible or unreadable archive.
 Viewer errors include the executable path or installation setting needed to
 correct a launch failure. Saving and loading do not require an active GUI.
+
+Shared construction tools
+-------------------------
+
+Import ``Material``, ``GoodConductor``, ``SurfaceImpedance``, ``materials``,
+``shapes``, ``EPSILON_0``, ``MU_0``, and ``C_0`` directly from this solver family.
+They are the shared FEM definitions; examples do not need a separate common import.

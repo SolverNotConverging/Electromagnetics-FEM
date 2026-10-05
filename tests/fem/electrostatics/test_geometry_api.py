@@ -1,12 +1,12 @@
 from __future__ import annotations
-from cem_common import Material, SurfaceImpedance, materials, shapes
+from fem_common import Material, SurfaceImpedance, materials, shapes
 
 import numpy as np
 import pytest
 
 from fem_electrostatics import ElectrostaticSolver
-from cem_common.shapes import Rectangle
-from cem_common.errors import GeometryError, BackendCapabilityError
+from fem_common.shapes import Rectangle
+from fem_common.errors import GeometryError, BackendCapabilityError
 from fem_electrostatics.exceptions import NotDiscretizedError
 
 

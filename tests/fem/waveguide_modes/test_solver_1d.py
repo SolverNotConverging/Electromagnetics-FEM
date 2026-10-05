@@ -1,14 +1,14 @@
 """Focused analytic and lifecycle tests for the standalone 1D FEM solver."""
 
 from __future__ import annotations
-from cem_common import Material, SurfaceImpedance, materials, shapes
+from fem_common import Material, SurfaceImpedance, materials, shapes
 
 import numpy as np
 import pytest
 from scipy.constants import c
 
 from fem_waveguide_modes.exceptions import NotDiscretizedError
-from cem_common.errors import BackendCapabilityError, ConfigurationError, MeshError
+from fem_common.errors import BackendCapabilityError, ConfigurationError, MeshError
 from fem_waveguide_modes.geometry import Interval
 from fem_waveguide_modes.materials import Material
 from fem_waveguide_modes.solver_1d import ModeSolver1D

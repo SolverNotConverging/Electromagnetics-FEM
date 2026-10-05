@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 
 from fem_waveguide_modes.geometry import Rectangle
-from cem_common import materials
+from fem_common import materials
 from importlib import import_module
 _example = import_module("fem_waveguide_modes.examples.2d_microstrip_surface_impedance")
 COPPER_THICKNESS = _example.COPPER_THICKNESS

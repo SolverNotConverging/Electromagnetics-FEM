@@ -1,5 +1,5 @@
 """Exception hierarchy for the standalone FEM mode solvers."""
-from cem_common import errors as _common
+from fem_common import errors as _common
 
 
 

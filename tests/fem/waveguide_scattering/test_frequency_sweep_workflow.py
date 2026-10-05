@@ -1,5 +1,5 @@
 from __future__ import annotations
-from cem_common import Material, SurfaceImpedance, materials, shapes
+from fem_common import Material, SurfaceImpedance, materials, shapes
 from fem_waveguide_scattering.constants import C0 as _internal_C0
 from fem_waveguide_scattering.hdf5 import load_h5 as _internal_load_h5
 

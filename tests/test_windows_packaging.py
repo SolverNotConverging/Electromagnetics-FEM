@@ -66,3 +66,31 @@ def test_finish_preserves_only_hash_verified_sources(tmp_path, monkeypatch):
     source.write_bytes(b"tampered source")
     with pytest.raises(RuntimeError, match="Missing cached source archive"):
         packager.finish(args)
+
+
+def test_finish_archives_qt_sources_from_verified_recipe(tmp_path, monkeypatch):
+    args = SimpleNamespace(output=tmp_path / "output", vcpkg_root=tmp_path / "vcpkg")
+    bundle = args.output / packager.BUNDLE_NAME
+    licenses = bundle / "licenses/qtbase"
+    licenses.mkdir(parents=True)
+    (licenses / "vcpkg.spdx.json").write_text(json.dumps({"packages": []}))
+    (bundle / "build-manifest.json").write_text(json.dumps({"packages": [{"name": "qtbase"}]}))
+    downloads = args.vcpkg_root / "downloads"
+    downloads.mkdir(parents=True)
+    archive = downloads / "qtbase-src.tar.xz"
+    archive.write_bytes(b"exact Qt module source")
+    checksum = hashlib.sha512(archive.read_bytes()).hexdigest()
+    recipe = bundle / "recipes/qtbase/port.data.cmake"
+    recipe.parent.mkdir(parents=True)
+    recipe.write_text(
+        f'set(qtbase_HASH "{checksum}")\n'
+        'set(qtbase_URL "https://download.qt.io/qtbase-src.tar.xz")\n'
+        'set(qtbase_FILENAME "qtbase-src.tar.xz")\n'
+    )
+    monkeypatch.setattr(packager, "qualify", lambda bundle: [])
+    packager.finish(args)
+    assert (args.output / "dependency-sources" / archive.name).read_bytes() == archive.read_bytes()
+    assert checksum in (bundle / "SOURCE_INDEX.md").read_text()
+    archive.write_bytes(b"incorrect Qt archive")
+    with pytest.raises(RuntimeError, match="Qt source archive differs"):
+        packager.finish(args)

@@ -1,12 +1,12 @@
 """Solution-driven refinement must improve fields and preserve interfaces."""
-from cem_common import Material, SurfaceImpedance, materials, shapes
+from fem_common import Material, SurfaceImpedance, materials, shapes
 
 import numpy as np
 import pytest
 
 from fem_electrostatics import ElectrostaticSolver
-from cem_common.shapes import Interval, Rectangle
-from cem_common.errors import SolverError
+from fem_common.shapes import Interval, Rectangle
+from fem_common.errors import SolverError
 from fem_electrostatics.solver import EPSILON_0
 
 

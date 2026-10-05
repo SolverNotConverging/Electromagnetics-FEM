@@ -66,7 +66,7 @@ Workflow
 
 .. code-block:: python
 
-    from cem_common import materials
+    from fem_waveguide_modes import materials
     from fem_waveguide_modes import ModeSolver2D, load_result
 
     solver = ModeSolver2D(frequency=10e9, x_range=22.86e-3,

@@ -3,7 +3,7 @@ import argparse
 
 from . import __version__
 from ._apps import launch
-from cem_common._native import bundled_executable
+from fem_common._native import bundled_executable
 
 
 def main():

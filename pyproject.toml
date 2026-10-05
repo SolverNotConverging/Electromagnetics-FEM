@@ -61,7 +61,7 @@ cache-keys = [
 minimum-version = "build-system.requires"
 build-dir = "build/{wheel_tag}"
 cmake.build-type = "Release"
-wheel.packages = ["fem", "cem_common", "fem_adaptivity", "fem_electrostatics", "fem_periodic_modes", "fem_waveguide_modes", "fem_waveguide_scattering", "periodic_eigensolver"]
+wheel.packages = ["fem", "fem_common", "fem_adaptivity", "fem_electrostatics", "fem_periodic_modes", "fem_waveguide_modes", "fem_waveguide_scattering", "periodic_eigensolver"]
 wheel.exclude = ["**/*.pyx", "**/__pycache__/**", "**/docs/**", "**/examples/**", "**/scripts/**", "**/outputs/**"]
 sdist.exclude = [".idea", "outputs", "examples", "**/__pycache__", "**/build", "**/outputs"]
 

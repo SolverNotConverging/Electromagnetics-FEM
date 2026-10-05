@@ -1,5 +1,5 @@
 """Physical and geometry checks for the public coaxial benchmark workflow."""
-from cem_common import Material, SurfaceImpedance, materials, shapes
+from fem_common import Material, SurfaceImpedance, materials, shapes
 from pathlib import Path
 import runpy
 
@@ -7,8 +7,8 @@ import numpy as np
 import pytest
 
 from fem_waveguide_modes import ModeSolver2D
-from cem_common.shapes import Circle
-from cem_common.errors import ConfigurationError, GeometryError
+from fem_common.shapes import Circle
+from fem_common.errors import ConfigurationError, GeometryError
 
 BENCHMARK = runpy.run_path(str(
     Path(__file__).resolve().parents[3] / 'benchmarks/analytical/coaxial_waveguide_adaptivity.py'

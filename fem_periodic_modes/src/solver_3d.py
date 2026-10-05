@@ -1,10 +1,10 @@
 """Geometry-first full-vector periodic FEM solver in three dimensions."""
 
 from __future__ import annotations
-from cem_common import materials
+from fem_common import materials
 from .scene import PeriodicScene3D
 
-from cem_common.contracts import ElectromagneticSolverMixin
+from fem_common.contracts import ElectromagneticSolverMixin
 
 from dataclasses import asdict
 from typing import Any, Literal

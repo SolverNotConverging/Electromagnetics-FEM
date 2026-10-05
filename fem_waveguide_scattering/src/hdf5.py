@@ -10,7 +10,7 @@ overlays; older schema-v1 files without that subgroup remain valid.
 
 from __future__ import annotations
 
-from cem_common.persistence import write_envelope, validate_envelope, write_value, read_value
+from fem_common.persistence import write_envelope, validate_envelope, write_value, read_value
 from .farfield import ClosedContourFields, LayeredExterior
 
 from collections.abc import Iterable, Mapping, Sequence

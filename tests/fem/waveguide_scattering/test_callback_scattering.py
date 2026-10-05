@@ -1,4 +1,4 @@
-from cem_common import materials
+from fem_common import materials
 from fem_waveguide_scattering.materials import Material as _internal_Material
 from fem_waveguide_scattering.modes import CrossSection as _internal_CrossSection
 from fem_waveguide_scattering.modes import ModeSolver as _internal_ModeSolver

@@ -1,8 +1,8 @@
-from cem_common import Material, SurfaceImpedance, materials, shapes
+from fem_common import Material, SurfaceImpedance, materials, shapes
 import numpy as np
 import pytest
 
-from cem_common.errors import ConfigurationError, MeshError
+from fem_common.errors import ConfigurationError, MeshError
 from fem_waveguide_scattering.geometry import GeometryModel
 from fem_waveguide_scattering.materials import Material
 from fem_waveguide_scattering.mesh import generate_mesh

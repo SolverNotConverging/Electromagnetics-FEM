@@ -8,7 +8,10 @@ from .errors import CEMError, ConfigurationError, GeometryError, MeshError, Solv
 from .errors import BackendCapabilityError
 from .materials import Material, GoodConductor, SurfaceImpedance
 from . import materials, shapes
+from scipy.constants import epsilon_0 as EPSILON_0, mu_0 as MU_0, c as C_0
 
 TIME_CONVENTION = "exp(+i*omega*t)"
 __version__ = "1.1.0"
 __all__ = ["Material", "GoodConductor", "SurfaceImpedance", "materials", "shapes", "CEMError", "BackendCapabilityError", "ConfigurationError", "GeometryError", "MeshError", "SolverError", "NoResultError", "PersistenceError", "ViewerError", "MeshSnapshot"]
+
+__all__ += ["EPSILON_0", "MU_0", "C_0"]

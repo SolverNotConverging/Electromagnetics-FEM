@@ -7,8 +7,7 @@ Use build_simulation(matched_ports=False) for a longitudinal-PML comparison.
 # Run directly from the downloaded repository without installing solver packages.
 import sys as _sys
 from pathlib import Path as _Path
-_ROOT = next(parent for parent in _Path(__file__).resolve().parents
-             if (parent / "cem_common" / "__init__.py").is_file())
+_ROOT = _Path(__file__).resolve().parents[2]
 if str(_ROOT) not in _sys.path:
     _sys.path.insert(0, str(_ROOT))
 

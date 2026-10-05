@@ -1,12 +1,12 @@
 """High-level 2.5D scattered-field waveguide simulation workflow."""
 
 from __future__ import annotations
-from cem_common import materials
-from cem_common.errors import BackendCapabilityError
+from fem_common import materials
+from fem_common.errors import BackendCapabilityError
 from .geometry_api import ScatteringSceneMixin
 
-from cem_common.contracts import ElectromagneticSolverMixin
-from cem_common.contracts import bounds
+from fem_common.contracts import ElectromagneticSolverMixin
+from fem_common.contracts import bounds
 
 from dataclasses import asdict, dataclass, replace
 from math import ceil, cos, radians, sin
@@ -128,7 +128,7 @@ class _SolverOptions:
 
 def _shape_bounds(region: Region) -> tuple[tuple[float, float], tuple[float, float]]:
     shape = region.shape
-    from cem_common.shapes import Shape
+    from fem_common.shapes import Shape
     if isinstance(shape, Shape):
         return shape.bounds[:2], shape.bounds[2:]
     if isinstance(shape, Rectangle):

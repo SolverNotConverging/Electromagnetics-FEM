@@ -4,7 +4,7 @@
 import sys as _sys
 from pathlib import Path as _Path
 _ROOT = next(parent for parent in _Path(__file__).resolve().parents
-             if (parent / "cem_common" / "__init__.py").is_file())
+             if (parent / "fem_common" / "__init__.py").is_file())
 if str(_ROOT) not in _sys.path:
     _sys.path.insert(0, str(_ROOT))
 
@@ -62,7 +62,7 @@ DESCRIPTIONS = {
     "outer_potential": "Exterior potential in volts; None permits natural boundaries.",
     "density": "Volume charge density in coulombs per cubic metre.",
     "region": "Geometry primitive or supported boundary name.",
-    "shape": "A predefined cem_common.shapes object in metres.",
+    "shape": "A predefined fem_common.shapes object in metres.",
     "clip": "Intersect the shape with the solver domain; otherwise out-of-bounds objects raise GeometryError.",
     "name": "Optional name used for later identification and diagnostics.",
     "center": "Physical centre coordinates in metres.",
@@ -172,12 +172,12 @@ def main():
             if package == 'fem_periodic_modes':
                 out += "Periodic fields are Bloch envelopes. ``period`` is in m; each mode also\nprovides ``gamma``, ``bloch_multiplier``, folded propagation quantities,\nand Gauss-law/PML filtering diagnostics. Combine solved cases with\n``PeriodicSweepResult.from_results(results)`` and call ``save(path)``.\nLoaded multi-case archives index cases lazily.\n\n"
         out += section("Geometry and material values")
-        out += ("Define reusable materials and shapes with ``cem_common`` before assigning them.\n"
+        out += ("Define reusable materials and shapes with ``fem_common`` before assigning them.\n"
                 "Use ``Material(name=..., epsilon=..., mu=...)`` for bulk media,\n"
                 "``materials.PEC`` or ``materials.PMC`` for ideal boundaries, and the\n"
                 "documented ``materials.copper``-style presets where SIBC is supported.\n"
                 "Continuous primitives and Boolean/transformed shapes live in\n"
-                "``cem_common.shapes``. Solver packages do not re-export these shared values.\n\n")
+                "``fem_common.shapes``. Solver packages do not re-export these shared values.\n\n")
         out += entry('load_result',module.load_result,'a typed result; multi-case archives provide lazy case access')
         out += section("Errors")+"Invalid inputs raise ``ConfigurationError`` or ``GeometryError`` where available.\nMesh and numerical failures raise the corresponding ``MeshError`` or\n``SolverError``. ``NoResultError`` requires a successful solve first.\n``PersistenceError`` identifies an incompatible or unreadable archive.\nViewer errors include the executable path or installation setting needed to\ncorrect a launch failure. Saving and loading do not require an active GUI.\n\n"
         (ROOT/spec['documentation']/'API_REFERENCE.rst').write_text(out.rstrip() + '\n',encoding='utf-8')

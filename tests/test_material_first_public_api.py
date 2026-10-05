@@ -7,8 +7,8 @@ import inspect
 import numpy as np
 import pytest
 
-from cem_common import Material, SurfaceImpedance, materials, shapes
-from cem_common.errors import BackendCapabilityError, ConfigurationError, GeometryError
+from fem_common import Material, SurfaceImpedance, materials, shapes
+from fem_common.errors import BackendCapabilityError, ConfigurationError, GeometryError
 
 
 def test_materials_are_named_reusable_values_with_exp_plus_iwt_loss_sign() -> None:
@@ -112,3 +112,15 @@ def test_clean_break_removes_obsolete_solver_workflows() -> None:
 
 
 
+
+
+def test_solver_families_export_shared_construction_tools():
+    import importlib
+    import fem_common
+    for family in ('fem_electrostatics', 'fem_periodic_modes',
+                   'fem_waveguide_modes', 'fem_waveguide_scattering'):
+        solver = importlib.import_module(family)
+        for name in ('Material', 'GoodConductor', 'SurfaceImpedance',
+                     'materials', 'shapes', 'EPSILON_0', 'MU_0', 'C_0'):
+            assert getattr(solver, name) is getattr(fem_common, name)
+            assert name in solver.__all__
