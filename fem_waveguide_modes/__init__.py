@@ -24,3 +24,6 @@ __all__ = ['ModeSolver1D', 'ModeSolver2D', 'Mode', 'ModeSet', 'SampledFields', '
 # Shared construction tools are available directly from the solver family.
 from fem_common import Material, GoodConductor, SurfaceImpedance, materials, shapes, EPSILON_0, MU_0, C_0
 __all__ += ['Material', 'GoodConductor', 'SurfaceImpedance', 'materials', 'shapes', 'EPSILON_0', 'MU_0', 'C_0']
+
+from fem_common.dispersion import plot_dispersion
+__all__ += ["plot_dispersion"]

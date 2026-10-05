@@ -104,3 +104,19 @@ root with ``python fem_waveguide_modes/examples/<example>.py``.
 
 See the `family example index <../examples/README.rst>`_
 for learning order, output locations, and viewer requirements.
+
+Frequency sweeps
+----------------
+
+The ``_dispersion.py`` examples solve each frequency with a ``tqdm`` progress
+bar and display both real and imaginary effective indices after the sweep.
+Import the plotting helper directly from this solver:
+
+.. code-block:: python
+
+    from fem_waveguide_modes import plot_dispersion
+
+    plot_dispersion(frequencies, neff_sweep)
+
+Use frequencies in Hz and one row of complex effective indices per frequency.
+Each column is one plotted mode, using the supplied ordering.

@@ -23,7 +23,8 @@
       "shapes",
       "EPSILON_0",
       "MU_0",
-      "C_0"
+      "C_0",
+      "plot_dispersion"
     ],
     "solvers": {
       "ModeSolver1D": [
@@ -94,7 +95,8 @@
       "shapes",
       "EPSILON_0",
       "MU_0",
-      "C_0"
+      "C_0",
+      "plot_dispersion"
     ],
     "solvers": {
       "PeriodicModeSolver2D": [

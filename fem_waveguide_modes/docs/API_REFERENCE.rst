@@ -1279,3 +1279,13 @@ Shared construction tools
 Import ``Material``, ``GoodConductor``, ``SurfaceImpedance``, ``materials``,
 ``shapes``, ``EPSILON_0``, ``MU_0``, and ``C_0`` directly from this solver family.
 They are the shared FEM definitions; examples do not need a separate common import.
+
+Dispersion plots
+----------------
+
+``plot_dispersion``: ``plot_dispersion(frequencies, neff, *, show=True)`` plots the real and imaginary
+parts of effective index, with one trace per mode and labels starting at Mode 1.
+``frequencies`` is in Hz. ``neff`` has shape (frequencies, modes); a single-mode
+sweep may use a one-dimensional array. Columns follow the supplied mode order.
+The function returns a Matplotlib Figure. Use ``show=False`` to save a figure
+without opening a window.

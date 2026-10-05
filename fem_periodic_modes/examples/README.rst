@@ -24,3 +24,16 @@ substantially longer. 3D cases also require more memory.
 Run a script from this directory, or pass its path from the repository root.
 Scripts that save results use
 ``fem_periodic_modes/outputs/<example>/`` in the downloaded repository.
+
+Dispersion sweeps
+-----------------
+
+Each script below runs from top to bottom, uses ``tqdm`` to report completed
+frequencies, saves each case and ``dispersion.csv`` in its own outputs folder,
+and opens real/imaginary ``neff`` curves when the sweep finishes. Each trace
+uses the mode order returned by the solver.
+
+* `2d_uniform_cell_dispersion.py <2d_uniform_cell_dispersion.py>`_
+* `3d_uniform_cell_dispersion.py <3d_uniform_cell_dispersion.py>`_
+* `2d_leaky_wave_antenna_dispersion.py <2d_leaky_wave_antenna_dispersion.py>`_
+* `3d_iris_loaded_waveguide_filter_dispersion.py <3d_iris_loaded_waveguide_filter_dispersion.py>`_

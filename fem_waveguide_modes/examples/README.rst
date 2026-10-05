@@ -25,3 +25,17 @@ substantially longer. 3D cases also require more memory.
 Run a script from this directory, or pass its path from the repository root.
 Scripts that save results use
 ``fem_waveguide_modes/outputs/<example>/`` in the downloaded repository.
+
+Dispersion sweeps
+-----------------
+
+Each script below runs from top to bottom, uses ``tqdm`` to report completed
+frequencies, saves each case and ``dispersion.csv`` in its own outputs folder,
+and opens real/imaginary ``neff`` curves when the sweep finishes. Each trace
+uses the mode order returned by the solver.
+
+* `1d_parallel_plate_waveguide_dispersion.py <1d_parallel_plate_waveguide_dispersion.py>`_
+* `1d_dielectric_slab_dispersion.py <1d_dielectric_slab_dispersion.py>`_
+* `2d_rectangular_waveguide_dispersion.py <2d_rectangular_waveguide_dispersion.py>`_
+* `2d_ridge_waveguide_dispersion.py <2d_ridge_waveguide_dispersion.py>`_
+* `2d_microstrip_surface_impedance_dispersion.py <2d_microstrip_surface_impedance_dispersion.py>`_
