@@ -97,26 +97,138 @@ python -m fem calculator
 
 You can also supply an HDF5 file or results directory explicitly.
 
-## Other platforms: install from source
+## Install from source
 
-A source installation builds the native applications and Cython kernel. Install a
-C++20 compiler, CMake 3.24 or newer, Ninja, Qt 6.2 or newer, HDF5, Eigen 3.4 or newer,
-Gmsh with OpenCASCADE, and FTXUI. VTK with Qt support enables the 3D periodic viewer.
-See [native build instructions](apps/native_build.md) for platform setup and dependency
-source information, and the application guides for individual builds.
+A source installation builds all native applications and the Cython kernel.
+Download and extract the repository, then run the commands below from its root
+folder. Use Python 3.12 for these instructions. Python dependencies are installed
+automatically by `pip install .`; no `requirements-dev.txt` is needed.
 
-In the downloaded repository, with those native dependencies available to CMake:
+Native dependencies are a C++20 compiler, CMake 3.24+, Ninja, Qt 6.2+,
+HDF5, Eigen 3.4+, Gmsh with OpenCASCADE, and FTXUI. The commands also install
+VTK with **Qt 6** support and enable the 3D periodic viewer. Use the same Qt
+version for Qt and VTK. The first dependency build can take considerable time.
 
-```sh
-python -m pip install .
-# Or, in an activated environment:
-uv pip install .
+### Windows: MSVC
+
+Install [Python 3.12](https://www.python.org/downloads/),
+[Git](https://git-scm.com/downloads), and
+[Visual Studio or Build Tools](https://learn.microsoft.com/en-us/cpp/build/vscpp-step-0-installation).
+Select **Desktop development with C++**, including the x64 MSVC compiler,
+Windows SDK, and **C++ CMake tools for Windows** (CMake and Ninja).
+
+Install the native dependencies with [vcpkg](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started).
+Run this setup once; if vcpkg is already installed, use its existing folder:
+
+```powershell
+git clone https://github.com/microsoft/vcpkg.git C:/opt/vcpkg
+C:/opt/vcpkg/bootstrap-vcpkg.bat
+C:/opt/vcpkg/vcpkg.exe install qtbase hdf5 eigen3 "gmsh[occ]" ftxui "vtk[qt]" --triplet=x64-windows --overlay-ports=./vcpkg-ports
 ```
 
-Python dependencies are installed automatically. `pip install -r requirements.txt`
-or `uv sync` alone installs Python dependencies; it does not build the native
-applications. Windows developers building from source also need MSVC and the
-vcpkg dependencies described in the native build instructions.
+Build and install FEM in its own Python environment:
+
+```powershell
+py -3.12 -m venv .venv
+. ./scripts/setup_msvc_windows.ps1
+./.venv/Scripts/python.exe -m pip install . --config-settings=cmake.define.FEM_PERIODIC_MODE_VIEWER_WITH_VTK=ON
+./.venv/Scripts/python.exe -m fem info
+```
+
+The setup script selects MSVC, Ninja, and the vcpkg CMake toolchain for this
+terminal. For another vcpkg folder, use
+`. ./scripts/setup_msvc_windows.ps1 -VcpkgRoot C:/path/to/vcpkg`.
+
+### macOS: Clang
+
+Install Apple's command-line tools, which provide Clang and the macOS SDK:
+
+```sh
+xcode-select --install
+```
+
+Install [Homebrew](https://brew.sh/) if needed, then install the dependencies:
+
+```sh
+brew install cmake ninja python@3.12 qtbase hdf5 eigen gmsh ftxui vtk
+```
+
+Use a recent Xcode command-line tools version with C++20 `std::format` support.
+Homebrew's Gmsh includes OpenCASCADE; its VTK uses Qt 6. Build using Clang and
+point CMake to the Homebrew dependency folders:
+
+```sh
+"$(brew --prefix python@3.12)/bin/python3.12" -m venv .venv
+source .venv/bin/activate
+export CC="$(xcrun --find clang)"
+export CXX="$(xcrun --find clang++)"
+export CMAKE_GENERATOR=Ninja
+export CMAKE_PREFIX_PATH="$(brew --prefix qtbase);$(brew --prefix hdf5);$(brew --prefix eigen);$(brew --prefix gmsh);$(brew --prefix ftxui);$(brew --prefix vtk)"
+python -m pip install . --config-settings=cmake.define.FEM_PERIODIC_MODE_VIEWER_WITH_VTK=ON
+python -m fem info
+```
+
+### Linux: GCC
+
+Use GCC 13 or newer for C++20 `std::format` support. These commands use
+**Ubuntu 24.04, x86-64**, with GCC 13 and Python 3.12. Other distributions need
+the equivalent compiler, Python headers, and X11/OpenGL development packages.
+
+Install the compiler, build tools, Python, and libraries needed to build Qt:
+
+```sh
+sudo apt update
+sudo apt install build-essential gcc g++ cmake ninja-build git curl zip unzip tar pkg-config python3-dev python3-venv autoconf autoconf-archive automake libtool xorg-dev libxkbcommon-dev libxkbcommon-x11-dev libxcb-cursor-dev libgl1-mesa-dev libglu1-mesa-dev libegl1-mesa-dev libfontconfig1-dev libwayland-dev
+```
+
+Use vcpkg to build Qt 6, HDF5, Eigen, Gmsh/OpenCASCADE, FTXUI, and VTK together.
+This avoids mixing a distribution's Qt 5 VTK with Qt 6. Install vcpkg once:
+
+```sh
+git clone https://github.com/microsoft/vcpkg.git "$HOME/vcpkg"
+"$HOME/vcpkg/bootstrap-vcpkg.sh" -disableMetrics
+```
+
+Create a configuration for shared native libraries, then install the dependencies:
+
+```sh
+export VCPKG_ROOT="$HOME/vcpkg"
+export CC=gcc
+export CXX=g++
+export CMAKE_GENERATOR=Ninja
+mkdir -p build/triplets
+cat > build/triplets/x64-linux-fem.cmake <<'EOF'
+set(VCPKG_TARGET_ARCHITECTURE x64)
+set(VCPKG_CRT_LINKAGE dynamic)
+set(VCPKG_LIBRARY_LINKAGE dynamic)
+set(VCPKG_CMAKE_SYSTEM_NAME Linux)
+EOF
+"$VCPKG_ROOT/vcpkg" install qtbase hdf5 eigen3 'gmsh[occ]' ftxui 'vtk[qt]' --triplet=x64-linux-fem --overlay-triplets=./build/triplets --overlay-ports=./vcpkg-ports
+```
+
+Build and install FEM:
+
+```sh
+python3.12 -m venv .venv
+source .venv/bin/activate
+export CMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake"
+export CMAKE_ARGS="-DCMAKE_TOOLCHAIN_FILE=$CMAKE_TOOLCHAIN_FILE -DVCPKG_TARGET_TRIPLET=x64-linux-fem -DVCPKG_OVERLAY_TRIPLETS=$PWD/build/triplets"
+python -m pip install . --config-settings=cmake.define.FEM_PERIODIC_MODE_VIEWER_WITH_VTK=ON
+python -m fem info
+```
+
+For ARM64 Linux, replace `x64` with `arm64` in the configuration, filename,
+and commands. Keep the installed native dependencies available after installation;
+macOS and Linux applications use those libraries at runtime.
+
+In an activated environment, `uv pip install .` can replace `python -m pip install .`
+with the same `--config-settings` option. With conda, activate a Python 3.12
+environment instead of creating `.venv`, then use its `python -m pip install .`.
+`pip install -r requirements.txt` or `uv sync` alone installs Python dependencies;
+it does not build the native applications.
+
+See the [native build guide](apps/native_build.md) for individual application
+builds and native dependency sources.
 
 ## License
 
