@@ -17,8 +17,29 @@ users can install the prebuilt Python 3.12 binary; other platforms build from so
 | waveguide modes | Propagation modes and complex effective indices of 1D and 2D waveguide cross-sections | `fem_waveguide_modes` | [Guide](fem_waveguide_modes/docs/guide.rst) | [Examples](fem_waveguide_modes/examples/README.rst) |
 | waveguide scattering | Reflection, transmission, fields, and radiation from 2D waveguide discontinuities | `fem_waveguide_scattering` | [Guide](fem_waveguide_scattering/docs/guide.rst) | [Examples](fem_waveguide_scattering/examples/README.rst) |
 
-The [native transmission-line calculator](apps/transmission_line_calculator/README.rst)
-also computes cross-section fields, impedance, effective index, and RLGC parameters.
+## Native applications
+
+The Windows wheel installs these applications and their runtime libraries:
+
+| Application | What it does | Launch |
+|---|---|---|
+| Transmission-line calculator | Cross-section E/H fields, impedance, effective index, and RLGC parameters | `python -m fem calculator` |
+| Transmission-line calculator CLI/TUI | Terminal interface to the same calculations | `python -m fem calculator-cli` |
+| Periodic mode viewer | Interactive 2D/3D fields, modes, meshes, and sweeps | `python -m fem periodic-viewer` |
+| Periodic mode inspector | Print HDF5 archive metadata and mode data | `fem-periodic-mode-inspect result.h5` |
+| Waveguide scattering viewer | Fields, lead modes, S-parameters, and radiation | `python -m fem scattering-viewer` |
+| Waveguide scattering inspector | Print scattering archive and frequency-case data | `fem-waveguide-scattering-viewer-inspect result.h5` |
+
+See the [calculator](apps/transmission_line_calculator/README.rst),
+[periodic viewer](apps/fem_periodic_mode_viewer/README.rst), and
+[scattering viewer](apps/fem_waveguide_scattering_viewer/README.rst) guides.
+Electrostatics and waveguide-mode viewers use Matplotlib.
+
+Install the wheel into the **same Python environment** used to run examples.
+For this repository's `.venv`, use `.venv/Scripts/python.exe -m pip install <wheel>`
+or `uv pip install --python .venv/Scripts/python.exe <wheel>`. Running `uv sync`
+alone installs Python dependencies and does not install the native applications.
+Source builds under `build/native-release` are also found automatically.
 
 ## Windows: install the binary
 
@@ -27,13 +48,13 @@ Use **64-bit Python 3.12**. Download the wheel from the
 and install it:
 
 ```powershell
-python -m pip install .\electromagnetics_fem-1.1.0-cp312-cp312-win_amd64.whl
+python -m pip install .\electromagnetics_fem-1.1.1-cp312-cp312-win_amd64.whl
 ```
 
 Or install directly:
 
 ```powershell
-python -m pip install https://github.com/SolverNotConverging/Electromagnetics-FEM/releases/download/v1.1.0/electromagnetics_fem-1.1.0-cp312-cp312-win_amd64.whl
+python -m pip install https://github.com/SolverNotConverging/Electromagnetics-FEM/releases/download/v1.1.1/electromagnetics_fem-1.1.1-cp312-cp312-win_amd64.whl
 ```
 
 With uv, use `uv pip install` instead of `python -m pip install` in an activated

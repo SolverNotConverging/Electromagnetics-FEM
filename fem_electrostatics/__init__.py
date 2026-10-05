@@ -13,7 +13,7 @@ from .result_api import load_result
 from fem_common import NoResultError
 from fem_common import PersistenceError
 
-__version__ = "1.1.0"
+__version__ = "1.1.1"
 __all__ = ['ElectrostaticSolver', 'ElectrostaticResult', 'ElectrostaticSolverError', 'GeometryError', 'MeshError', 'SolverError', 'load_result', 'NoResultError', 'PersistenceError']
 
 # Shared construction tools are available directly from the solver family.

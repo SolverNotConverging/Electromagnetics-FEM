@@ -19,7 +19,7 @@ from fem_common.errors import SolverError
 from .result_api import load_result
 from fem_common import NoResultError
 
-__version__ = "1.1.0"
+__version__ = "1.1.1"
 __all__ = ['PeriodicModeSolver2D', 'PeriodicModeSolver3D', 'PeriodicMode', 'PeriodicModeSet', 'PeriodicSampledFields', 'PeriodicSweepResult', 'BackendCapabilityError', 'ConfigurationError', 'FEMPeriodicSolverError', 'GeometryError', 'MeshError', 'PersistenceError', 'SolverError', 'load_result', 'NoResultError']
 
 # Shared construction tools are available directly from the solver family.

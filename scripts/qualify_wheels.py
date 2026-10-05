@@ -15,12 +15,15 @@ import os
 import platform
 import subprocess
 import sys
+import tomllib
 import tempfile
 import venv
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
+VERSION = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
 SMOKE = r'''
+from importlib.metadata import version
 from importlib import import_module
 from pathlib import Path
 import os
@@ -33,7 +36,7 @@ packages = ('fem_common', 'fem_adaptivity', 'periodic_eigensolver',
     'fem_waveguide_modes', 'fem_periodic_modes', 'fem_waveguide_scattering', 'fem_electrostatics')
 for name in packages:
     module = import_module(name)
-    assert module.__version__ == '1.1.0', name
+    assert module.__version__ == version('electromagnetics-fem'), name
     assert Path(module.__file__).is_relative_to(Path(sys.prefix)), module.__file__
 
 from periodic_eigensolver import native_backend_available, solve_generalized
@@ -93,7 +96,7 @@ np.testing.assert_array_equal(load_result('scattering.h5').E_total, result.E_tot
 print('Installed distributions, native eigensolver, all solver families, physics, and archives: PASS')
 
 import fem
-from importlib.metadata import distribution
+from importlib.metadata import distribution, version
 assert Path(fem.__file__).is_relative_to(Path(sys.prefix))
 installed = distribution('electromagnetics-fem')
 assert not any(requirement.startswith(('fem-common', 'fem-', 'fdfd-', 'periodic-eigensolver')) for requirement in installed.requires)
@@ -150,9 +153,9 @@ def main():
     args = parser.parse_args()
     wheels = sorted(args.dist.resolve().glob('*.whl'))
     if sys.platform == 'win32' and platform.machine().lower() in ('amd64', 'x86_64'):
-        expected = 'electromagnetics_fem-1.1.0-cp312-cp312-win_amd64.whl'
+        expected = f'electromagnetics_fem-{VERSION}-cp312-cp312-win_amd64.whl'
     elif sys.platform == 'darwin' and platform.machine() == 'arm64':
-        expected = 'electromagnetics_fem-1.1.0-cp312-cp312-macosx_15_0_arm64.whl'
+        expected = f'electromagnetics_fem-{VERSION}-cp312-cp312-macosx_15_0_arm64.whl'
     else:
         raise SystemExit('Wheel qualification supports Windows x64 and macOS Apple silicon.')
     if len(wheels) != 1 or wheels[0].name != expected:

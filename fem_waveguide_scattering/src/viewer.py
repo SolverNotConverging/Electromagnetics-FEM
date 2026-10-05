@@ -14,6 +14,7 @@ from fem_common._native import (
     bundled_executable,
     bundled_environment,
     source_build_environment,
+    source_build_roots,
 )
 
 
@@ -102,15 +103,8 @@ def _build_candidates(repository: Path) -> list[Path]:
 
     viewer_source = repository / "apps" / "fem_waveguide_scattering_viewer"
     build_directories: list[Path] = []
-    for directory in sorted(viewer_source.glob("build*")):
-        if directory.is_dir():
-            build_directories.append(directory)
-    for directory in (*sorted(repository.glob("build*")),
-                      *sorted((repository / "outputs").glob("build*"))):
-        if not directory.is_dir():
-            continue
-        # A root CMake build places this target in its subproject directory.
-        build_directories.append(directory / "apps" / "fem_waveguide_scattering_viewer")
+    for directory in source_build_roots(repository, "fem_waveguide_scattering_viewer"):
+        build_directories.extend((directory, directory / "apps" / "fem_waveguide_scattering_viewer"))
 
     # Keep conventional paths available even before their directories exist;
     # this also makes discovery deterministic in minimally populated checkouts.
@@ -140,7 +134,7 @@ def find_viewer_executable() -> Path:
     """Find the native GUI in an override, build tree, ``PATH``, or install.
 
     The explicit environment override has highest priority, followed by the native
-    application bundled with FDFD, checkout builds, PATH, and local installations.
+    application bundled with FEM, checkout builds, PATH, and local installations.
     """
 
     candidates: list[Path] = []
@@ -178,8 +172,8 @@ def find_viewer_executable() -> Path:
             return resolved
 
     raise ViewerError(
-        "The native fem-waveguide-scattering-viewer executable was not found. Build the "
-        "FEMWaveguideScatteringViewer CMake project, install it on PATH, or set "
+        "The native fem-waveguide-scattering-viewer executable was not found. Install the "
+        "complete FEM wheel in this Python environment (see README.md), or set "
         "FEM_WAVEGUIDE_SCATTERING_VIEWER_EXECUTABLE to the executable path."
     )
 

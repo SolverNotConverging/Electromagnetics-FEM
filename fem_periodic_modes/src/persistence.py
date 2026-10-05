@@ -12,6 +12,7 @@ from fem_common._native import (
     bundled_executable,
     bundled_environment,
     source_build_environment,
+    source_build_roots,
 )
 from fem_common.persistence import write_envelope, validate_envelope, write_value, read_value
 
@@ -1339,10 +1340,7 @@ def _viewer_candidates(executable_name: str) -> tuple[Path, ...]:
     repository = _repository_root()
     build_roots = []
     if repository is not None:
-        source_root = repository / "apps" / "fem_periodic_mode_viewer"
-        build_roots = [source_root / "build", source_root / "build" / "msvc-install",
-            *sorted(source_root.glob("build*")),
-            *sorted(repository.glob("build*")), *sorted((repository / "outputs").glob("build*"))]
+        build_roots = source_build_roots(repository, "fem_periodic_mode_viewer")
     configurations = ("Release", "RelWithDebInfo", "Debug", "MinSizeRel")
     for build_root in build_roots:
         for binary_root in (build_root, build_root / "apps" / "fem_periodic_mode_viewer"):
@@ -1429,7 +1427,7 @@ def launch_viewer(
     executable = next((candidate.resolve() for candidate in candidates if candidate.is_file()), None)
     if executable is None:
         raise PersistenceError(
-            "fem-periodic-mode-viewer was not found. Install it on PATH or set "
+            "fem-periodic-mode-viewer was not found. Install the complete FEM wheel in this Python environment (see README.md), or set "
             "FEM_PERIODIC_MODE_VIEWER_EXECUTABLE."
         )
     arguments = [str(executable)]

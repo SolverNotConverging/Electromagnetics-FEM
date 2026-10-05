@@ -13,9 +13,11 @@ import argparse
 import os
 import subprocess
 import sys
+import tomllib
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
+VERSION = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
 SOURCE_ROOTS = tuple(ROOT / name for name in ('fem', 'fem_common', 'fem_adaptivity', 'fem_electrostatics', 'fem_periodic_modes', 'fem_waveguide_modes', 'fem_waveguide_scattering', 'periodic_eigensolver'))
 
 
@@ -25,7 +27,7 @@ def main():
     parser.add_argument("--native-bundle", type=Path, default=ROOT / "build/native-release-1.1.0/FEM-1.1.0-windows-x64")
     args = parser.parse_args()
     if sys.platform != "win32" or sys.version_info[:2] != (3, 12):
-        parser.error("The complete 1.1.0 release wheel targets Windows x64 / CPython 3.12.")
+        parser.error("The complete release wheel targets Windows x64 / CPython 3.12.")
     if sys.maxsize <= 2**32:
         parser.error("A 64-bit interpreter is required.")
     output = args.output.resolve()
@@ -43,7 +45,7 @@ def main():
         check=True,
     )
     wheels = list(output.glob("*.whl"))
-    if len(wheels) != 1 or wheels[0].name != "electromagnetics_fem-1.1.0-cp312-cp312-win_amd64.whl":
+    if len(wheels) != 1 or wheels[0].name != f"electromagnetics_fem-{VERSION}-cp312-cp312-win_amd64.whl":
         raise SystemExit(f"Unexpected release artifacts: {wheels}")
     with zipfile.ZipFile(wheels[0]) as archive:
         members = set(archive.namelist())

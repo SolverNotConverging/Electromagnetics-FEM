@@ -139,3 +139,27 @@ def test_explicit_override_precedes_bundle_and_bundle_precedes_checkout(tmp_path
     assert find() == bundled
     monkeypatch.setenv(variable, str(configured))
     assert find() == configured
+
+
+@pytest.mark.parametrize("family", ("periodic", "scattering"))
+@pytest.mark.parametrize("layout", ("native-release", "msvc/cp312-cp312-win_amd64"))
+def test_nested_root_builds_are_discovered(tmp_path, monkeypatch, family, layout):
+    app = "fem_periodic_mode_viewer" if family == "periodic" else "fem_waveguide_scattering_viewer"
+    basename = "fem-periodic-mode-viewer" if family == "periodic" else "fem-waveguide-scattering-viewer"
+    filename = basename + (".exe" if _native.os.name == "nt" else "")
+    root = tmp_path / "build" / layout
+    binary = root / "apps" / app / filename
+    binary.parent.mkdir(parents=True)
+    binary.touch()
+    (root / "CMakeCache.txt").touch()
+    if family == "periodic":
+        from fem_periodic_modes import persistence
+        monkeypatch.setattr(persistence, "_repository_root", lambda: tmp_path)
+        monkeypatch.setattr(persistence, "bundled_executable", lambda name: None)
+        assert binary in persistence._viewer_candidates(filename)
+    else:
+        from fem_waveguide_scattering import viewer
+        monkeypatch.setattr(viewer, "_repository_root", lambda: tmp_path)
+        monkeypatch.setattr(viewer, "bundled_executable", lambda name: None)
+        monkeypatch.delenv("FEM_WAVEGUIDE_SCATTERING_VIEWER_EXECUTABLE", raising=False)
+        assert viewer.find_viewer_executable() == binary

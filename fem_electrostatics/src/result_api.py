@@ -33,9 +33,15 @@ def load_result(path):
         raise PersistenceError(f"Cannot load electrostatic result from {path}: {exc}") from exc
 
 
-def _draw(ax, result, component, quantity):
+def _draw(ax, result, component, quantity, *, colorbar_axes=None):
     import matplotlib.tri as mtri
     points, cells = result.coordinates, result.elements
+    ax.set_xlim(points[:, 0].min(), points[:, 0].max())
+    ax.set_xlabel("x (m)")
+    if points.shape[1] == 2:
+        ax.set_ylim(points[:, 1].min(), points[:, 1].max())
+        ax.set_aspect("equal", adjustable="box")
+        ax.set_ylabel("y (m)")
     if component == "potential":
         value, unit, location = result.potential, "V", "node"
     elif component == "mesh":
@@ -65,7 +71,7 @@ def _draw(ax, result, component, quantity):
     else:
         triangle = mtri.Triangulation(points[:, 0], points[:, 1], cells)
         artist = ax.tripcolor(triangle, value, shading="gouraud") if location == "node" else ax.tripcolor(triangle, facecolors=value, shading="flat")
-        ax.figure.colorbar(artist, ax=ax, label=unit)
+        ax.figure.colorbar(artist, ax=ax, cax=colorbar_axes, label=unit)
         ax.set_aspect("equal")
         ax.set_ylabel("y (m)")
     ax.set_xlabel("x (m)")
@@ -92,8 +98,11 @@ def show_result(result, *, block=True):
         for axis in list(figure.axes):
             if axis is not selector_axes:
                 figure.delaxes(axis)
-        axis = figure.add_axes((.25, .15, .65, .75))
-        _draw(axis, result, component, "real")
+        is_2d = result.coordinates.shape[1] == 2
+        axis = figure.add_axes((.25, .15, .57 if is_2d else .65, .75))
+        colorbar_axes = (figure.add_axes((.85, .15, .025, .75))
+                         if is_2d and component != "mesh" else None)
+        _draw(axis, result, component, "real", colorbar_axes=colorbar_axes)
         figure.canvas.draw_idle()
     buttons.on_clicked(redraw)
     figure._cem_selector = buttons

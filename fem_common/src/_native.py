@@ -24,6 +24,21 @@ def bundled_executable(name: str) -> Path | None:
     return next((candidate for candidate in candidates if candidate.is_file()), None)
 
 
+
+def source_build_roots(repository: Path, application: str) -> tuple[Path, ...]:
+    """Locate root and app builds, including nested Ninja/scikit-build folders."""
+    source = repository / "apps" / application
+    roots = [source / "build", source / "build" / "msvc-install",
+             *sorted(source.glob("build*")), *sorted(repository.glob("build*")),
+             *sorted((repository / "outputs").glob("build*"))]
+    for base in tuple(roots):
+        if base.is_dir():
+            # Limit traversal to supported build layouts, avoiding archived trees.
+            for pattern in ("*/CMakeCache.txt", "*/*/CMakeCache.txt"):
+                roots.extend(cache.parent for cache in sorted(base.glob(pattern)))
+    return tuple(dict.fromkeys(roots))
+
+
 def bundled_environment(executable: Path) -> dict[str, str] | None:
     """Keep another Python/Qt installation's plugin settings out of this process."""
     manifest = executable.parent.parent / "build-manifest.json"
