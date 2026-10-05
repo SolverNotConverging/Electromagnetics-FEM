@@ -24,7 +24,7 @@ for case, frequency in enumerate(tqdm(frequencies, desc="Frequency sweep", unit=
     solver.add_rectangle(x_range=(-1e-6, 1e-6), y_range=(-200e-9, -110e-9),
         name="slab", material=silica)
     solver.mesh(max_element_size=100e-9, quadrature_order=4)
-    modes = solver.solve(max_refinements=0, num_modes=4, neff_guess=3.6)
+    modes = solver.solve(max_refinements=0, num_modes=4)
     modes.save(OUTPUT / f"case_{case:03d}.h5")
     neff_sweep.append(modes.neff)
 

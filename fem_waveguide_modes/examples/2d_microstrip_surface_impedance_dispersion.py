@@ -25,7 +25,7 @@ for case, frequency in enumerate(tqdm(frequencies, desc="Frequency sweep", unit=
     solver.add_geometry(name="copper_strip", material=materials.copper,
         shape=shapes.Rectangle(bounds=((-1.5e-3, 1.5e-3), (1.524e-3, 1.559e-3))))
     solver.mesh(max_element_size=600e-6, wavelength_elements=10, material_aware=True)
-    modes = solver.solve(max_refinements=0, num_modes=1, neff_guess=1.9)
+    modes = solver.solve(max_refinements=0, num_modes=1)
     modes.save(OUTPUT / f"case_{case:03d}.h5")
     neff_sweep.append(modes.neff)
 

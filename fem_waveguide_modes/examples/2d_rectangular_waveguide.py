@@ -20,7 +20,7 @@ def main():
     expected = np.sqrt(.75)
     guide = ModeSolver2D(frequency=frequency, x_range=1.0, y_range=0.5)
     guide.mesh(resolution=(5, 3), element_order=2)
-    vector_modes = guide.solve(max_refinements=0, num_modes=1, neff_guess=expected)
+    vector_modes = guide.solve(max_refinements=0, num_modes=1)
     print("2D TE10 effective index:", vector_modes[0].neff)
     print("Analytic TE10 effective index:", expected)
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)

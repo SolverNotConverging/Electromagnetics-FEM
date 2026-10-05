@@ -40,7 +40,7 @@ def compare(levels=(8, 12, 16)):
             solver = FEMModeSolver2D(frequency=frequency, x_range=width, y_range=height, boundary=materials.PEC)
             mesh = solver.mesh(resolution=(cells_x + 1, cells_y + 1), element_order=1)
             mode = solver.solve(
-                num_modes=1, neff_guess=exact_neff, max_refinements=0,
+                num_modes=1, max_refinements=0,
                 dense_linearization_limit=4,
             )[0]
             neff, elements, algebraic_residual = mode.neff, len(mesh.elements), mode.residual

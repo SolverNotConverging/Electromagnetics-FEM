@@ -72,13 +72,15 @@ Workflow
     solver = ModeSolver2D(frequency=10e9, x_range=22.86e-3,
                          y_range=10.16e-3, boundary=materials.PEC)
     solver.mesh(max_element_size=1e-3)
-    result = solver.solve(num_modes=4, neff_guess=.8, max_refinements=0)
+    result = solver.solve(num_modes=4, max_refinements=0)
     result.save("outputs/modes.h5")
     loaded = load_result("outputs/modes.h5")
     figure = loaded.plot(component="Ey", mode=0)
     solver.show()
 
 ``solve()`` automatically meshes when needed and never saves or opens a window.
+Omit ``neff_guess`` to let the solver choose its search target from the
+materials at each frequency. The examples use this automatic default.
 The adaptive defaults are two refinements and a relative tolerance of 0.05.
 The example uses a fixed mesh for reproducibility. Geometry edits invalidate
 ``mesh_data`` and ``result``; an automatic rebuild reuses explicit mesh settings.

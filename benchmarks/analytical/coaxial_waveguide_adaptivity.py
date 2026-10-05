@@ -101,7 +101,7 @@ def compare(max_refinements=4, adaptive_tolerance=.05):
         start = perf_counter()
         solver = make_solver()
         result = solver.solve(
-            num_modes=1, neff_guess=1.001, max_refinements=budget,
+            num_modes=1, max_refinements=budget,
             adaptive_tolerance=adaptive_tolerance, dense_linearization_limit=4,
         )
         mode = result[0]

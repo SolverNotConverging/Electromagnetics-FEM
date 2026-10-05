@@ -59,7 +59,7 @@ def main() -> None:
         f"h=[{mesh.info.minimum_edge:.3g}, {mesh.info.maximum_edge:.3g}] m"
     )
 
-    modes = solver.solve(max_refinements=0, num_modes=1, neff_guess=1.65)
+    modes = solver.solve(max_refinements=0, num_modes=1)
     mode = modes[0]
     print(
         f"microstrip mode: neff={mode.neff:.9g}, "

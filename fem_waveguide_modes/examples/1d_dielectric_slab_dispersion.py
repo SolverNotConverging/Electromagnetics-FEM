@@ -21,7 +21,7 @@ for case, frequency in enumerate(tqdm(frequencies, desc="Frequency sweep", unit=
                           background_material=cladding)
     solver.add_layer(x_range=(-250e-9, 250e-9), name="core", material=silicon)
     solver.mesh(max_element_size=60e-9)
-    modes = solver.solve(neff_guess=3.6, max_refinements=0, num_modes=4)
+    modes = solver.solve(max_refinements=0, num_modes=4)
     modes.save(OUTPUT / f"case_{case:03d}.h5")
     neff_sweep.append(modes.neff)
 

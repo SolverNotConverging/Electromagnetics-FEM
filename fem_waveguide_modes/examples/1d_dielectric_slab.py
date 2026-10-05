@@ -30,7 +30,7 @@ def main() -> None:
     solver.add_layer(x_range=(-2.5e-7, 2.5e-7), name="core", material=silicon)
 
     solver.mesh(max_element_size=6e-08)
-    modes = solver.solve(neff_guess=3.2, max_refinements=0, num_modes=4)
+    modes = solver.solve(max_refinements=0, num_modes=4)
 
     for number, mode in enumerate(modes):
         print(
