@@ -12,7 +12,6 @@ from fem_waveguide_modes import ModeSolver1D, plot_dispersion
 OUTPUT = Path(__file__).resolve().parents[1] / "outputs" / Path(__file__).stem
 OUTPUT.mkdir(parents=True, exist_ok=True)
 
-
 frequencies = np.linspace(200e6, 400e6, 21)
 neff_sweep = []
 for case, frequency in enumerate(tqdm(frequencies, desc="Frequency sweep", unit="frequency"), start=1):
