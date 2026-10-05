@@ -23,9 +23,10 @@ from pathlib import Path
 import re
 import shutil
 import subprocess
+import tomllib
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "1.1.0"
+VERSION = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
 BUNDLE_NAME = f"FEM-{VERSION}-windows-x64"
 APPS = {
     "fem_waveguide_scattering_viewer": (
@@ -255,7 +256,7 @@ def finish(args):
 
 
 def write_bundle_readme(bundle):
-    (bundle / "README.txt").write_text("""FEM 1.1.0 - bundled Windows x64 native applications
+    (bundle / "README.txt").write_text(f"""FEM {VERSION} - bundled Windows x64 native applications
 
 These runtime files are installed by the complete FEM wheel. Launch the apps:
   python -m fem calculator
@@ -289,7 +290,7 @@ def main():
     parser.add_argument("--phase", required=True, choices=("stage", "finish"))
     parser.add_argument("--build", type=Path, default=ROOT / "build/native-release")
     parser.add_argument("--samples", type=Path, default=ROOT / "build/native-qualification")
-    parser.add_argument("--output", type=Path, default=ROOT / "build/native-release-1.1.0")
+    parser.add_argument("--output", type=Path, default=ROOT / f"build/native-release-{VERSION}")
     parser.add_argument("--recipe-root", type=Path, help="Archived hash-verified recipes for installed dependencies.")
     parser.add_argument("--vcpkg-root", type=Path, default=Path("C:/opt/vcpkg"))
     args = parser.parse_args()

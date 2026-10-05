@@ -7,12 +7,13 @@
 #include <algorithm>
 
 namespace femviewer {
-// Results from all examples remain selectable, including nested case folders.
-inline QFileInfoList resultFiles(const QDir& directory) {
+// Directory opening includes nested example folders; opening one file only lists siblings.
+inline QFileInfoList resultFiles(const QDir& directory, bool recursive = true) {
     QFileInfoList files;
     QDirIterator iterator(directory.absolutePath(),
         {QStringLiteral("*.h5"), QStringLiteral("*.hdf5")},
-        QDir::Files | QDir::Readable, QDirIterator::Subdirectories);
+        QDir::Files | QDir::Readable,
+        recursive ? QDirIterator::Subdirectories : QDirIterator::NoIteratorFlags);
     while (iterator.hasNext()) {
         iterator.next();
         files.append(iterator.fileInfo());

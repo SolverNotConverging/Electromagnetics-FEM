@@ -18,7 +18,7 @@ from .result_api import load_result
 from fem_common import NoResultError
 from fem_common import PersistenceError
 
-__version__ = "1.1.1"
+__version__ = "1.1.2"
 __all__ = ['ModeSolver1D', 'ModeSolver2D', 'Mode', 'ModeSet', 'SampledFields', 'BackendCapabilityError', 'ConfigurationError', 'FEMModeSolverError', 'GeometryError', 'MeshError', 'SolverError', 'load_result', 'NoResultError', 'PersistenceError']
 
 # Shared construction tools are available directly from the solver family.

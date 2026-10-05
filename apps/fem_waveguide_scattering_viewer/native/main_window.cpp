@@ -328,7 +328,7 @@ void MainWindow::loadDirectory(const QString& directoryPath) {
 void MainWindow::refreshFileChoices(const QString& selectedPath) {
     const QFileInfo selectedFile(selectedPath);
     QDir directory(resultsDirectory_.isEmpty() ? selectedFile.absolutePath() : resultsDirectory_);
-    const auto entries = femviewer::resultFiles(directory);
+    const auto entries = femviewer::resultFiles(directory, !resultsDirectory_.isEmpty());
     fileCombo_->blockSignals(true);
     fileCombo_->clear();
     int selectedIndex = -1;
@@ -372,7 +372,7 @@ void MainWindow::loadPath(const QString& path) {
     frequencyCombo_->clear();
     for (std::size_t index = 0; index < fileIndex_->frequenciesHz.size(); ++index) {
         frequencyCombo_->addItem(QStringLiteral("%1: %2")
-            .arg(index).arg(formatFrequency(fileIndex_->frequenciesHz[index])));
+            .arg(index + 1).arg(formatFrequency(fileIndex_->frequenciesHz[index])));
     }
     frequencyCombo_->setCurrentIndex(0);
     frequencyCombo_->setEnabled(true);
@@ -519,7 +519,7 @@ void MainWindow::refreshSParameters() {
     std::vector<double> horizontal = fileIndex_->frequenciesHz;
     if (!knownFrequencies) {
         for (std::size_t index = 0; index < horizontal.size(); ++index) {
-            horizontal[index] = static_cast<double>(index);
+            horizontal[index] = static_cast<double>(index + 1);
         }
     }
     std::vector<PlotSeries> series;

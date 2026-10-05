@@ -10,7 +10,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "electromagnetics-fem"
-version = "1.1.1"
+version = "1.1.2"
 description = "FEM electromagnetic solvers and interactive native applications"
 readme = "README.md"
 requires-python = ">=3.11,<3.14"

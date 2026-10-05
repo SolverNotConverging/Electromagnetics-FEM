@@ -26,7 +26,9 @@ Features
 
 * Single-result and multi-case frequency-sweep archives.
 
-* Separate 2D and 3D mode panels with their own relevant controls, each opening on a material tab before its field tab. Controls from the other dimension are not shown or disabled in the active panel.
+* Separate 2D and 3D mode panels with their own relevant controls, each opening on the field tab, followed by the material tab. Controls from the other dimension are not shown or disabled in the active panel.
+
+* Case and mode numbers start at 1. Wide dropdowns show rounded complex effective indices.
 
 * Complex propagation constant, raw/folded effective index, Bloch multiplier, residual, PML participation, polarization, direction, and normalization metadata.
 
@@ -45,6 +47,8 @@ Features
 * Fixed-length and variable-length UTF-8 HDF5 strings.
 
 * Read-only asynchronous loading, stale-request suppression, and truthful load-error reporting.
+
+* Opening one file lists only sibling files, so temporary viewer archives do not trigger a recursive search of the system temporary folder. Opening a directory includes nested example folders.
 
 * Directory picker and sibling-file selector for readable ``.h5``/``.hdf5`` results, including directory paths supplied on the command line.
 

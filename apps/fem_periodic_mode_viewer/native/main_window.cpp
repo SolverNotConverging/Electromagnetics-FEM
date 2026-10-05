@@ -43,11 +43,11 @@ QString qString(const std::string& value) {
     return QString::fromUtf8(value.data(), static_cast<qsizetype>(value.size()));
 }
 
-QString formatComplex(Complex value) {
+QString formatComplex(Complex value, int precision = 6) {
     return QStringLiteral("%1 %2 %3j")
-        .arg(value.real(), 0, 'g', 9)
+        .arg(value.real(), 0, 'g', precision)
         .arg(value.imag() < 0.0 ? QStringLiteral("-") : QStringLiteral("+"))
-        .arg(std::abs(value.imag()), 0, 'g', 9);
+        .arg(std::abs(value.imag()), 0, 'g', precision);
 }
 
 } // namespace
@@ -65,6 +65,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     pathLabel_ = new QLabel(QStringLiteral("No result loaded"), central);
     pathLabel_->setTextInteractionFlags(Qt::TextSelectableByMouse);
     fileCombo_ = new QComboBox(central);
+    fileCombo_->setObjectName(QStringLiteral("resultFiles"));
     fileCombo_->setMinimumContentsLength(22);
     fileCombo_->setEnabled(false);
     fileRow->addWidget(open);
@@ -83,6 +84,12 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
         };
     addSelectionCombo(QStringLiteral("Case:"), caseCombo_);
     addSelectionCombo(QStringLiteral("Mode:"), modeCombo_);
+    caseCombo_->setObjectName(QStringLiteral("cases"));
+    modeCombo_->setObjectName(QStringLiteral("modes"));
+    caseCombo_->setMinimumContentsLength(18);
+    modeCombo_->setMinimumContentsLength(40);
+    caseCombo_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+    modeCombo_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     selectionRow->addStretch(1);
     outer->addLayout(selectionRow);
 
@@ -113,8 +120,9 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     materialPlot2D_ = new FieldPlot2D(tabs2D_);
     materialPlot2D_->setMaterialOnly(true);
     plot2D_ = new FieldPlot2D(tabs2D_);
-    tabs2D_->addTab(materialPlot2D_, QStringLiteral("Material"));
+    tabs2D_->setObjectName(QStringLiteral("fields2D"));
     tabs2D_->addTab(plot2D_, QStringLiteral("Field"));
+    tabs2D_->addTab(materialPlot2D_, QStringLiteral("Material"));
     page2DLayout->addWidget(tabs2D_, 1);
     dimensionStack_->addWidget(page2D);
 
@@ -161,8 +169,9 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     materialView3D_ = new VtkFieldView(tabs3D_);
     materialView3D_->setMaterialOnly(true);
     view3D_ = new VtkFieldView(tabs3D_);
-    tabs3D_->addTab(materialView3D_, QStringLiteral("Material"));
+    tabs3D_->setObjectName(QStringLiteral("fields3D"));
     tabs3D_->addTab(view3D_, QStringLiteral("Field"));
+    tabs3D_->addTab(materialView3D_, QStringLiteral("Material"));
     page3DLayout->addWidget(tabs3D_, 1);
     dimensionStack_->addWidget(page3D);
 
@@ -276,7 +285,7 @@ void MainWindow::loadDirectory(const std::filesystem::path& directoryPath) {
 void MainWindow::refreshFileChoices(const std::filesystem::path& selectedPath) {
     const QFileInfo selectedFile(qStringFromPath(std::filesystem::absolute(selectedPath)));
     QDir directory(resultsDirectory_.isEmpty() ? selectedFile.absolutePath() : resultsDirectory_);
-    const auto entries = femviewer::resultFiles(directory);
+    const auto entries = femviewer::resultFiles(directory, !resultsDirectory_.isEmpty());
     fileCombo_->blockSignals(true);
     fileCombo_->clear();
     int selectedIndex = -1;
@@ -326,13 +335,13 @@ void MainWindow::loadFile(const std::filesystem::path& filePath) {
     modeCombo_->clear();
     caseCombo_->blockSignals(false);
     modeCombo_->blockSignals(false);
-    plot2D_->clearData(QStringLiteral("Indexing the selected result…"));
-    materialPlot2D_->clearData(QStringLiteral("Indexing the selected result…"));
-    view3D_->clearData(QStringLiteral("Indexing the selected result…"));
-    materialView3D_->clearData(QStringLiteral("Indexing the selected result…"));
+    plot2D_->clearData(QStringLiteral("Loading fields…"));
+    materialPlot2D_->clearData(QStringLiteral("Loading fields…"));
+    view3D_->clearData(QStringLiteral("Loading fields…"));
+    materialView3D_->clearData(QStringLiteral("Loading fields…"));
     metadata_->clear();
     pathLabel_->setText(qStringFromPath(absolutePath));
-    statusBar()->showMessage(QStringLiteral("Indexing result…"));
+    statusBar()->showMessage(QStringLiteral("Loading result…"));
     caseCombo_->setEnabled(false);
     modeCombo_->setEnabled(false);
     auto* watcher = new QFutureWatcher<IndexOutcome>(this);
@@ -405,8 +414,8 @@ void MainWindow::applyIndex(const IndexOutcome& outcome) {
     caseCombo_->clear();
     for (std::size_t index = 0; index < index_->cases.size(); ++index) {
         caseCombo_->addItem(QStringLiteral("%1 · %2 GHz")
-                                .arg(index)
-                                .arg(index_->cases[index].frequencyHz / 1.0e9, 0, 'g', 8));
+                                .arg(index + 1)
+                                .arg(index_->cases[index].frequencyHz / 1.0e9, 0, 'g', 5));
     }
     caseCombo_->setCurrentIndex(0);
     caseCombo_->blockSignals(false);
@@ -438,7 +447,7 @@ void MainWindow::populateModes() {
             modeCombo_->addItem(QStringLiteral("%1 · %2 · neff %3")
                                     .arg(local + 1)
                                     .arg(qString(mode.polarization))
-                                    .arg(formatComplex(mode.neff)));
+                                    .arg(formatComplex(mode.neff, 5)));
         }
     }
     if (modeCombo_->count() > 0) {
@@ -471,7 +480,7 @@ void MainWindow::requestSelectedMode() {
     materialView3D_->clearData(QStringLiteral("Loading the selected mode…"));
     metadata_->clear();
     statusBar()->showMessage(QStringLiteral("Loading case %1, mode %2…")
-                                 .arg(caseIndex).arg(modeIndex + 1));
+                                 .arg(caseIndex + 1).arg(modeIndex + 1));
     auto* watcher = new QFutureWatcher<ModeOutcome>(this);
     connect(watcher, &QFutureWatcher<ModeOutcome>::finished, this, [this, watcher] {
         const auto outcome = watcher->result();
@@ -594,7 +603,7 @@ void MainWindow::refreshMetadata() {
     text += QStringLiteral("  producer: %1 %2\n")
                 .arg(qString(index_->producer), qString(index_->producerVersion));
     text += QStringLiteral("  convention: %1\n\n").arg(qString(index_->timeConvention));
-    text += QStringLiteral("Case\n");
+    text += QStringLiteral("Case %1\n").arg(selectedCase() + 1);
     text += QStringLiteral("  frequency: %1 GHz\n")
                 .arg(selectedCaseData.frequencyHz / 1.0e9, 0, 'g', 10);
     if (mesh_) {

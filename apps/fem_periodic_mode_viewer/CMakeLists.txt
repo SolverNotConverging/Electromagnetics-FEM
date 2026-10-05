@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.24)
 
 include("${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/WindowsToolchain.cmake")
 
-project(FEMPeriodicModeViewer VERSION 1.1.0 LANGUAGES C CXX)
+project(FEMPeriodicModeViewer VERSION 1.1.2 LANGUAGES C CXX)
 include("${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/NativeRuntime.cmake")
 
 set(CMAKE_CXX_STANDARD 20)
@@ -433,4 +433,27 @@ if(BUILD_TESTING)
             TIMEOUT 20
         )
     endif()
+endif()
+
+if(BUILD_TESTING)
+    add_executable(fem-periodic-viewer-test
+        tests/viewer_test.cpp
+        native/main_window.cpp
+        native/field_plot_2d.cpp
+        native/vtk_field_view.cpp)
+    target_include_directories(fem-periodic-viewer-test PRIVATE native)
+    target_link_libraries(fem-periodic-viewer-test PRIVATE
+        fem-periodic-archive Qt6::Concurrent Qt6::Widgets ${FEM_PERIODIC_MODE_VTK_TARGETS})
+    target_compile_definitions(fem-periodic-viewer-test PRIVATE
+        $<$<BOOL:${FEM_PERIODIC_MODE_VTK_ENABLED}>:FEM_PERIODIC_MODE_VIEWER_WITH_VTK=1>)
+    fem_periodic_enable_warnings(fem-periodic-viewer-test)
+    if(FEM_PERIODIC_MODE_VTK_ENABLED)
+        vtk_module_autoinit(TARGETS fem-periodic-viewer-test MODULES ${FEM_PERIODIC_MODE_VTK_TARGETS})
+    endif()
+    add_test(NAME fem-periodic-viewer-selections-and-file-browsing
+        COMMAND fem-periodic-viewer-test "${FEM_PERIODIC_SWEEP_TEST_FILE}" "${FEM_PERIODIC_3D_FILE}")
+    set_tests_properties(fem-periodic-viewer-selections-and-file-browsing PROPERTIES
+        FIXTURES_REQUIRED "periodic_sweep_fixture;periodic_3d_fixture"
+        ENVIRONMENT "${FEM_QT_TEST_ENVIRONMENT}"
+        TIMEOUT 30)
 endif()
