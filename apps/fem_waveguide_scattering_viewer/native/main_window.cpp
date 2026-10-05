@@ -406,7 +406,7 @@ void MainWindow::loadSelectedResult() {
     }
     radiationPlot_->setEmpty(QStringLiteral("Radiation pattern"),
                              QStringLiteral("Loading selected result…"));
-    statusBar()->showMessage(QStringLiteral("Loading frequency %1…").arg(selected));
+    statusBar()->showMessage(QStringLiteral("Loading frequency %1…").arg(selected + 1));
 
     auto* watcher = new QFutureWatcher<LoadOutcome>(this);
     connect(watcher, &QFutureWatcher<LoadOutcome>::finished, this, [this, watcher] {
