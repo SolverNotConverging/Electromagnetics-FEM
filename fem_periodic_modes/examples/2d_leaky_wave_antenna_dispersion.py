@@ -13,19 +13,19 @@ OUTPUT = Path(__file__).resolve().parents[1] / "outputs" / Path(__file__).stem
 OUTPUT.mkdir(parents=True, exist_ok=True)
 
 substrate = Material(name="antenna substrate", epsilon=10.2)
-frequencies = np.linspace(18e9, 22e9, 9)
+frequencies = np.linspace(18e9, 22e9, 100)
 neff_sweep = []
 for case, frequency in enumerate(tqdm(frequencies, desc="Frequency sweep", unit="frequency"), start=1):
     solver = PeriodicModeSolver2D(frequency=frequency, x_range=(0., 10e-3),
-        z_range=(0., 8e-3), polarization="TM", boundary=materials.PEC)
+                                  z_range=(0., 8e-3), polarization="TM", boundary=materials.PEC)
     solver.add_rectangle(x_range=(0., 1.27e-3), z_range=(0., 8e-3),
-        name="grounded_dielectric_slab", material=substrate)
+                         name="grounded_dielectric_slab", material=substrate)
     solver.add_geometry(name="top_pec_perturbation", material=materials.PEC,
-        shape=shapes.Rectangle(bounds=((1.27e-3, 1.32e-3), (1e-3, 2e-3))))
+                        shape=shapes.Rectangle(bounds=((1.27e-3, 1.32e-3), (1e-3, 2e-3))))
     solver.add_pml(thickness=2.5e-3, direction="x+")
     solver.mesh(max_element_size=350e-6)
     modes = solver.solve(max_refinements=0, direction="all", eigensolver="auto",
-        max_pml_fraction=None, num_modes=4, neff_guess=0.)
+                         max_pml_fraction=None, num_modes=4, neff_guess=0.)
     modes.save(OUTPUT / f"case_{case:03d}.h5")
     neff_sweep.append(modes.neff)
 
