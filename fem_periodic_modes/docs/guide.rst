@@ -105,4 +105,6 @@ Import the plotting helper directly from this solver:
     plot_dispersion(frequencies, neff_sweep)
 
 Use frequencies in Hz and one row of complex effective indices per frequency.
-Each column is one plotted mode, using the supplied ordering.
+The real and imaginary panels use unconnected scatter markers. Mode numbers
+refer to the returned order at each frequency; modes can exchange places, so
+points are not joined across frequencies.

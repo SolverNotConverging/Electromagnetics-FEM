@@ -26,5 +26,5 @@ __all__ = ['PeriodicModeSolver2D', 'PeriodicModeSolver3D', 'PeriodicMode', 'Peri
 from fem_common import Material, GoodConductor, SurfaceImpedance, materials, shapes, EPSILON_0, MU_0, C_0
 __all__ += ['Material', 'GoodConductor', 'SurfaceImpedance', 'materials', 'shapes', 'EPSILON_0', 'MU_0', 'C_0']
 
-from fem_common.dispersion import plot_dispersion
+from .dispersion import plot_dispersion
 __all__ += ["plot_dispersion"]

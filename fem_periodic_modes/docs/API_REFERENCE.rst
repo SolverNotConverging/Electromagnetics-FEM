@@ -1563,8 +1563,9 @@ Dispersion plots
 ----------------
 
 ``plot_dispersion``: ``plot_dispersion(frequencies, neff, *, show=True)`` plots the real and imaginary
-parts of effective index, with one trace per mode and labels starting at Mode 1.
+parts of effective index as unconnected scatter markers, with labels starting
+at Mode 1. Modes can exchange places, so samples are not joined.
 ``frequencies`` is in Hz. ``neff`` has shape (frequencies, modes); a single-mode
-sweep may use a one-dimensional array. Columns follow the supplied mode order.
+sweep may use a one-dimensional array. Columns give the returned mode order at each frequency.
 The function returns a Matplotlib Figure. Use ``show=False`` to save a figure
 without opening a window.
