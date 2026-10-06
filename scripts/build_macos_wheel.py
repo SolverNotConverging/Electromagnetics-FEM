@@ -21,6 +21,7 @@ import stat
 import subprocess
 import sys
 import tempfile
+import tomllib
 import zipfile
 
 from delocate.delocating import delocate_wheel
@@ -28,7 +29,8 @@ from delocate.wheeltools import InWheel
 
 
 ROOT = Path(__file__).resolve().parents[1]
-WHEEL_NAME = "electromagnetics_fem-1.1.0-cp312-cp312-macosx_15_0_arm64.whl"
+VERSION = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
+WHEEL_NAME = f"electromagnetics_fem-{VERSION}-cp312-cp312-macosx_15_0_arm64.whl"
 APPLICATIONS = (
     "transmission-line-calculator",
     "fem-periodic-mode-viewer",

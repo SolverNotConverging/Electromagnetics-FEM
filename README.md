@@ -5,8 +5,8 @@ and waveguide scattering. FEM uses conforming meshes and supports material inter
 full-vector fields, and adaptive refinement. Each solver folder contains its own
 `src/`, `docs/`, `examples/`, and `outputs/`.
 
-FEM includes native C++ applications and a compiled periodic eigensolver. Windows
-users can install the prebuilt Python 3.12 binary; other platforms build from source.
+FEM includes native C++ applications and a compiled periodic eigensolver. Windows and Apple silicon macOS
+users can install prebuilt Python 3.12 binaries; other platforms build from source.
 
 ## Choose a solver
 
@@ -19,7 +19,7 @@ users can install the prebuilt Python 3.12 binary; other platforms build from so
 
 ## Native applications
 
-The Windows wheel installs these applications and their runtime libraries:
+The Windows and macOS wheels install these applications and their runtime libraries:
 
 | Application | What it does | Launch |
 |---|---|---|
@@ -64,6 +64,22 @@ that environment's `python -m pip install` command above.
 The wheel includes the native viewers, transmission-line calculator, Cython kernel,
 and their runtime libraries. Windows users do not need MSVC, Qt, or vcpkg to run it.
 The 3D viewer needs an OpenGL-capable graphics driver.
+
+## macOS: install the binary
+
+Use **Apple silicon (arm64), macOS 15 or later, and Python 3.12**. In an
+activated Python environment, install directly from the release:
+
+```sh
+python -m pip install https://github.com/SolverNotConverging/Electromagnetics-FEM/releases/download/v1.1.3/electromagnetics_fem-1.1.3-cp312-cp312-macosx_15_0_arm64.whl
+```
+
+The wheel bundles the native applications, Cython kernel, Qt, and native runtime
+libraries. No compiler or Homebrew build dependencies are needed. Intel Macs and
+older macOS versions currently require a source build.
+
+For this repository's `.venv`, use `.venv/bin/python -m pip install <wheel>` or
+`uv pip install --python .venv/bin/python <wheel>`.
 
 ## Download and run examples
 
