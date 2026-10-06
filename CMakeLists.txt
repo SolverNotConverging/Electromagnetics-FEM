@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.24)
 
 include(cmake/WindowsToolchain.cmake)
 
-project(FEM VERSION 1.1.2 LANGUAGES C CXX)
+project(FEM VERSION 1.1.3 LANGUAGES C CXX)
 
 # A Command Line Tools upgrade can leave an obsolete, incomplete libc++ header
 # directory beside the compiler. Apple Clang prefers that directory over the

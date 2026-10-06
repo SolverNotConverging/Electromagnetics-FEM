@@ -23,7 +23,7 @@ from .result_api import load_result
 from fem_common import NoResultError
 from fem_common import PersistenceError
 
-__version__ = "1.1.2"
+__version__ = "1.1.3"
 _FARFIELD_EXPORTS = ["ClosedContourFields", "LayeredExterior", "FarFieldResult"]
 __all__ = ['WaveguideScatteringSolver2D', 'ScatteringResult', 'FrequencySweepResult', 'IncidentMode', 'Mode', 'ModeSet', 'Diagnostic', 'DiagnosticReport', 'BackendCapabilityError', 'ConfigurationError', 'GeometryError', 'MaterialError', 'MeshError', 'ModeProjectionError', 'ModeSolverError', 'SolverError', 'ViewerError', 'load_result', 'NoResultError', 'PersistenceError']
 __all__ += _FARFIELD_EXPORTS

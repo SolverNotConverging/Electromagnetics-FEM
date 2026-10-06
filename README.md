@@ -48,13 +48,13 @@ Use **64-bit Python 3.12**. Download the wheel from the
 and install it:
 
 ```powershell
-python -m pip install .\electromagnetics_fem-1.1.2-cp312-cp312-win_amd64.whl
+python -m pip install .\electromagnetics_fem-1.1.3-cp312-cp312-win_amd64.whl
 ```
 
 Or install directly:
 
 ```powershell
-python -m pip install https://github.com/SolverNotConverging/Electromagnetics-FEM/releases/download/v1.1.2/electromagnetics_fem-1.1.2-cp312-cp312-win_amd64.whl
+python -m pip install https://github.com/SolverNotConverging/Electromagnetics-FEM/releases/download/v1.1.3/electromagnetics_fem-1.1.3-cp312-cp312-win_amd64.whl
 ```
 
 With uv, use `uv pip install` instead of `python -m pip install` in an activated

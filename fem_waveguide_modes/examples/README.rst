@@ -39,3 +39,22 @@ uses the mode order returned by the solver.
 * `2d_rectangular_waveguide_dispersion.py <2d_rectangular_waveguide_dispersion.py>`_
 * `2d_ridge_waveguide_dispersion.py <2d_ridge_waveguide_dispersion.py>`_
 * `2d_microstrip_surface_impedance_dispersion.py <2d_microstrip_surface_impedance_dispersion.py>`_
+
+Post-processing saved dispersion
+--------------------------------
+
+Run these scripts after a dispersion sweep to plot its saved ``dispersion.csv``
+without solving again. Each reads the matching example output by default and
+writes ``dispersion.png`` beside the CSV. Supply another CSV path to plot
+any sweep from the same solver family. Both real and imaginary ``neff`` are
+included, with mode labels starting at 1.
+
+* `1d_plot_dispersion.py <post_processing/1d_plot_dispersion.py>`_
+* `2d_plot_dispersion.py <post_processing/2d_plot_dispersion.py>`_
+
+From the repository folder:
+
+.. code-block:: sh
+
+    python fem_waveguide_modes/examples/post_processing/1d_plot_dispersion.py
+    python fem_waveguide_modes/examples/post_processing/1d_plot_dispersion.py path/to/dispersion.csv

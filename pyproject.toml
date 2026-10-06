@@ -10,7 +10,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "electromagnetics-fem"
-version = "1.1.2"
+version = "1.1.3"
 description = "FEM electromagnetic solvers and interactive native applications"
 readme = "README.md"
 requires-python = ">=3.11,<3.14"
@@ -65,7 +65,6 @@ wheel.packages = ["fem", "fem_common", "fem_adaptivity", "fem_electrostatics", "
 wheel.exclude = ["**/*.pyx", "**/__pycache__/**", "**/docs/**", "**/examples/**", "**/scripts/**", "**/outputs/**"]
 sdist.exclude = [".idea", "outputs", "examples", "**/__pycache__", "**/build", "**/outputs"]
 
-# Keep Windows caches separate from the former MinGW build directory.
 [[tool.scikit-build.overrides]]
 if.platform-system = "^win32$"
 build-dir = "build/msvc/{wheel_tag}"

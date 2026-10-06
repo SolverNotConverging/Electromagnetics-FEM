@@ -30,10 +30,31 @@ Dispersion sweeps
 
 Each script below runs from top to bottom, uses ``tqdm`` to report completed
 frequencies, saves each case and ``dispersion.csv`` in its own outputs folder,
-and opens real/imaginary ``neff`` curves when the sweep finishes. Each trace
-uses the mode order returned by the solver.
+and opens real/imaginary ``neff`` scatter plots when the sweep finishes.
+Modes use the returned order at each frequency; samples are not connected.
 
 * `2d_uniform_cell_dispersion.py <2d_uniform_cell_dispersion.py>`_
 * `3d_uniform_cell_dispersion.py <3d_uniform_cell_dispersion.py>`_
 * `2d_leaky_wave_antenna_dispersion.py <2d_leaky_wave_antenna_dispersion.py>`_
 * `3d_iris_loaded_waveguide_filter_dispersion.py <3d_iris_loaded_waveguide_filter_dispersion.py>`_
+
+Post-processing saved dispersion
+--------------------------------
+
+Run these scripts after a dispersion sweep to plot its saved ``dispersion.csv``
+without solving again. Each reads the matching example output by default and
+writes ``dispersion.png`` beside the CSV. Supply another CSV path to plot
+any sweep from the same solver family. Both real and imaginary ``neff`` are
+included, with mode labels starting at 1.
+
+* `2d_plot_dispersion.py <post_processing/2d_plot_dispersion.py>`_
+* `3d_plot_dispersion.py <post_processing/3d_plot_dispersion.py>`_
+
+From the repository folder:
+
+.. code-block:: sh
+
+    python fem_periodic_modes/examples/post_processing/2d_plot_dispersion.py
+    python fem_periodic_modes/examples/post_processing/2d_plot_dispersion.py path/to/dispersion.csv
+
+Periodic dispersion uses scatter markers because modes can exchange places.

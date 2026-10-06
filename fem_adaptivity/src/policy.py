@@ -1,6 +1,6 @@
 """Shared solve/estimate/refine policy and Maxwell interface residuals."""
 
-__version__ = "1.1.2"
+__version__ = "1.1.3"
 
 from dataclasses import fields, replace
 from math import factorial
