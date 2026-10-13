@@ -4,6 +4,12 @@ fem_periodic_modes user API
 Version 1.1.0. This reference covers the deliberately supported user API.
 Implementation helpers are documented in their source modules.
 
+Both periodic solvers accept ``arnoldi_backend="cuda"`` with
+``eigensolver="refined"`` or ``"auto"``. This optional path requires CuPy
+and cuDSS >= 0.8; see the `CUDA setup and benchmark guide
+<../../benchmarks/periodic_eigensolver/README.md>`_. Explicit dense QZ remains
+a CPU method. The default ``arnoldi_backend="auto"`` retains CPU selection.
+
 Workflow and units
 ------------------
 

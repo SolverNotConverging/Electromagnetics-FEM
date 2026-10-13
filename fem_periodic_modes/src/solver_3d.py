@@ -514,8 +514,8 @@ class PeriodicModeSolver3D(PeriodicScene3D, ElectromagneticSolverMixin):
         if method not in ("auto", "dense", "refined"):
             raise ConfigurationError("eigensolver must be 'auto', 'dense', or 'refined'.")
         backend = str(arnoldi_backend).strip().lower()
-        if backend not in ("auto", "cython", "python", "numpy"):
-            raise ConfigurationError("arnoldi_backend must be auto, cython, or python.")
+        if backend not in ("auto", "cython", "python", "numpy", "cuda"):
+            raise ConfigurationError("arnoldi_backend must be auto, cython, python, or cuda.")
         for value, name in (
             (eigensolver_tolerance, "eigensolver_tolerance"),
             (residual_tolerance, "residual_tolerance"),
@@ -546,7 +546,9 @@ class PeriodicModeSolver3D(PeriodicScene3D, ElectromagneticSolverMixin):
         )
         resolved_method = method
         if method == "auto":
-            resolved_method = "dense" if 2 * system.ndofs <= int(dense_linearization_limit) else "refined"
+            resolved_method = "dense" if backend != "cuda" and 2 * system.ndofs <= int(dense_linearization_limit) else "refined"
+        if resolved_method == "dense" and backend == "cuda":
+            raise ConfigurationError("CUDA supports the refined eigensolver; choose eigensolver='refined' or 'auto'.")
         if resolved_method == "dense":
             values, vectors, _, method_name = _dense_candidates(system, target, candidate_count)
         else:

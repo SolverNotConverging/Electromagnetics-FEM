@@ -67,7 +67,7 @@ Solve ``A x = lambda B x`` with refined shift-invert Arnoldi.
      - ``PublicBackend``
      - Optional
      - ``'auto'``
-     - auto selects the native extension when available; python and cython select explicitly.
+     - auto selects the CPU native extension when available; python, cython, and cuda select explicitly. CUDA requires CuPy and cuDSS >= 0.8.
 
 Returns: an immutable ArnoldiResult.
 

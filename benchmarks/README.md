@@ -11,3 +11,5 @@ python benchmarks/analytical/uniform_periodic_medium.py --check
 
 Reports are written to ignored `outputs/benchmarks/analytical/`.
 Shared periodic eigensolver performance benchmarks are in `periodic_eigensolver/`.
+See [CUDA/cuDSS benchmarks](periodic_eigensolver/README.md) for CPU/GPU scaling
+measurements and CUDA runtime setup.

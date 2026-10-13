@@ -36,11 +36,40 @@ The primary API is:
        backend="auto",
    )
 
-Public backend names are ``auto``, ``cython``, and ``python``. ``auto`` selects the Cython extension when it can be imported and otherwise selects Python/NumPy. An explicitly requested but unavailable Cython backend raises ``ImportError``; an installed but broken native binary is never silently hidden by the fallback.
+Public backend names are ``auto``, ``cython``, ``python``, and ``cuda``. ``auto`` selects the CPU Cython extension when it can be imported and otherwise selects Python/NumPy. An explicitly requested but unavailable Cython backend raises ``ImportError``; an installed but broken native binary is never silently hidden by the fallback.
 
 The returned immutable ``ArnoldiResult`` contains eigenvalues, eigenvectors, physical original-pencil residuals, projected smallest singular values, restart and Arnoldi-step counts, convergence status, and the resolved backend. When the restart budget is exhausted it returns the best candidate set found with ``converged=False``.
 
 The sparse shift-and-invert factorization and sparse matrix products remain in SciPy. The native extension owns the repeated complex two-pass Arnoldi orthogonalization and batched final residual norms. Refined extraction follows the paper's ``(k + 1) x k`` Hessenberg SVD. Roundoff-identical repeated roots are refined as an independent right-singular subspace; distinct clustered roots retain their unrestricted refined vectors even when a non-normal pencil makes those vectors nearly parallel. Every returned mode is validated with the original sparse pencil residual.
+
+CUDA backend
+------------
+
+The `CUDA implementation document <CUDA_IMPLEMENTATION.rst>`_ describes the
+algorithm, custom kernels, cuDSS binding, data transfers, and restart policy.
+
+``backend="cuda"`` uses optional CuPy and cuDSS >= 0.8. Set ``CUDSS_LIBRARY``
+to the absolute path of ``cudss64_0.dll`` (Windows) or ``libcudss.so`` (Linux).
+Install one matching CuPy distribution: ``cupy-cuda12x`` or ``cupy-cuda13x``.
+The corresponding project extras are ``cuda12`` and ``cuda13``.
+
+Numeric sparse factorization and shifted solves use cuDSS on the device.
+Sparse products, custom CUDA two-pass orthogonalization, basis storage,
+vector reconstruction, and original-pencil residuals also use the device.
+cuDSS performs its symbolic analysis on the host; the small Hessenberg
+eigendecomposition and refined SVDs use the shared CPU extraction code.
+Results return as immutable NumPy arrays, matching the CPU API. The CUDA
+backend supports complex nonsymmetric pencils and singular B when the
+shifted pencil is invertible. It raises on missing dependencies or cuDSS
+failure and reports nonconvergence through ``converged=False``.
+
+In periodic FEM solvers, select ``eigensolver="refined"`` and
+``arnoldi_backend="cuda"``. ``eigensolver="auto"`` also selects refined
+Arnoldi when CUDA is explicitly requested. Dense QZ remains a CPU method.
+
+See `CUDA setup and benchmarks
+<../../benchmarks/periodic_eigensolver/README.md>`_ for reproducible commands,
+DOF definitions, runtime requirements, and saved benchmark measurements.
 
 Controlled performance gate
 ---------------------------

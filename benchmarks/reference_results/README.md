@@ -49,6 +49,16 @@ decrease while the effective index is already near roundoff. The default four
 refinements exhaust the budget before reaching the estimator tolerance. Refinement
 is currently global, controlled by the estimator.
 
+## CUDA/cuDSS laptop scaling
+
+[Setup and methodology](../periodic_eigensolver/README.md) compare CPU ARPACK,
+CPU refined Arnoldi, and CUDA refined Arnoldi with cuDSS on an RTX 4070 Laptop
+GPU. These performance snapshots have separate hardware/options JSON files;
+they are not part of the analytical reference manifest or its refresh script.
+
+* [Antenna pencil measurements](cuda_laptop_antenna/results.csv)
+* [3D stencil measurements](cuda_laptop_stencil/results.csv)
+
 ![Coaxial analytical errors](coaxial_waveguide_adaptivity/convergence.png)
 
 ![Coaxial initial and refined meshes](coaxial_waveguide_adaptivity/meshes.png)

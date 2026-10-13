@@ -14,9 +14,9 @@ from scipy.sparse.linalg import splu
 
 from . import _numpy_kernels
 
-PublicBackend = Literal["auto", "cython", "python"]
+PublicBackend = Literal["auto", "cython", "python", "cuda"]
 KernelBackend = Literal["auto", "cython", "python", "numpy"]
-ResolvedBackend = Literal["cython", "python"]
+ResolvedBackend = Literal["cython", "python", "cuda"]
 
 try:
     _cython_kernels = import_module(f"{__package__}._cython_kernels")
@@ -74,8 +74,8 @@ class ArnoldiResult:
             raise ValueError("Residual counts must match the eigenvalue count.")
         if int(self.restart_count) < 0 or int(self.step_count) < 0:
             raise ValueError("Arnoldi work counts must be nonnegative.")
-        if self.resolved_backend not in {"cython", "python"}:
-            raise ValueError("resolved_backend must be 'cython' or 'python'.")
+        if self.resolved_backend not in {"cython", "python", "cuda"}:
+            raise ValueError("resolved_backend must be 'cython', 'python', or 'cuda'.")
 
         object.__setattr__(self, "eigenvalues", eigenvalues)
         object.__setattr__(self, "eigenvectors", eigenvectors)
@@ -131,10 +131,12 @@ def resolve_kernel_backend(backend: KernelBackend = "auto") -> str:
 
 
 def resolve_backend(backend: PublicBackend = "auto") -> ResolvedBackend:
-    """Resolve the public backend name to ``python`` or ``cython``."""
+    """Resolve the public backend; auto retains CPU selection."""
     backend = str(backend).lower()
+    if backend == "cuda":
+        return "cuda"
     if backend not in {"auto", "cython", "python"}:
-        raise ValueError("backend must be 'auto', 'cython', or 'python'.")
+        raise ValueError("backend must be 'auto', 'cython', 'python', or 'cuda'.")
     resolved = resolve_kernel_backend(backend)
     return "cython" if resolved == "cython" else "python"
 
@@ -548,6 +550,10 @@ def solve_generalized(
     if not (np.isfinite(shift.real) and np.isfinite(shift.imag)):
         raise ValueError("sigma must be a finite scalar.")
     resolved_backend = resolve_backend(backend)
+    if resolved_backend == "cuda":
+        from .cuda import solve_cuda
+        return solve_cuda(A, B, sigma=shift, num_modes=num_modes, tol=tolerance,
+                          ncv=ncv, max_restarts=max_restarts, random_seed=random_seed)
 
     n = int(A.shape[0])
     ncv = _default_arnoldi_ncv(n, num_modes, ncv)

@@ -303,11 +303,13 @@ def solve_qep_candidates(
     if method not in ("auto", "dense", "refined"):
         raise ConfigurationError("eigensolver must be 'auto', 'dense', or 'refined'.")
     backend = str(arnoldi_backend).strip().lower()
-    if backend not in ("auto", "cython", "python", "numpy"):
-        raise ConfigurationError("arnoldi_backend must be 'auto', 'cython', or 'python'.")
+    if backend not in ("auto", "cython", "python", "numpy", "cuda"):
+        raise ConfigurationError("arnoldi_backend must be 'auto', 'cython', 'python', or 'cuda'.")
     size = 2 * system.ndofs
     if method == "auto":
-        method = "dense" if size <= int(dense_linearization_limit) else "refined"
+        method = "dense" if backend != "cuda" and size <= int(dense_linearization_limit) else "refined"
+    if method == "dense" and backend == "cuda":
+        raise ConfigurationError("CUDA supports the refined eigensolver; choose eigensolver='refined' or 'auto'.")
     if method == "dense":
         return _dense_candidates(system, complex(target), int(candidate_count))
     return _refined_candidates(
