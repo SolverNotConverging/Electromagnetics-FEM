@@ -1,0 +1,292 @@
+[1/20] iris-coarse
+Transforming over 1000 elements to C_CONTIGUOUS.
+  warmup -1 cpu_eigs: 0.5317s valid=True residual=1.343e-14
+  warmup -1 cpu_refined: 0.5452s valid=True residual=1.834e-14
+  warmup -1 cuda_cudss: 10.8826s valid=True residual=2.498e-13
+  timed 0 cpu_eigs: 0.4833s valid=True residual=1.343e-14
+  timed 0 cpu_refined: 0.5053s valid=True residual=1.834e-14
+  timed 0 cuda_cudss: 0.1960s valid=True residual=1.658e-13
+  timed 1 cpu_refined: 0.5166s valid=True residual=1.834e-14
+  timed 1 cuda_cudss: 0.1903s valid=False residual=1.973e-13
+  timed 1 cpu_eigs: 0.5257s valid=True residual=1.343e-14
+  timed 2 cuda_cudss: 0.1905s valid=True residual=1.449e-13
+  timed 2 cpu_eigs: 0.5342s valid=True residual=1.343e-14
+  timed 2 cpu_refined: 0.5306s valid=True residual=1.834e-14
+[2/20] iris-medium
+Transforming over 1000 elements to C_CONTIGUOUS.
+  warmup -1 cpu_eigs: 1.1229s valid=True residual=2.318e-14
+  warmup -1 cpu_refined: 1.0357s valid=False residual=2.201e-14
+  warmup -1 cuda_cudss: 0.5893s valid=True residual=2.793e-13
+  timed 0 cpu_eigs: 1.0357s valid=True residual=2.318e-14
+  timed 0 cpu_refined: 1.0483s valid=False residual=2.201e-14
+  timed 0 cuda_cudss: 0.2549s valid=False residual=3.123e-13
+  timed 1 cpu_refined: 1.0274s valid=False residual=2.201e-14
+  timed 1 cuda_cudss: 0.2530s valid=False residual=3.930e-13
+  timed 1 cpu_eigs: 1.0833s valid=True residual=2.318e-14
+  timed 2 cuda_cudss: 0.3722s valid=False residual=2.335e-13
+  timed 2 cpu_eigs: 1.3450s valid=True residual=2.318e-14
+  timed 2 cpu_refined: 1.0725s valid=False residual=2.201e-14
+[3/20] iris-fine
+Transforming over 1000 vertices to C_CONTIGUOUS.
+Transforming over 1000 elements to C_CONTIGUOUS.
+  warmup -1 cpu_eigs: 4.0277s valid=True residual=2.897e-14
+  warmup -1 cpu_refined: 4.2171s valid=False residual=2.680e-14
+  warmup -1 cuda_cudss: 0.7241s valid=False residual=4.170e-13
+  timed 0 cpu_eigs: 4.6806s valid=True residual=2.897e-14
+  timed 0 cpu_refined: 3.9895s valid=False residual=2.680e-14
+  timed 0 cuda_cudss: 0.3929s valid=False residual=3.206e-13
+  timed 1 cpu_refined: 4.1235s valid=False residual=2.680e-14
+  timed 1 cuda_cudss: 0.4055s valid=False residual=2.825e-13
+  timed 1 cpu_eigs: 4.1546s valid=True residual=2.897e-14
+  timed 2 cuda_cudss: 0.3993s valid=False residual=2.955e-13
+  timed 2 cpu_eigs: 4.2339s valid=True residual=2.897e-14
+  timed 2 cpu_refined: 4.1180s valid=False residual=2.680e-14
+[4/20] siw-coarse
+Transforming over 1000 elements to C_CONTIGUOUS.
+  warmup -1 cpu_eigs: 0.9839s valid=True residual=4.544e-15
+  warmup -1 cpu_refined: 0.8718s valid=True residual=5.892e-15
+  warmup -1 cuda_cudss: 0.6826s valid=True residual=2.523e-14
+  timed 0 cpu_eigs: 0.6367s valid=True residual=4.544e-15
+  timed 0 cpu_refined: 0.6184s valid=True residual=5.892e-15
+  timed 0 cuda_cudss: 0.2116s valid=True residual=3.268e-14
+  timed 1 cpu_refined: 0.6201s valid=True residual=5.892e-15
+  timed 1 cuda_cudss: 0.2069s valid=True residual=2.832e-14
+  timed 1 cpu_eigs: 0.6332s valid=True residual=4.544e-15
+  timed 2 cuda_cudss: 0.1892s valid=True residual=2.400e-14
+  timed 2 cpu_eigs: 0.5903s valid=True residual=4.544e-15
+  timed 2 cpu_refined: 0.5618s valid=True residual=5.892e-15
+[5/20] siw-medium
+Transforming over 1000 vertices to C_CONTIGUOUS.
+Transforming over 1000 elements to C_CONTIGUOUS.
+  warmup -1 cpu_eigs: 1.2768s valid=True residual=5.480e-15
+  warmup -1 cpu_refined: 1.2390s valid=True residual=5.543e-15
+  warmup -1 cuda_cudss: 0.5735s valid=True residual=3.683e-14
+  timed 0 cpu_eigs: 1.2643s valid=True residual=5.480e-15
+  timed 0 cpu_refined: 1.2344s valid=True residual=5.543e-15
+  timed 0 cuda_cudss: 0.2586s valid=True residual=5.333e-14
+  timed 1 cpu_refined: 1.2317s valid=True residual=5.543e-15
+  timed 1 cuda_cudss: 0.2563s valid=True residual=5.532e-14
+  timed 1 cpu_eigs: 1.3430s valid=True residual=5.480e-15
+  timed 2 cuda_cudss: 0.2671s valid=True residual=4.247e-14
+  timed 2 cpu_eigs: 1.2707s valid=True residual=5.480e-15
+  timed 2 cpu_refined: 1.2869s valid=True residual=5.543e-15
+[6/20] siw-fine
+Transforming over 1000 vertices to C_CONTIGUOUS.
+Transforming over 1000 elements to C_CONTIGUOUS.
+  warmup -1 cpu_eigs: 3.9034s valid=True residual=8.454e-15
+  warmup -1 cpu_refined: 4.1244s valid=True residual=7.906e-15
+  warmup -1 cuda_cudss: 0.7278s valid=True residual=2.714e-13
+  timed 0 cpu_eigs: 3.7702s valid=True residual=8.454e-15
+  timed 0 cpu_refined: 3.6350s valid=True residual=7.906e-15
+  timed 0 cuda_cudss: 0.3764s valid=True residual=2.514e-13
+  timed 1 cpu_refined: 3.6294s valid=True residual=7.906e-15
+  timed 1 cuda_cudss: 0.3919s valid=True residual=2.756e-13
+  timed 1 cpu_eigs: 3.7332s valid=True residual=8.454e-15
+  timed 2 cuda_cudss: 0.3899s valid=True residual=1.462e-13
+  timed 2 cpu_eigs: 3.7219s valid=True residual=8.454e-15
+  timed 2 cpu_refined: 3.6522s valid=True residual=7.906e-15
+[7/20] perforated_waveguide-coarse
+Transforming over 1000 vertices to C_CONTIGUOUS.
+Transforming over 1000 elements to C_CONTIGUOUS.
+  warmup -1 cpu_eigs: 7.1727s valid=True residual=5.862e-15
+  warmup -1 cpu_refined: 7.2838s valid=True residual=6.382e-15
+  warmup -1 cuda_cudss: 0.8975s valid=True residual=5.975e-14
+  timed 0 cpu_eigs: 7.1375s valid=True residual=5.862e-15
+  timed 0 cpu_refined: 7.0277s valid=True residual=6.382e-15
+  timed 0 cuda_cudss: 0.4900s valid=True residual=4.798e-14
+  timed 1 cpu_refined: 6.8473s valid=True residual=6.382e-15
+  timed 1 cuda_cudss: 0.5061s valid=True residual=6.686e-14
+  timed 1 cpu_eigs: 7.2409s valid=True residual=5.862e-15
+  timed 2 cuda_cudss: 0.4879s valid=True residual=5.918e-14
+  timed 2 cpu_eigs: 6.9126s valid=True residual=5.862e-15
+  timed 2 cpu_refined: 7.0319s valid=True residual=6.382e-15
+[8/20] perforated_waveguide-medium
+Transforming over 1000 vertices to C_CONTIGUOUS.
+Transforming over 1000 elements to C_CONTIGUOUS.
+  warmup -1 cpu_eigs: 8.2511s valid=True residual=6.398e-15
+  warmup -1 cpu_refined: 9.1985s valid=True residual=7.093e-15
+  warmup -1 cuda_cudss: 0.9314s valid=True residual=7.812e-14
+  timed 0 cpu_eigs: 8.6922s valid=True residual=6.398e-15
+  timed 0 cpu_refined: 8.2220s valid=True residual=7.093e-15
+  timed 0 cuda_cudss: 0.5749s valid=True residual=5.501e-14
+  timed 1 cpu_refined: 9.1294s valid=True residual=7.093e-15
+  timed 1 cuda_cudss: 0.5677s valid=True residual=9.380e-14
+  timed 1 cpu_eigs: 8.4923s valid=True residual=6.398e-15
+  timed 2 cuda_cudss: 0.5464s valid=True residual=5.385e-14
+  timed 2 cpu_eigs: 9.3905s valid=True residual=6.398e-15
+  timed 2 cpu_refined: 8.3431s valid=True residual=7.093e-15
+[9/20] perforated_waveguide-fine
+Transforming over 1000 vertices to C_CONTIGUOUS.
+Transforming over 1000 elements to C_CONTIGUOUS.
+  warmup -1 cpu_eigs: 33.3287s valid=True residual=1.092e-14
+  warmup -1 cpu_refined: 32.5173s valid=True residual=1.164e-14
+  warmup -1 cuda_cudss: 1.3424s valid=True residual=8.971e-14
+  timed 0 cpu_eigs: 34.4308s valid=True residual=1.092e-14
+  timed 0 cpu_refined: 33.7921s valid=True residual=1.164e-14
+  timed 0 cuda_cudss: 1.0523s valid=True residual=6.781e-14
+  timed 1 cpu_refined: 35.4098s valid=True residual=1.164e-14
+  timed 1 cuda_cudss: 1.0387s valid=True residual=7.993e-14
+  timed 1 cpu_eigs: 34.8400s valid=True residual=1.092e-14
+  timed 2 cuda_cudss: 1.0593s valid=True residual=7.517e-14
+  timed 2 cpu_eigs: 34.4978s valid=True residual=1.092e-14
+  timed 2 cpu_refined: 33.2367s valid=True residual=1.164e-14
+[10/20] dielectric_rod-coarse
+Transforming over 1000 elements to C_CONTIGUOUS.
+  warmup -1 cpu_eigs: 3.3988s valid=True residual=2.745e-14
+  warmup -1 cpu_refined: 2.5620s valid=True residual=2.731e-14
+  warmup -1 cuda_cudss: 0.6281s valid=True residual=1.570e-13
+  timed 0 cpu_eigs: 2.5315s valid=True residual=2.745e-14
+  timed 0 cpu_refined: 2.5104s valid=True residual=2.731e-14
+  timed 0 cuda_cudss: 0.2681s valid=True residual=1.006e-13
+  timed 1 cpu_refined: 2.7677s valid=True residual=2.731e-14
+  timed 1 cuda_cudss: 0.2565s valid=True residual=1.201e-13
+  timed 1 cpu_eigs: 3.4894s valid=True residual=2.745e-14
+  timed 2 cuda_cudss: 0.2705s valid=True residual=1.085e-13
+  timed 2 cpu_eigs: 2.5759s valid=True residual=2.745e-14
+  timed 2 cpu_refined: 2.4715s valid=True residual=2.731e-14
+[11/20] dielectric_rod-medium
+Transforming over 1000 elements to C_CONTIGUOUS.
+  warmup -1 cpu_eigs: 4.8200s valid=True residual=2.827e-14
+  warmup -1 cpu_refined: 5.8754s valid=True residual=2.817e-14
+  warmup -1 cuda_cudss: 0.7273s valid=True residual=1.592e-13
+  timed 0 cpu_eigs: 4.7990s valid=True residual=2.827e-14
+  timed 0 cpu_refined: 4.9493s valid=True residual=2.817e-14
+  timed 0 cuda_cudss: 0.4733s valid=True residual=1.693e-13
+  timed 1 cpu_refined: 4.9580s valid=True residual=2.817e-14
+  timed 1 cuda_cudss: 0.3465s valid=True residual=1.925e-13
+  timed 1 cpu_eigs: 4.8280s valid=True residual=2.827e-14
+  timed 2 cuda_cudss: 0.3544s valid=True residual=1.772e-13
+  timed 2 cpu_eigs: 4.7800s valid=True residual=2.827e-14
+  timed 2 cpu_refined: 4.7253s valid=True residual=2.817e-14
+[12/20] dielectric_rod-fine
+Transforming over 1000 vertices to C_CONTIGUOUS.
+Transforming over 1000 elements to C_CONTIGUOUS.
+  warmup -1 cpu_eigs: 32.6073s valid=True residual=4.850e-14
+  warmup -1 cpu_refined: 31.7691s valid=True residual=4.997e-14
+  warmup -1 cuda_cudss: 0.9774s valid=True residual=6.206e-13
+  timed 0 cpu_eigs: 33.3732s valid=True residual=4.850e-14
+  timed 0 cpu_refined: 32.2837s valid=True residual=4.997e-14
+  timed 0 cuda_cudss: 0.6393s valid=True residual=5.284e-13
+  timed 1 cpu_refined: 33.3251s valid=True residual=4.997e-14
+  timed 1 cuda_cudss: 0.6397s valid=True residual=4.935e-13
+  timed 1 cpu_eigs: 33.6860s valid=True residual=4.850e-14
+  timed 2 cuda_cudss: 0.6350s valid=True residual=5.376e-13
+  timed 2 cpu_eigs: 33.0538s valid=True residual=4.850e-14
+  timed 2 cpu_refined: 32.6975s valid=True residual=4.997e-14
+[13/20] iris-medium-threads10
+Transforming over 1000 elements to C_CONTIGUOUS.
+  warmup -1 cpu_eigs: 1.0691s valid=True residual=2.089e-14
+  warmup -1 cpu_refined: 1.0705s valid=False residual=2.251e-14
+  warmup -1 cuda_cudss: 0.6626s valid=True residual=3.164e-13
+  timed 0 cpu_eigs: 1.0624s valid=True residual=2.089e-14
+  timed 0 cpu_refined: 1.0931s valid=False residual=2.251e-14
+  timed 0 cuda_cudss: 0.2655s valid=True residual=2.850e-13
+  timed 1 cpu_refined: 1.0551s valid=False residual=2.251e-14
+  timed 1 cuda_cudss: 0.2622s valid=True residual=4.482e-13
+  timed 1 cpu_eigs: 1.0597s valid=True residual=2.089e-14
+  timed 2 cuda_cudss: 0.2384s valid=True residual=3.051e-13
+  timed 2 cpu_eigs: 2.0281s valid=True residual=2.089e-14
+  timed 2 cpu_refined: 1.2686s valid=False residual=2.251e-14
+[14/20] iris-medium-modes14
+Transforming over 1000 elements to C_CONTIGUOUS.
+  warmup -1 cpu_eigs: 1.2920s valid=True residual=7.340e-14
+  warmup -1 cpu_refined: 1.3486s valid=True residual=6.570e-14
+  warmup -1 cuda_cudss: 0.8430s valid=True residual=1.335e-12
+  timed 0 cpu_eigs: 1.2829s valid=True residual=7.340e-14
+  timed 0 cpu_refined: 1.3508s valid=True residual=6.570e-14
+  timed 0 cuda_cudss: 0.4378s valid=True residual=1.231e-12
+  timed 1 cpu_refined: 1.3890s valid=True residual=6.570e-14
+  timed 1 cuda_cudss: 0.4139s valid=True residual=7.508e-13
+  timed 1 cpu_eigs: 1.1955s valid=True residual=7.340e-14
+  timed 2 cuda_cudss: 0.4270s valid=True residual=1.020e-12
+  timed 2 cpu_eigs: 1.5110s valid=True residual=7.340e-14
+  timed 2 cpu_refined: 1.4591s valid=True residual=6.570e-14
+[15/20] siw-medium-threads10
+Transforming over 1000 vertices to C_CONTIGUOUS.
+Transforming over 1000 elements to C_CONTIGUOUS.
+  warmup -1 cpu_eigs: 1.3524s valid=True residual=5.820e-15
+  warmup -1 cpu_refined: 1.3963s valid=True residual=6.438e-15
+  warmup -1 cuda_cudss: 0.6380s valid=True residual=4.384e-14
+  timed 0 cpu_eigs: 1.3668s valid=True residual=5.820e-15
+  timed 0 cpu_refined: 1.3685s valid=True residual=6.438e-15
+  timed 0 cuda_cudss: 0.2984s valid=True residual=4.246e-14
+  timed 1 cpu_refined: 1.3438s valid=True residual=6.438e-15
+  timed 1 cuda_cudss: 0.2859s valid=True residual=7.488e-14
+  timed 1 cpu_eigs: 1.3248s valid=True residual=5.820e-15
+  timed 2 cuda_cudss: 0.2853s valid=True residual=5.213e-14
+  timed 2 cpu_eigs: 1.3537s valid=True residual=5.820e-15
+  timed 2 cpu_refined: 1.3643s valid=True residual=6.438e-15
+[16/20] siw-medium-modes14
+Transforming over 1000 vertices to C_CONTIGUOUS.
+Transforming over 1000 elements to C_CONTIGUOUS.
+  warmup -1 cpu_eigs: 1.6274s valid=True residual=9.496e-15
+  warmup -1 cpu_refined: 1.7048s valid=True residual=1.099e-14
+  warmup -1 cuda_cudss: 0.7997s valid=True residual=1.069e-13
+  timed 0 cpu_eigs: 1.5912s valid=True residual=9.496e-15
+  timed 0 cpu_refined: 2.0812s valid=True residual=1.099e-14
+  timed 0 cuda_cudss: 0.4838s valid=True residual=1.611e-13
+  timed 1 cpu_refined: 1.7557s valid=True residual=1.099e-14
+  timed 1 cuda_cudss: 0.4537s valid=True residual=9.817e-14
+  timed 1 cpu_eigs: 1.6244s valid=True residual=9.496e-15
+  timed 2 cuda_cudss: 0.4404s valid=True residual=1.243e-13
+  timed 2 cpu_eigs: 1.6414s valid=True residual=9.496e-15
+  timed 2 cpu_refined: 1.7075s valid=True residual=1.099e-14
+[17/20] perforated_waveguide-medium-threads10
+Transforming over 1000 vertices to C_CONTIGUOUS.
+Transforming over 1000 elements to C_CONTIGUOUS.
+  warmup -1 cpu_eigs: 8.5541s valid=True residual=6.445e-15
+  warmup -1 cpu_refined: 8.5056s valid=True residual=6.703e-15
+  warmup -1 cuda_cudss: 1.5641s valid=True residual=6.464e-14
+  timed 0 cpu_eigs: 9.5114s valid=True residual=6.445e-15
+  timed 0 cpu_refined: 9.1851s valid=True residual=6.703e-15
+  timed 0 cuda_cudss: 0.6159s valid=True residual=6.538e-14
+  timed 1 cpu_refined: 9.2016s valid=True residual=6.703e-15
+  timed 1 cuda_cudss: 1.1681s valid=True residual=5.956e-14
+  timed 1 cpu_eigs: 9.6132s valid=True residual=6.445e-15
+  timed 2 cuda_cudss: 0.5490s valid=True residual=7.695e-14
+  timed 2 cpu_eigs: 8.9140s valid=True residual=6.445e-15
+  timed 2 cpu_refined: 8.5947s valid=True residual=6.703e-15
+[18/20] perforated_waveguide-medium-modes14
+Transforming over 1000 vertices to C_CONTIGUOUS.
+Transforming over 1000 elements to C_CONTIGUOUS.
+  warmup -1 cpu_eigs: 9.8364s valid=True residual=9.943e-14
+  warmup -1 cpu_refined: 10.4976s valid=True residual=8.601e-14
+  warmup -1 cuda_cudss: 1.1803s valid=True residual=6.382e-13
+  timed 0 cpu_eigs: 9.9921s valid=True residual=9.943e-14
+  timed 0 cpu_refined: 9.4123s valid=True residual=8.601e-14
+  timed 0 cuda_cudss: 0.7562s valid=True residual=1.367e-12
+  timed 1 cpu_refined: 10.4083s valid=True residual=8.601e-14
+  timed 1 cuda_cudss: 0.7541s valid=True residual=7.969e-13
+  timed 1 cpu_eigs: 9.8006s valid=True residual=9.943e-14
+  timed 2 cuda_cudss: 0.7910s valid=True residual=8.466e-13
+  timed 2 cpu_eigs: 10.0720s valid=True residual=9.943e-14
+  timed 2 cpu_refined: 10.2580s valid=True residual=8.601e-14
+[19/20] dielectric_rod-medium-threads10
+Transforming over 1000 elements to C_CONTIGUOUS.
+  warmup -1 cpu_eigs: 4.6976s valid=True residual=2.739e-14
+  warmup -1 cpu_refined: 4.7278s valid=True residual=2.843e-14
+  warmup -1 cuda_cudss: 0.7599s valid=True residual=1.593e-13
+  timed 0 cpu_eigs: 4.7481s valid=True residual=2.739e-14
+  timed 0 cpu_refined: 6.4962s valid=True residual=2.843e-14
+  timed 0 cuda_cudss: 0.3887s valid=True residual=1.837e-13
+  timed 1 cpu_refined: 4.7160s valid=True residual=2.843e-14
+  timed 1 cuda_cudss: 0.3533s valid=True residual=1.533e-13
+  timed 1 cpu_eigs: 5.5228s valid=True residual=2.739e-14
+  timed 2 cuda_cudss: 0.6011s valid=True residual=1.616e-13
+  timed 2 cpu_eigs: 5.5283s valid=True residual=2.739e-14
+  timed 2 cpu_refined: 4.9600s valid=True residual=2.843e-14
+[20/20] dielectric_rod-medium-modes14
+Transforming over 1000 elements to C_CONTIGUOUS.
+  warmup -1 cpu_eigs: 5.4298s valid=True residual=3.437e-14
+  warmup -1 cpu_refined: 5.4823s valid=True residual=3.216e-14
+  warmup -1 cuda_cudss: 0.9121s valid=True residual=2.025e-13
+  timed 0 cpu_eigs: 5.6913s valid=True residual=3.437e-14
+  timed 0 cpu_refined: 5.9541s valid=True residual=3.216e-14
+  timed 0 cuda_cudss: 0.5745s valid=True residual=1.795e-13
+  timed 1 cpu_refined: 5.7318s valid=True residual=3.216e-14
+  timed 1 cuda_cudss: 0.5640s valid=True residual=2.436e-13
+  timed 1 cpu_eigs: 5.6510s valid=True residual=3.437e-14
+  timed 2 cuda_cudss: 0.5515s valid=True residual=1.867e-13
+  timed 2 cpu_eigs: 5.5412s valid=True residual=3.437e-14
+  timed 2 cpu_refined: 5.7568s valid=True residual=3.216e-14
+Some cases failed or did not converge; see saved raw results.
