@@ -121,9 +121,10 @@ folder. Use Python 3.12 for these instructions. Python dependencies are installe
 automatically by `pip install .`; no `requirements-dev.txt` is needed.
 
 Native dependencies are a C++20 compiler, CMake 3.24+, Ninja, Qt 6.2+,
-HDF5, Eigen 3.4+, Gmsh with OpenCASCADE, and FTXUI. The commands also install
-VTK with **Qt 6** support and enable the 3D periodic viewer. Use the same Qt
-version for Qt and VTK. The first dependency build can take considerable time.
+HDF5, Eigen 3.4+, Gmsh with OpenCASCADE, and FTXUI. The Windows and macOS commands also install
+VTK with **Qt 6** support and enable the 3D periodic viewer. Linux setup below
+explains how to enable that optional viewport. Use the same Qt version for Qt
+and VTK. The first dependency build can take considerable time.
 
 ### Windows: MSVC
 
@@ -184,58 +185,56 @@ python -m pip install . --config-settings=cmake.define.FEM_PERIODIC_MODE_VIEWER_
 python -m fem info
 ```
 
-### Linux: GCC
+### Linux: GCC and system packages
 
-Use GCC 13 or newer for C++20 `std::format` support. These commands use
-**Ubuntu 24.04, x86-64**, with GCC 13 and Python 3.12. Other distributions need
-the equivalent compiler, Python headers, and X11/OpenGL development packages.
+Use GCC 13 or newer for C++20 `std::format` support. These commands target
+**Ubuntu 24.04** with GCC 13 and Python 3.12; on other distributions, use the
+equivalent development packages from `dnf`, `pacman`, or your package manager.
 
-Install the compiler, build tools, Python, and libraries needed to build Qt:
+Install the compiler, build tools, and native libraries through apt:
 
 ```sh
 sudo apt update
-sudo apt install build-essential gcc g++ cmake ninja-build git curl zip unzip tar pkg-config python3-dev python3-venv autoconf autoconf-archive automake libtool xorg-dev libxkbcommon-dev libxkbcommon-x11-dev libxcb-cursor-dev libgl1-mesa-dev libglu1-mesa-dev libegl1-mesa-dev libfontconfig1-dev libwayland-dev
+sudo apt install build-essential gcc-13 g++-13 cmake ninja-build git pkg-config python3.12-dev python3.12-venv qt6-base-dev libqt6opengl6-dev libhdf5-dev libeigen3-dev libgmsh-dev libgl1-mesa-dev libglu1-mesa-dev
 ```
 
-Use vcpkg to build Qt 6, HDF5, Eigen, Gmsh/OpenCASCADE, FTXUI, and VTK together.
-This avoids mixing a distribution's Qt 5 VTK with Qt 6. Install vcpkg once:
+The calculator also needs FTXUI. If your distribution provides `libftxui-dev`,
+install it with `sudo apt install libftxui-dev`. If the package is unavailable,
+build [FTXUI](https://github.com/ArthurSonzogni/FTXUI) into a local prefix:
 
 ```sh
-git clone https://github.com/microsoft/vcpkg.git "$HOME/vcpkg"
-"$HOME/vcpkg/bootstrap-vcpkg.sh" -disableMetrics
+git clone --branch v5.0.0 --depth 1 https://github.com/ArthurSonzogni/FTXUI.git build/deps/ftxui
+cmake -S build/deps/ftxui -B build/deps/ftxui-build -G Ninja \
+  -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$PWD/build/deps/install" \
+  -DFTXUI_BUILD_EXAMPLES=OFF -DFTXUI_BUILD_DOCS=OFF -DFTXUI_BUILD_TESTS=OFF
+cmake --build build/deps/ftxui-build --parallel
+cmake --install build/deps/ftxui-build
+export CMAKE_PREFIX_PATH="$PWD/build/deps/install${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"
 ```
 
-Create a configuration for shared native libraries, then install the dependencies:
-
-```sh
-export VCPKG_ROOT="$HOME/vcpkg"
-export CC=gcc
-export CXX=g++
-export CMAKE_GENERATOR=Ninja
-mkdir -p build/triplets
-cat > build/triplets/x64-linux-fem.cmake <<'EOF'
-set(VCPKG_TARGET_ARCHITECTURE x64)
-set(VCPKG_CRT_LINKAGE dynamic)
-set(VCPKG_LIBRARY_LINKAGE dynamic)
-set(VCPKG_CMAKE_SYSTEM_NAME Linux)
-EOF
-"$VCPKG_ROOT/vcpkg" install qtbase hdf5 eigen3 'gmsh[occ]' ftxui 'vtk[qt]' --triplet=x64-linux-fem --overlay-triplets=./build/triplets --overlay-ports=./vcpkg-ports
-```
-
-Build and install FEM:
+Build and install FEM with the 2D periodic viewer:
 
 ```sh
 python3.12 -m venv .venv
 source .venv/bin/activate
-export CMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake"
-export CMAKE_ARGS="-DCMAKE_TOOLCHAIN_FILE=$CMAKE_TOOLCHAIN_FILE -DVCPKG_TARGET_TRIPLET=x64-linux-fem -DVCPKG_OVERLAY_TRIPLETS=$PWD/build/triplets"
-python -m pip install . --config-settings=cmake.define.FEM_PERIODIC_MODE_VIEWER_WITH_VTK=ON
+export CC=gcc-13
+export CXX=g++-13
+export CMAKE_GENERATOR=Ninja
+python -m pip install . --config-settings=cmake.define.FEM_PERIODIC_MODE_VIEWER_WITH_VTK=OFF
 python -m fem info
 ```
 
-For ARM64 Linux, replace `x64` with `arm64` in the configuration, filename,
-and commands. Keep the installed native dependencies available after installation;
-macOS and Linux applications use those libraries at runtime.
+The 3D periodic viewer requires **VTK 9.2+ built against Qt 6**.
+[Ubuntu 24.04's VTK package](https://packages.ubuntu.com/noble/libvtk9-qt-dev)
+is VTK 9.1 with Qt 5, so the commands above disable that optional viewport.
+On distributions offering a compatible VTK development package, install it with
+the system package manager and replace `OFF` with `ON`. Alternatively, build
+VTK 9.2+ from upstream with `VTK_GROUP_ENABLE_Qt=YES` and `VTK_QT_VERSION=6`,
+add its install prefix to `CMAKE_PREFIX_PATH`, and reinstall with `ON`.
+The FEM solvers can still compute 3D modes with the 2D-only viewer installed.
+
+Keep the installed native dependencies available after installation; macOS and
+Linux applications use those libraries at runtime.
 
 In an activated environment, `uv pip install .` can replace `python -m pip install .`
 with the same `--config-settings` option. With conda, activate a Python 3.12
@@ -245,6 +244,89 @@ it does not build the native applications.
 
 See the [native build guide](apps/native_build.md) for individual application
 builds and native dependency sources.
+
+## Optional refined and CUDA eigensolvers
+
+Periodic FEM solves can use refined shift-and-invert Arnoldi by passing
+`eigensolver="refined"` to `solver.solve(...)`. The CPU implementation is
+included in FEM and needs no separate solver package. Select
+`arnoldi_backend="python"` for NumPy/SciPy, `"cython"` for the compiled kernel,
+or `"auto"` to use Cython when available and otherwise Python.
+The Windows/macOS wheels and `pip install .` source builds include the Cython kernel.
+
+To run from a checkout with only Python dependencies, install them into an
+activated environment. Optionally compile just the Cython kernel with a C
+compiler (MSVC on Windows, Clang on macOS, or GCC on Linux):
+
+```sh
+python -m pip install -r requirements.txt
+# Optional CPU acceleration in this checkout:
+python -m pip install "Cython>=3,<4" setuptools
+python setup_cython.py build_ext --inplace
+python periodic_eigensolver/examples/diagonal_pencil.py --backend cython
+```
+
+Skip the compilation commands and use `--backend python` for the portable
+CPU solver. See the [refined solver guide](periodic_eigensolver/docs/guide.rst).
+
+### CUDA acceleration (Windows and Linux)
+
+CUDA is optional and requires an NVIDIA GPU, a compatible NVIDIA driver,
+a CUDA 12 or CUDA 13 toolkit, one matching CuPy package, and **cuDSS >= 0.8**.
+Install the driver/toolkit using [NVIDIA's CUDA downloads](https://developer.nvidia.com/cuda-downloads).
+In the Python environment where FEM is installed, install exactly one CuPy package:
+
+```sh
+# CUDA 12:
+python -m pip install "cupy-cuda12x>=13.6,<15"
+# Or, for CUDA 13:
+python -m pip install "cupy-cuda13x>=14,<15"
+```
+
+For a source installation, `python -m pip install ".[cuda12]"` or
+`python -m pip install ".[cuda13]"` installs FEM and the corresponding CuPy
+extra; retain the platform's CMake settings from the source-build instructions.
+
+Install cuDSS separately using [NVIDIA's installation instructions](https://docs.nvidia.com/cuda/cudss/getting_started.html),
+or download and extract a matching CUDA-version archive from the
+[Linux x86-64 redistributables](https://developer.download.nvidia.com/compute/cudss/redist/libcudss/linux-x86_64/)
+or [Windows x86-64 redistributables](https://developer.download.nvidia.com/compute/cudss/redist/libcudss/windows-x86_64/).
+Set the library path in each terminal used to run FEM (replace the example paths
+with your extracted archive's actual paths):
+
+```sh
+# Linux:
+export CUDSS_LIBRARY="/absolute/path/to/cudss/lib/libcudss.so"
+export LD_LIBRARY_PATH="$(dirname "$CUDSS_LIBRARY"):${LD_LIBRARY_PATH:-}"
+```
+
+```powershell
+# Windows:
+$env:CUDSS_LIBRARY="C:/path/to/cudss/bin/cudss64_0.dll"
+```
+
+CuPy and cuDSS are not bundled in the FEM wheels. CUDA is selected explicitly;
+`arnoldi_backend="auto"` keeps CPU selection. In a periodic FEM solve, use:
+
+```python
+modes = solver.solve(
+    neff_guess=0.5 - 0.02j,
+    num_modes=2,
+    eigensolver="refined",
+    arnoldi_backend="cuda",  # Use "auto", "python", or "cython" for CPU.
+)
+```
+
+From the repository root, check the GPU setup with:
+
+```sh
+python periodic_eigensolver/examples/diagonal_pencil.py --backend cuda
+```
+
+See [CUDA setup and benchmarks](benchmarks/periodic_eigensolver/README.md)
+and the [CUDA implementation guide](periodic_eigensolver/docs/CUDA_IMPLEMENTATION.rst)
+for details. CUDA acceleration is available on Windows and Linux; macOS uses
+the CPU backends.
 
 ## License
 
