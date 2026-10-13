@@ -1,0 +1,87 @@
+{
+  "status": "complete",
+  "completed": [
+    {
+      "case": "iris-medium-threads2",
+      "exit_code": 0,
+      "seconds": 21.66326029226184
+    },
+    {
+      "case": "iris-medium-threads4",
+      "exit_code": 0,
+      "seconds": 11.941657934337854
+    },
+    {
+      "case": "iris-medium-threads8",
+      "exit_code": 0,
+      "seconds": 12.747738737612963
+    },
+    {
+      "case": "iris-medium-threads20",
+      "exit_code": 0,
+      "seconds": 15.37220237404108
+    },
+    {
+      "case": "siw-medium-threads2",
+      "exit_code": 0,
+      "seconds": 16.147104986011982
+    },
+    {
+      "case": "siw-medium-threads4",
+      "exit_code": 0,
+      "seconds": 16.964299451559782
+    },
+    {
+      "case": "siw-medium-threads8",
+      "exit_code": 0,
+      "seconds": 17.847787704318762
+    },
+    {
+      "case": "siw-medium-threads20",
+      "exit_code": 0,
+      "seconds": 21.0304723829031
+    },
+    {
+      "case": "perforated_waveguide-medium-threads2",
+      "exit_code": 0,
+      "seconds": 73.73389989510179
+    },
+    {
+      "case": "perforated_waveguide-medium-threads4",
+      "exit_code": 0,
+      "seconds": 74.9739757552743
+    },
+    {
+      "case": "perforated_waveguide-medium-threads8",
+      "exit_code": 0,
+      "seconds": 78.1348575130105
+    },
+    {
+      "case": "perforated_waveguide-medium-threads20",
+      "exit_code": 0,
+      "seconds": 88.40532794222236
+    },
+    {
+      "case": "dielectric_rod-medium-threads2",
+      "exit_code": 0,
+      "seconds": 43.06588478758931
+    },
+    {
+      "case": "dielectric_rod-medium-threads4",
+      "exit_code": 0,
+      "seconds": 43.771029114723206
+    },
+    {
+      "case": "dielectric_rod-medium-threads8",
+      "exit_code": 0,
+      "seconds": 43.37467793747783
+    },
+    {
+      "case": "dielectric_rod-medium-threads20",
+      "exit_code": 0,
+      "seconds": 53.63358459621668
+    }
+  ],
+  "total": 16,
+  "active": null
+}

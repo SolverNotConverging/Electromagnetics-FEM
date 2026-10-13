@@ -1,0 +1,110 @@
+{
+  "configurations": 40,
+  "backend_rows": 120,
+  "timed_samples": 360,
+  "warmups": 120,
+  "thread_comparability": [
+    {
+      "case": "iris-medium-threads10",
+      "same_mesh_statistics": true,
+      "magnitude_error": 8.896287761149326e-15
+    },
+    {
+      "case": "siw-medium-threads10",
+      "same_mesh_statistics": true,
+      "magnitude_error": 2.9408325581107204e-15
+    },
+    {
+      "case": "perforated_waveguide-medium-threads10",
+      "same_mesh_statistics": true,
+      "magnitude_error": 1.3322676295501878e-15
+    },
+    {
+      "case": "dielectric_rod-medium-threads10",
+      "same_mesh_statistics": true,
+      "magnitude_error": 2.8033131371785203e-15
+    },
+    {
+      "case": "iris-medium-threads2",
+      "same_mesh_statistics": true,
+      "magnitude_error": 1.0849131416035762e-14
+    },
+    {
+      "case": "iris-medium-threads4",
+      "same_mesh_statistics": true,
+      "magnitude_error": 1.887379141862766e-15
+    },
+    {
+      "case": "iris-medium-threads8",
+      "same_mesh_statistics": true,
+      "magnitude_error": 1.4320853469167208e-14
+    },
+    {
+      "case": "iris-medium-threads20",
+      "same_mesh_statistics": true,
+      "magnitude_error": 1.0632148787715048e-14
+    },
+    {
+      "case": "siw-medium-threads2",
+      "same_mesh_statistics": true,
+      "magnitude_error": 3.4113657674084354e-15
+    },
+    {
+      "case": "siw-medium-threads4",
+      "same_mesh_statistics": true,
+      "magnitude_error": 3.5512886290928527e-16
+    },
+    {
+      "case": "siw-medium-threads8",
+      "same_mesh_statistics": true,
+      "magnitude_error": 1.7756443145464265e-15
+    },
+    {
+      "case": "siw-medium-threads20",
+      "same_mesh_statistics": true,
+      "magnitude_error": 1.7756443145464265e-15
+    },
+    {
+      "case": "perforated_waveguide-medium-threads2",
+      "same_mesh_statistics": true,
+      "magnitude_error": 7.771561172376096e-16
+    },
+    {
+      "case": "perforated_waveguide-medium-threads4",
+      "same_mesh_statistics": true,
+      "magnitude_error": 5.551115123125783e-16
+    },
+    {
+      "case": "perforated_waveguide-medium-threads8",
+      "same_mesh_statistics": true,
+      "magnitude_error": 3.3306690738754696e-16
+    },
+    {
+      "case": "perforated_waveguide-medium-threads20",
+      "same_mesh_statistics": true,
+      "magnitude_error": 4.440892098500626e-16
+    },
+    {
+      "case": "dielectric_rod-medium-threads2",
+      "same_mesh_statistics": true,
+      "magnitude_error": 2.886579864025407e-15
+    },
+    {
+      "case": "dielectric_rod-medium-threads4",
+      "same_mesh_statistics": true,
+      "magnitude_error": 3.3306690738754696e-15
+    },
+    {
+      "case": "dielectric_rod-medium-threads8",
+      "same_mesh_statistics": true,
+      "magnitude_error": 1.4432899320127035e-15
+    },
+    {
+      "case": "dielectric_rod-medium-threads20",
+      "same_mesh_statistics": true,
+      "magnitude_error": 2.220446049250313e-15
+    }
+  ],
+  "errors": [],
+  "passed": true
+}

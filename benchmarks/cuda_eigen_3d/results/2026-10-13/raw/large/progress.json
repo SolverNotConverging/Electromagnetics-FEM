@@ -1,0 +1,27 @@
+{
+  "status": "complete",
+  "completed": [
+    {
+      "case": "iris-large",
+      "exit_code": 0,
+      "seconds": 170.6195677705109
+    },
+    {
+      "case": "siw-large",
+      "exit_code": 0,
+      "seconds": 101.41813352704048
+    },
+    {
+      "case": "perforated_waveguide-large",
+      "exit_code": 0,
+      "seconds": 741.4347552545369
+    },
+    {
+      "case": "dielectric_rod-large",
+      "exit_code": 0,
+      "seconds": 708.824624273926
+    }
+  ],
+  "total": 4,
+  "active": null
+}

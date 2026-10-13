@@ -1,0 +1,107 @@
+{
+  "status": "complete",
+  "completed": [
+    {
+      "case": "iris-coarse",
+      "exit_code": 0,
+      "seconds": 17.303083285689354
+    },
+    {
+      "case": "iris-medium",
+      "exit_code": 0,
+      "seconds": 12.04111247509718
+    },
+    {
+      "case": "iris-fine",
+      "exit_code": 0,
+      "seconds": 37.65758194774389
+    },
+    {
+      "case": "siw-coarse",
+      "exit_code": 0,
+      "seconds": 11.14153977483511
+    },
+    {
+      "case": "siw-medium",
+      "exit_code": 0,
+      "seconds": 15.69820399582386
+    },
+    {
+      "case": "siw-fine",
+      "exit_code": 0,
+      "seconds": 36.55492341890931
+    },
+    {
+      "case": "perforated_waveguide-coarse",
+      "exit_code": 0,
+      "seconds": 62.46580742299557
+    },
+    {
+      "case": "perforated_waveguide-medium",
+      "exit_code": 0,
+      "seconds": 75.25191168487072
+    },
+    {
+      "case": "perforated_waveguide-fine",
+      "exit_code": 0,
+      "seconds": 281.00448326021433
+    },
+    {
+      "case": "dielectric_rod-coarse",
+      "exit_code": 0,
+      "seconds": 25.543648704886436
+    },
+    {
+      "case": "dielectric_rod-medium",
+      "exit_code": 0,
+      "seconds": 43.47069922462106
+    },
+    {
+      "case": "dielectric_rod-fine",
+      "exit_code": 0,
+      "seconds": 268.2064833045006
+    },
+    {
+      "case": "iris-medium-threads10",
+      "exit_code": 0,
+      "seconds": 12.948775988072157
+    },
+    {
+      "case": "iris-medium-modes14",
+      "exit_code": 0,
+      "seconds": 14.655409503728151
+    },
+    {
+      "case": "siw-medium-threads10",
+      "exit_code": 0,
+      "seconds": 16.796772819012403
+    },
+    {
+      "case": "siw-medium-modes14",
+      "exit_code": 0,
+      "seconds": 20.411208260804415
+    },
+    {
+      "case": "perforated_waveguide-medium-threads10",
+      "exit_code": 0,
+      "seconds": 79.0415141582489
+    },
+    {
+      "case": "perforated_waveguide-medium-modes14",
+      "exit_code": 0,
+      "seconds": 87.5531984642148
+    },
+    {
+      "case": "dielectric_rod-medium-threads10",
+      "exit_code": 0,
+      "seconds": 45.36673083528876
+    },
+    {
+      "case": "dielectric_rod-medium-modes14",
+      "exit_code": 0,
+      "seconds": 49.78002988547087
+    }
+  ],
+  "total": 20,
+  "active": null
+}

@@ -1,0 +1,624 @@
+{
+  "case": {
+    "name": "perforated_waveguide-medium-threads8",
+    "problem": "perforated_waveguide",
+    "size": 3.5,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 8,
+    "max_restarts": 24,
+    "seed": 0
+  },
+  "status": "complete",
+  "warmups": [
+    {
+      "backend": "cpu_eigs",
+      "phase": "warmup",
+      "repeat": -1,
+      "seconds": 9.368372946977615,
+      "converged": true,
+      "max_residual": 6.985978452662592e-15,
+      "complex_eigenvalue_error": 0.0,
+      "eigenvalue_error": 0.0,
+      "valid": true,
+      "steps": 81,
+      "restarts": null,
+      "eigenvalues": [
+        [
+          0.9140809702817594,
+          -0.051200193312177
+        ],
+        [
+          0.8578127870894269,
+          9.456263607141198e-05
+        ],
+        [
+          0.9462282288630187,
+          -2.0358697512117344e-05
+        ],
+        [
+          0.8308588168733191,
+          0.00018406609542250332
+        ]
+      ],
+      "residuals": [
+        3.53065095451055e-15,
+        4.65988946531241e-15,
+        5.0814590618675435e-15,
+        6.985978452662592e-15
+      ],
+      "complex_set_match": true,
+      "magnitude_eigenvalue_error": 0.0
+    },
+    {
+      "backend": "cpu_refined",
+      "phase": "warmup",
+      "repeat": -1,
+      "seconds": 8.804614745080471,
+      "converged": true,
+      "max_residual": 6.975514756449942e-15,
+      "complex_eigenvalue_error": 4.3108140156425387e-16,
+      "eigenvalue_error": 2.220446049250313e-16,
+      "valid": true,
+      "steps": 80,
+      "restarts": 0,
+      "eigenvalues": [
+        [
+          0.8578127870894269,
+          9.456263607144494e-05
+        ],
+        [
+          0.9140809702817594,
+          -0.051200193312177004
+        ],
+        [
+          0.9462282288630188,
+          -2.035869751194734e-05
+        ],
+        [
+          0.8308588168733189,
+          0.00018406609542213383
+        ]
+      ],
+      "residuals": [
+        4.578830988740459e-15,
+        3.5229717033577555e-15,
+        5.1628896463926304e-15,
+        6.975514756449942e-15
+      ],
+      "complex_set_match": true,
+      "magnitude_eigenvalue_error": 2.220446049250313e-16
+    },
+    {
+      "backend": "cuda_cudss",
+      "phase": "warmup",
+      "repeat": -1,
+      "seconds": 0.9713260158896446,
+      "converged": true,
+      "max_residual": 6.273228787482034e-14,
+      "complex_eigenvalue_error": 9.915493805525182e-15,
+      "eigenvalue_error": 9.2148511043888e-15,
+      "valid": true,
+      "steps": 80,
+      "restarts": 0,
+      "eigenvalues": [
+        [
+          0.8578127870894177,
+          9.456263607025145e-05
+        ],
+        [
+          0.9140809702817599,
+          -0.051200193312176255
+        ],
+        [
+          0.9462282288630189,
+          -2.0358697513040216e-05
+        ],
+        [
+          0.830858816873311,
+          0.00018406609541679088
+        ]
+      ],
+      "residuals": [
+        5.6458146627711465e-14,
+        4.937213237330728e-14,
+        4.9150659507055176e-14,
+        6.273228787482034e-14
+      ],
+      "complex_set_match": true,
+      "magnitude_eigenvalue_error": 9.2148511043888e-15
+    }
+  ],
+  "samples": [
+    {
+      "backend": "cpu_eigs",
+      "phase": "timed",
+      "repeat": 0,
+      "seconds": 8.919805940240622,
+      "converged": true,
+      "max_residual": 6.985978452662592e-15,
+      "complex_eigenvalue_error": 0.0,
+      "eigenvalue_error": 0.0,
+      "valid": true,
+      "steps": 81,
+      "restarts": null,
+      "eigenvalues": [
+        [
+          0.9140809702817594,
+          -0.051200193312177
+        ],
+        [
+          0.8578127870894269,
+          9.456263607141198e-05
+        ],
+        [
+          0.9462282288630187,
+          -2.0358697512117344e-05
+        ],
+        [
+          0.8308588168733191,
+          0.00018406609542250332
+        ]
+      ],
+      "residuals": [
+        3.53065095451055e-15,
+        4.65988946531241e-15,
+        5.0814590618675435e-15,
+        6.985978452662592e-15
+      ],
+      "complex_set_match": true,
+      "magnitude_eigenvalue_error": 0.0
+    },
+    {
+      "backend": "cpu_refined",
+      "phase": "timed",
+      "repeat": 0,
+      "seconds": 9.362688671797514,
+      "converged": true,
+      "max_residual": 6.975514756449942e-15,
+      "complex_eigenvalue_error": 4.3108140156425387e-16,
+      "eigenvalue_error": 2.220446049250313e-16,
+      "valid": true,
+      "steps": 80,
+      "restarts": 0,
+      "eigenvalues": [
+        [
+          0.8578127870894269,
+          9.456263607144494e-05
+        ],
+        [
+          0.9140809702817594,
+          -0.051200193312177004
+        ],
+        [
+          0.9462282288630188,
+          -2.035869751194734e-05
+        ],
+        [
+          0.8308588168733189,
+          0.00018406609542213383
+        ]
+      ],
+      "residuals": [
+        4.578830988740459e-15,
+        3.5229717033577555e-15,
+        5.1628896463926304e-15,
+        6.975514756449942e-15
+      ],
+      "complex_set_match": true,
+      "magnitude_eigenvalue_error": 2.220446049250313e-16
+    },
+    {
+      "backend": "cuda_cudss",
+      "phase": "timed",
+      "repeat": 0,
+      "seconds": 0.6855173222720623,
+      "converged": true,
+      "max_residual": 6.957285202947811e-14,
+      "complex_eigenvalue_error": 9.737035012283284e-15,
+      "eigenvalue_error": 5.10702591327572e-15,
+      "valid": true,
+      "steps": 80,
+      "restarts": 0,
+      "eigenvalues": [
+        [
+          0.8578127870894316,
+          9.456263607608012e-05
+        ],
+        [
+          0.9140809702817594,
+          -0.05120019331217703
+        ],
+        [
+          0.9462282288630192,
+          -2.0358697511877952e-05
+        ],
+        [
+          0.830858816873314,
+          0.00018406609543079357
+        ]
+      ],
+      "residuals": [
+        4.3065215561067893e-14,
+        2.5986938847533237e-14,
+        5.6439220867868296e-14,
+        6.957285202947811e-14
+      ],
+      "complex_set_match": true,
+      "magnitude_eigenvalue_error": 5.10702591327572e-15
+    },
+    {
+      "backend": "cpu_refined",
+      "phase": "timed",
+      "repeat": 1,
+      "seconds": 8.65684063732624,
+      "converged": true,
+      "max_residual": 6.975514756449942e-15,
+      "complex_eigenvalue_error": 4.3108140156425387e-16,
+      "eigenvalue_error": 2.220446049250313e-16,
+      "valid": true,
+      "steps": 80,
+      "restarts": 0,
+      "eigenvalues": [
+        [
+          0.8578127870894269,
+          9.456263607144494e-05
+        ],
+        [
+          0.9140809702817594,
+          -0.051200193312177004
+        ],
+        [
+          0.9462282288630188,
+          -2.035869751194734e-05
+        ],
+        [
+          0.8308588168733189,
+          0.00018406609542213383
+        ]
+      ],
+      "residuals": [
+        4.578830988740459e-15,
+        3.5229717033577555e-15,
+        5.1628896463926304e-15,
+        6.975514756449942e-15
+      ],
+      "complex_set_match": true,
+      "magnitude_eigenvalue_error": 2.220446049250313e-16
+    },
+    {
+      "backend": "cuda_cudss",
+      "phase": "timed",
+      "repeat": 1,
+      "seconds": 0.5847471356391907,
+      "converged": true,
+      "max_residual": 7.316585906915215e-14,
+      "complex_eigenvalue_error": 1.2544741543426175e-14,
+      "eigenvalue_error": 1.0658141036401503e-14,
+      "valid": true,
+      "steps": 80,
+      "restarts": 0,
+      "eigenvalues": [
+        [
+          0.8578127870894162,
+          9.456263607802821e-05
+        ],
+        [
+          0.91408097028176,
+          -0.05120019331217741
+        ],
+        [
+          0.94622822886302,
+          -2.0358697512967358e-05
+        ],
+        [
+          0.8308588168733131,
+          0.0001840660954306999
+        ]
+      ],
+      "residuals": [
+        5.116468892740368e-14,
+        3.833472605067892e-14,
+        4.618006883747231e-14,
+        7.316585906915215e-14
+      ],
+      "complex_set_match": true,
+      "magnitude_eigenvalue_error": 1.0658141036401503e-14
+    },
+    {
+      "backend": "cpu_eigs",
+      "phase": "timed",
+      "repeat": 1,
+      "seconds": 8.424201760441065,
+      "converged": true,
+      "max_residual": 6.985978452662592e-15,
+      "complex_eigenvalue_error": 0.0,
+      "eigenvalue_error": 0.0,
+      "valid": true,
+      "steps": 81,
+      "restarts": null,
+      "eigenvalues": [
+        [
+          0.9140809702817594,
+          -0.051200193312177
+        ],
+        [
+          0.8578127870894269,
+          9.456263607141198e-05
+        ],
+        [
+          0.9462282288630187,
+          -2.0358697512117344e-05
+        ],
+        [
+          0.8308588168733191,
+          0.00018406609542250332
+        ]
+      ],
+      "residuals": [
+        3.53065095451055e-15,
+        4.65988946531241e-15,
+        5.0814590618675435e-15,
+        6.985978452662592e-15
+      ],
+      "complex_set_match": true,
+      "magnitude_eigenvalue_error": 0.0
+    },
+    {
+      "backend": "cuda_cudss",
+      "phase": "timed",
+      "repeat": 2,
+      "seconds": 0.5875053964555264,
+      "converged": true,
+      "max_residual": 8.039063589452802e-14,
+      "complex_eigenvalue_error": 1.991755346593239e-14,
+      "eigenvalue_error": 1.7319479184152442e-14,
+      "valid": true,
+      "steps": 80,
+      "restarts": 0,
+      "eigenvalues": [
+        [
+          0.8578127870894281,
+          9.456263607675666e-05
+        ],
+        [
+          0.9140809702817604,
+          -0.05120019331217751
+        ],
+        [
+          0.9462282288630194,
+          -2.035869751241745e-05
+        ],
+        [
+          0.8308588168733018,
+          0.00018406609541266744
+        ]
+      ],
+      "residuals": [
+        6.644472131609691e-14,
+        4.843728754649349e-14,
+        3.896978833452645e-14,
+        8.039063589452802e-14
+      ],
+      "complex_set_match": true,
+      "magnitude_eigenvalue_error": 1.7319479184152442e-14
+    },
+    {
+      "backend": "cpu_eigs",
+      "phase": "timed",
+      "repeat": 2,
+      "seconds": 8.665036540478468,
+      "converged": true,
+      "max_residual": 6.985978452662592e-15,
+      "complex_eigenvalue_error": 0.0,
+      "eigenvalue_error": 0.0,
+      "valid": true,
+      "steps": 81,
+      "restarts": null,
+      "eigenvalues": [
+        [
+          0.9140809702817594,
+          -0.051200193312177
+        ],
+        [
+          0.8578127870894269,
+          9.456263607141198e-05
+        ],
+        [
+          0.9462282288630187,
+          -2.0358697512117344e-05
+        ],
+        [
+          0.8308588168733191,
+          0.00018406609542250332
+        ]
+      ],
+      "residuals": [
+        3.53065095451055e-15,
+        4.65988946531241e-15,
+        5.0814590618675435e-15,
+        6.985978452662592e-15
+      ],
+      "complex_set_match": true,
+      "magnitude_eigenvalue_error": 0.0
+    },
+    {
+      "backend": "cpu_refined",
+      "phase": "timed",
+      "repeat": 2,
+      "seconds": 9.942807409912348,
+      "converged": true,
+      "max_residual": 6.975514756449942e-15,
+      "complex_eigenvalue_error": 4.3108140156425387e-16,
+      "eigenvalue_error": 2.220446049250313e-16,
+      "valid": true,
+      "steps": 80,
+      "restarts": 0,
+      "eigenvalues": [
+        [
+          0.8578127870894269,
+          9.456263607144494e-05
+        ],
+        [
+          0.9140809702817594,
+          -0.051200193312177004
+        ],
+        [
+          0.9462282288630188,
+          -2.035869751194734e-05
+        ],
+        [
+          0.8308588168733189,
+          0.00018406609542213383
+        ]
+      ],
+      "residuals": [
+        4.578830988740459e-15,
+        3.5229717033577555e-15,
+        5.1628896463926304e-15,
+        6.975514756449942e-15
+      ],
+      "complex_set_match": true,
+      "magnitude_eigenvalue_error": 2.220446049250313e-16
+    }
+  ],
+  "errors": {},
+  "assembly_seconds": 1.755911473184824,
+  "field_dofs": 9685,
+  "pencil_dofs": 19370,
+  "nnz_a": 275533,
+  "nnz_b": 146686,
+  "sigma": [
+    0.9,
+    -0.01
+  ],
+  "geometry": {
+    "frequency_hz": 20000000000.0,
+    "period_mm": 15.0,
+    "description": "WR-90 cavity under a 0.5 mm PEC top wall with one 4 mm diameter hole per 15 mm cell, offset x=4 mm. Air above the wall; x and y+ PML 3 mm.",
+    "field_dofs": 9685,
+    "mesh_mm": 3.5,
+    "mesh_nodes": 2720,
+    "mesh_tetrahedra": 10150
+  },
+  "runtime": {
+    "gpu": "NVIDIA TITAN RTX",
+    "gpu_memory_bytes": 25189679104,
+    "cupy": "14.2.0",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "cuda_runtime": 13020,
+    "cuda_driver": 13020,
+    "cpu_refined_backend": "cython",
+    "threads": {
+      "OMP_NUM_THREADS": "8",
+      "OPENBLAS_NUM_THREADS": "8",
+      "MKL_NUM_THREADS": "8",
+      "BLIS_NUM_THREADS": "8"
+    },
+    "blas_libraries": [
+      {
+        "library": "/home/s2307298/projects/FEM/Electromagnetics-FEM/.venv/lib/python3.13/site-packages/numpy.libs/libscipy_openblas64_-f48b354e.so",
+        "configured_threads": 8,
+        "config": "OpenBLAS 0.3.34.106.0  USE64BITINT DYNAMIC_ARCH NO_AFFINITY SkylakeX MAX_THREADS=64"
+      },
+      {
+        "library": "/home/s2307298/projects/FEM/Electromagnetics-FEM/.venv/lib/python3.13/site-packages/scipy.libs/libscipy_openblas-5f890258.so",
+        "configured_threads": 8,
+        "config": "OpenBLAS 0.3.31.dev DYNAMIC_ARCH NO_AFFINITY SkylakeX MAX_THREADS=64"
+      }
+    ]
+  },
+  "summaries": [
+    {
+      "backend": "cpu_eigs",
+      "valid": true,
+      "median_seconds": 8.665036540478468,
+      "min_seconds": 8.424201760441065,
+      "max_seconds": 8.919805940240622,
+      "samples_seconds": [
+        8.919805940240622,
+        8.424201760441065,
+        8.665036540478468
+      ],
+      "max_residual": 6.985978452662592e-15,
+      "max_eigenvalue_error": 0.0,
+      "max_complex_eigenvalue_error": 0.0,
+      "steps": [
+        81,
+        81,
+        81
+      ],
+      "restarts": [
+        null,
+        null,
+        null
+      ],
+      "error": null,
+      "speedup_vs_eigs": 1.0,
+      "complex_set_match": true
+    },
+    {
+      "backend": "cpu_refined",
+      "valid": true,
+      "median_seconds": 9.362688671797514,
+      "min_seconds": 8.65684063732624,
+      "max_seconds": 9.942807409912348,
+      "samples_seconds": [
+        9.362688671797514,
+        8.65684063732624,
+        9.942807409912348
+      ],
+      "max_residual": 6.975514756449942e-15,
+      "max_eigenvalue_error": 2.220446049250313e-16,
+      "max_complex_eigenvalue_error": 4.3108140156425387e-16,
+      "steps": [
+        80,
+        80,
+        80
+      ],
+      "restarts": [
+        0,
+        0,
+        0
+      ],
+      "error": null,
+      "speedup_vs_eigs": 0.9254859201480736,
+      "complex_set_match": true
+    },
+    {
+      "backend": "cuda_cudss",
+      "valid": true,
+      "median_seconds": 0.5875053964555264,
+      "min_seconds": 0.5847471356391907,
+      "max_seconds": 0.6855173222720623,
+      "samples_seconds": [
+        0.6855173222720623,
+        0.5847471356391907,
+        0.5875053964555264
+      ],
+      "max_residual": 8.039063589452802e-14,
+      "max_eigenvalue_error": 1.7319479184152442e-14,
+      "max_complex_eigenvalue_error": 1.991755346593239e-14,
+      "steps": [
+        80,
+        80,
+        80
+      ],
+      "restarts": [
+        0,
+        0,
+        0
+      ],
+      "error": null,
+      "speedup_vs_eigs": 14.748862891737547,
+      "complex_set_match": true
+    }
+  ],
+  "host_peak_rss_kib": 1014264,
+  "validation": {
+    "source": "/home/s2307298/projects/FEM/Electromagnetics-FEM/build/cuda-eigen-3d/2026-10-13/threads",
+    "criterion": "One-to-one matching of eigenvalue magnitudes, as requested by the user; max abs(|lambda_ref|-|lambda_test|)/max(1,|lambda_ref|) < 1e-5. Every sample must also converge and meet its original-pencil residual tolerance. Complex eigenvalues are retained; complex-set equality is diagnostic only."
+  }
+}

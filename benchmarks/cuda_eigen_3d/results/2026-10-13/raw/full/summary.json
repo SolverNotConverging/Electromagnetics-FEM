@@ -1,0 +1,2102 @@
+[
+  {
+    "case": "iris-coarse",
+    "problem": "iris",
+    "size": 4.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 3182,
+    "field_dofs": 1591,
+    "backend": "cpu_eigs",
+    "valid": true,
+    "median_seconds": 0.5256512425839901,
+    "min_seconds": 0.4833495616912842,
+    "max_seconds": 0.534248948097229,
+    "samples_seconds": [
+      0.4833495616912842,
+      0.5256512425839901,
+      0.534248948097229
+    ],
+    "max_residual": 1.3428517477140286e-14,
+    "max_eigenvalue_error": 0.0,
+    "steps": [
+      81,
+      81,
+      81
+    ],
+    "restarts": [
+      null,
+      null,
+      null
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0
+  },
+  {
+    "case": "iris-coarse",
+    "problem": "iris",
+    "size": 4.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 3182,
+    "field_dofs": 1591,
+    "backend": "cpu_refined",
+    "valid": true,
+    "median_seconds": 0.5165605433285236,
+    "min_seconds": 0.5052883289754391,
+    "max_seconds": 0.5306092463433743,
+    "samples_seconds": [
+      0.5052883289754391,
+      0.5165605433285236,
+      0.5306092463433743
+    ],
+    "max_residual": 1.833727182072118e-14,
+    "max_eigenvalue_error": 4.593087514467427e-15,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0175985165202308
+  },
+  {
+    "case": "iris-coarse",
+    "problem": "iris",
+    "size": 4.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 3182,
+    "field_dofs": 1591,
+    "backend": "cuda_cudss",
+    "valid": false,
+    "median_seconds": 0.19048289954662323,
+    "min_seconds": 0.19033508002758026,
+    "max_seconds": 0.19596396014094353,
+    "samples_seconds": [
+      0.19596396014094353,
+      0.19033508002758026,
+      0.19048289954662323
+    ],
+    "max_residual": 1.9734996172536534e-13,
+    "max_eigenvalue_error": 1.5265068363943755,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": null
+  },
+  {
+    "case": "iris-medium",
+    "problem": "iris",
+    "size": 3.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 4844,
+    "field_dofs": 2422,
+    "backend": "cpu_eigs",
+    "valid": true,
+    "median_seconds": 1.083287175744772,
+    "min_seconds": 1.0356602855026722,
+    "max_seconds": 1.34502612054348,
+    "samples_seconds": [
+      1.0356602855026722,
+      1.083287175744772,
+      1.34502612054348
+    ],
+    "max_residual": 2.3184476196593516e-14,
+    "max_eigenvalue_error": 0.0,
+    "steps": [
+      81,
+      81,
+      81
+    ],
+    "restarts": [
+      null,
+      null,
+      null
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0
+  },
+  {
+    "case": "iris-medium",
+    "problem": "iris",
+    "size": 3.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 4844,
+    "field_dofs": 2422,
+    "backend": "cpu_refined",
+    "valid": false,
+    "median_seconds": 1.0482580997049809,
+    "min_seconds": 1.0273762978613377,
+    "max_seconds": 1.072541669011116,
+    "samples_seconds": [
+      1.0482580997049809,
+      1.0273762978613377,
+      1.072541669011116
+    ],
+    "max_residual": 2.201402204290617e-14,
+    "max_eigenvalue_error": 1.5639024067764056,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": null
+  },
+  {
+    "case": "iris-medium",
+    "problem": "iris",
+    "size": 3.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 4844,
+    "field_dofs": 2422,
+    "backend": "cuda_cudss",
+    "valid": false,
+    "median_seconds": 0.25485866516828537,
+    "min_seconds": 0.2530497536063194,
+    "max_seconds": 0.37218402326107025,
+    "samples_seconds": [
+      0.25485866516828537,
+      0.2530497536063194,
+      0.37218402326107025
+    ],
+    "max_residual": 3.9299828457857065e-13,
+    "max_eigenvalue_error": 1.563902406776417,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": null
+  },
+  {
+    "case": "iris-fine",
+    "problem": "iris",
+    "size": 2.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 10954,
+    "field_dofs": 5477,
+    "backend": "cpu_eigs",
+    "valid": true,
+    "median_seconds": 4.233913742005825,
+    "min_seconds": 4.15462776646018,
+    "max_seconds": 4.680579677224159,
+    "samples_seconds": [
+      4.680579677224159,
+      4.15462776646018,
+      4.233913742005825
+    ],
+    "max_residual": 2.8967025653401984e-14,
+    "max_eigenvalue_error": 0.0,
+    "steps": [
+      81,
+      81,
+      81
+    ],
+    "restarts": [
+      null,
+      null,
+      null
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0
+  },
+  {
+    "case": "iris-fine",
+    "problem": "iris",
+    "size": 2.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 10954,
+    "field_dofs": 5477,
+    "backend": "cpu_refined",
+    "valid": false,
+    "median_seconds": 4.118004646152258,
+    "min_seconds": 3.989477425813675,
+    "max_seconds": 4.123527266085148,
+    "samples_seconds": [
+      3.989477425813675,
+      4.123527266085148,
+      4.118004646152258
+    ],
+    "max_residual": 2.6802734612556952e-14,
+    "max_eigenvalue_error": 1.5595810380932018,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": null
+  },
+  {
+    "case": "iris-fine",
+    "problem": "iris",
+    "size": 2.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 10954,
+    "field_dofs": 5477,
+    "backend": "cuda_cudss",
+    "valid": false,
+    "median_seconds": 0.3993167541921139,
+    "min_seconds": 0.3928847685456276,
+    "max_seconds": 0.40551117435097694,
+    "samples_seconds": [
+      0.3928847685456276,
+      0.40551117435097694,
+      0.3993167541921139
+    ],
+    "max_residual": 3.2062027421402424e-13,
+    "max_eigenvalue_error": 1.7630335740942005,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": null
+  },
+  {
+    "case": "siw-coarse",
+    "problem": "siw",
+    "size": 2.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 4290,
+    "field_dofs": 2145,
+    "backend": "cpu_eigs",
+    "valid": true,
+    "median_seconds": 0.6331880167126656,
+    "min_seconds": 0.5902581103146076,
+    "max_seconds": 0.6367375738918781,
+    "samples_seconds": [
+      0.6367375738918781,
+      0.6331880167126656,
+      0.5902581103146076
+    ],
+    "max_residual": 4.54428720915317e-15,
+    "max_eigenvalue_error": 0.0,
+    "steps": [
+      81,
+      81,
+      81
+    ],
+    "restarts": [
+      null,
+      null,
+      null
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0
+  },
+  {
+    "case": "siw-coarse",
+    "problem": "siw",
+    "size": 2.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 4290,
+    "field_dofs": 2145,
+    "backend": "cpu_refined",
+    "valid": true,
+    "median_seconds": 0.6183644980192184,
+    "min_seconds": 0.5618324019014835,
+    "max_seconds": 0.6201451197266579,
+    "samples_seconds": [
+      0.6183644980192184,
+      0.6201451197266579,
+      0.5618324019014835
+    ],
+    "max_residual": 5.892417123739001e-15,
+    "max_eigenvalue_error": 2.4343630401687462e-15,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0239721373735566
+  },
+  {
+    "case": "siw-coarse",
+    "problem": "siw",
+    "size": 2.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 4290,
+    "field_dofs": 2145,
+    "backend": "cuda_cudss",
+    "valid": true,
+    "median_seconds": 0.2068980522453785,
+    "min_seconds": 0.1891774833202362,
+    "max_seconds": 0.211612980812788,
+    "samples_seconds": [
+      0.211612980812788,
+      0.2068980522453785,
+      0.1891774833202362
+    ],
+    "max_residual": 3.268224309050862e-14,
+    "max_eigenvalue_error": 1.0662978629617764e-14,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 3.060386551931927
+  },
+  {
+    "case": "siw-medium",
+    "problem": "siw",
+    "size": 1.4,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 7292,
+    "field_dofs": 3646,
+    "backend": "cpu_eigs",
+    "valid": true,
+    "median_seconds": 1.2707444727420807,
+    "min_seconds": 1.2642700262367725,
+    "max_seconds": 1.3429866656661034,
+    "samples_seconds": [
+      1.2642700262367725,
+      1.3429866656661034,
+      1.2707444727420807
+    ],
+    "max_residual": 5.480133538646349e-15,
+    "max_eigenvalue_error": 0.0,
+    "steps": [
+      81,
+      81,
+      81
+    ],
+    "restarts": [
+      null,
+      null,
+      null
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0
+  },
+  {
+    "case": "siw-medium",
+    "problem": "siw",
+    "size": 1.4,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 7292,
+    "field_dofs": 3646,
+    "backend": "cpu_refined",
+    "valid": true,
+    "median_seconds": 1.2343800850212574,
+    "min_seconds": 1.2316678799688816,
+    "max_seconds": 1.2869422174990177,
+    "samples_seconds": [
+      1.2343800850212574,
+      1.2316678799688816,
+      1.2869422174990177
+    ],
+    "max_residual": 5.542625498561706e-15,
+    "max_eigenvalue_error": 2.2280228756390335e-15,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0294596357816297
+  },
+  {
+    "case": "siw-medium",
+    "problem": "siw",
+    "size": 1.4,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 7292,
+    "field_dofs": 3646,
+    "backend": "cuda_cudss",
+    "valid": true,
+    "median_seconds": 0.2586015984416008,
+    "min_seconds": 0.2562750615179539,
+    "max_seconds": 0.26714755594730377,
+    "samples_seconds": [
+      0.2586015984416008,
+      0.2562750615179539,
+      0.26714755594730377
+    ],
+    "max_residual": 5.532335552972847e-14,
+    "max_eigenvalue_error": 6.780595409114525e-15,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 4.91390803614483
+  },
+  {
+    "case": "siw-fine",
+    "problem": "siw",
+    "size": 1.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 13246,
+    "field_dofs": 6623,
+    "backend": "cpu_eigs",
+    "valid": true,
+    "median_seconds": 3.7332459688186646,
+    "min_seconds": 3.721854005008936,
+    "max_seconds": 3.770230293273926,
+    "samples_seconds": [
+      3.770230293273926,
+      3.7332459688186646,
+      3.721854005008936
+    ],
+    "max_residual": 8.453689229449592e-15,
+    "max_eigenvalue_error": 0.0,
+    "steps": [
+      81,
+      81,
+      81
+    ],
+    "restarts": [
+      null,
+      null,
+      null
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0
+  },
+  {
+    "case": "siw-fine",
+    "problem": "siw",
+    "size": 1.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 13246,
+    "field_dofs": 6623,
+    "backend": "cpu_refined",
+    "valid": true,
+    "median_seconds": 3.6350493393838406,
+    "min_seconds": 3.62937119230628,
+    "max_seconds": 3.6522070541977882,
+    "samples_seconds": [
+      3.6350493393838406,
+      3.62937119230628,
+      3.6522070541977882
+    ],
+    "max_residual": 7.906079277431098e-15,
+    "max_eigenvalue_error": 4.19890065501438e-15,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0270138367506916
+  },
+  {
+    "case": "siw-fine",
+    "problem": "siw",
+    "size": 1.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 13246,
+    "field_dofs": 6623,
+    "backend": "cuda_cudss",
+    "valid": true,
+    "median_seconds": 0.3899076096713543,
+    "min_seconds": 0.37640082091093063,
+    "max_seconds": 0.39185021817684174,
+    "samples_seconds": [
+      0.37640082091093063,
+      0.39185021817684174,
+      0.3899076096713543
+    ],
+    "max_residual": 2.7557380993894213e-13,
+    "max_eigenvalue_error": 5.4538042784405305e-15,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 9.574693789550162
+  },
+  {
+    "case": "perforated_waveguide-coarse",
+    "problem": "perforated_waveguide",
+    "size": 5.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 16746,
+    "field_dofs": 8373,
+    "backend": "cpu_eigs",
+    "valid": true,
+    "median_seconds": 7.137490000575781,
+    "min_seconds": 6.912569981068373,
+    "max_seconds": 7.240861169993877,
+    "samples_seconds": [
+      7.137490000575781,
+      7.240861169993877,
+      6.912569981068373
+    ],
+    "max_residual": 5.862430615892758e-15,
+    "max_eigenvalue_error": 0.0,
+    "steps": [
+      81,
+      81,
+      81
+    ],
+    "restarts": [
+      null,
+      null,
+      null
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0
+  },
+  {
+    "case": "perforated_waveguide-coarse",
+    "problem": "perforated_waveguide",
+    "size": 5.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 16746,
+    "field_dofs": 8373,
+    "backend": "cpu_refined",
+    "valid": true,
+    "median_seconds": 7.02766627073288,
+    "min_seconds": 6.847252294421196,
+    "max_seconds": 7.031911842525005,
+    "samples_seconds": [
+      7.02766627073288,
+      6.847252294421196,
+      7.031911842525005
+    ],
+    "max_residual": 6.381727607708687e-15,
+    "max_eigenvalue_error": 1.831920557255352e-16,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.015627339946444
+  },
+  {
+    "case": "perforated_waveguide-coarse",
+    "problem": "perforated_waveguide",
+    "size": 5.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 16746,
+    "field_dofs": 8373,
+    "backend": "cuda_cudss",
+    "valid": true,
+    "median_seconds": 0.4899640269577503,
+    "min_seconds": 0.48785723373293877,
+    "max_seconds": 0.5060862004756927,
+    "samples_seconds": [
+      0.4899640269577503,
+      0.5060862004756927,
+      0.48785723373293877
+    ],
+    "max_residual": 6.686396084455971e-14,
+    "max_eigenvalue_error": 8.261315082555672e-15,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 14.567375578352914
+  },
+  {
+    "case": "perforated_waveguide-medium",
+    "problem": "perforated_waveguide",
+    "size": 3.5,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 19370,
+    "field_dofs": 9685,
+    "backend": "cpu_eigs",
+    "valid": true,
+    "median_seconds": 8.692156232893467,
+    "min_seconds": 8.492273654788733,
+    "max_seconds": 9.390509821474552,
+    "samples_seconds": [
+      8.692156232893467,
+      8.492273654788733,
+      9.390509821474552
+    ],
+    "max_residual": 6.398370039267849e-15,
+    "max_eigenvalue_error": 0.0,
+    "steps": [
+      81,
+      81,
+      81
+    ],
+    "restarts": [
+      null,
+      null,
+      null
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0
+  },
+  {
+    "case": "perforated_waveguide-medium",
+    "problem": "perforated_waveguide",
+    "size": 3.5,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 19370,
+    "field_dofs": 9685,
+    "backend": "cpu_refined",
+    "valid": true,
+    "median_seconds": 8.343063775449991,
+    "min_seconds": 8.221976697444916,
+    "max_seconds": 9.129405058920383,
+    "samples_seconds": [
+      8.221976697444916,
+      9.129405058920383,
+      8.343063775449991
+    ],
+    "max_residual": 7.092779110742852e-15,
+    "max_eigenvalue_error": 2.5561725808105187e-16,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0418422376766079
+  },
+  {
+    "case": "perforated_waveguide-medium",
+    "problem": "perforated_waveguide",
+    "size": 3.5,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 19370,
+    "field_dofs": 9685,
+    "backend": "cuda_cudss",
+    "valid": true,
+    "median_seconds": 0.5677260681986809,
+    "min_seconds": 0.5464027859270573,
+    "max_seconds": 0.5748937614262104,
+    "samples_seconds": [
+      0.5748937614262104,
+      0.5677260681986809,
+      0.5464027859270573
+    ],
+    "max_residual": 9.380148086885904e-14,
+    "max_eigenvalue_error": 1.6834347325342067e-14,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 15.31047580829346
+  },
+  {
+    "case": "perforated_waveguide-fine",
+    "problem": "perforated_waveguide",
+    "size": 2.5,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 39360,
+    "field_dofs": 19680,
+    "backend": "cpu_eigs",
+    "valid": true,
+    "median_seconds": 34.497802421450615,
+    "min_seconds": 34.4308340921998,
+    "max_seconds": 34.839957404881716,
+    "samples_seconds": [
+      34.4308340921998,
+      34.839957404881716,
+      34.497802421450615
+    ],
+    "max_residual": 1.0924771266140941e-14,
+    "max_eigenvalue_error": 0.0,
+    "steps": [
+      81,
+      81,
+      81
+    ],
+    "restarts": [
+      null,
+      null,
+      null
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0
+  },
+  {
+    "case": "perforated_waveguide-fine",
+    "problem": "perforated_waveguide",
+    "size": 2.5,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 39360,
+    "field_dofs": 19680,
+    "backend": "cpu_refined",
+    "valid": true,
+    "median_seconds": 33.79209917038679,
+    "min_seconds": 33.23674698174,
+    "max_seconds": 35.409812949597836,
+    "samples_seconds": [
+      33.79209917038679,
+      35.409812949597836,
+      33.23674698174
+    ],
+    "max_residual": 1.1637395931203251e-14,
+    "max_eigenvalue_error": 4.446614354553279e-16,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0208836760186315
+  },
+  {
+    "case": "perforated_waveguide-fine",
+    "problem": "perforated_waveguide",
+    "size": 2.5,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 39360,
+    "field_dofs": 19680,
+    "backend": "cuda_cudss",
+    "valid": true,
+    "median_seconds": 1.052284099161625,
+    "min_seconds": 1.038660828024149,
+    "max_seconds": 1.0592751279473305,
+    "samples_seconds": [
+      1.052284099161625,
+      1.038660828024149,
+      1.0592751279473305
+    ],
+    "max_residual": 7.993450239347019e-14,
+    "max_eigenvalue_error": 8.145810941957167e-15,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 32.78373440113339
+  },
+  {
+    "case": "dielectric_rod-coarse",
+    "problem": "dielectric_rod",
+    "size": 4.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 4968,
+    "field_dofs": 2484,
+    "backend": "cpu_eigs",
+    "valid": true,
+    "median_seconds": 2.5758882872760296,
+    "min_seconds": 2.531533021479845,
+    "max_seconds": 3.4894461780786514,
+    "samples_seconds": [
+      2.531533021479845,
+      3.4894461780786514,
+      2.5758882872760296
+    ],
+    "max_residual": 2.7446471160011764e-14,
+    "max_eigenvalue_error": 0.0,
+    "steps": [
+      81,
+      81,
+      81
+    ],
+    "restarts": [
+      null,
+      null,
+      null
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0
+  },
+  {
+    "case": "dielectric_rod-coarse",
+    "problem": "dielectric_rod",
+    "size": 4.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 4968,
+    "field_dofs": 2484,
+    "backend": "cpu_refined",
+    "valid": true,
+    "median_seconds": 2.510352425277233,
+    "min_seconds": 2.471512448042631,
+    "max_seconds": 2.767705801874399,
+    "samples_seconds": [
+      2.510352425277233,
+      2.767705801874399,
+      2.471512448042631
+    ],
+    "max_residual": 2.7307479145036484e-14,
+    "max_eigenvalue_error": 1.3922125900994122e-15,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0261062396414555
+  },
+  {
+    "case": "dielectric_rod-coarse",
+    "problem": "dielectric_rod",
+    "size": 4.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 4968,
+    "field_dofs": 2484,
+    "backend": "cuda_cudss",
+    "valid": true,
+    "median_seconds": 0.26810043305158615,
+    "min_seconds": 0.2564604766666889,
+    "max_seconds": 0.27050305902957916,
+    "samples_seconds": [
+      0.26810043305158615,
+      0.2564604766666889,
+      0.27050305902957916
+    ],
+    "max_residual": 1.2013399661905977e-13,
+    "max_eigenvalue_error": 5.143775420446722e-15,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 9.607922889033132
+  },
+  {
+    "case": "dielectric_rod-medium",
+    "problem": "dielectric_rod",
+    "size": 3.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 7440,
+    "field_dofs": 3720,
+    "backend": "cpu_eigs",
+    "valid": true,
+    "median_seconds": 4.798996798694134,
+    "min_seconds": 4.780006028711796,
+    "max_seconds": 4.827992282807827,
+    "samples_seconds": [
+      4.798996798694134,
+      4.827992282807827,
+      4.780006028711796
+    ],
+    "max_residual": 2.8266848749760647e-14,
+    "max_eigenvalue_error": 0.0,
+    "steps": [
+      81,
+      81,
+      81
+    ],
+    "restarts": [
+      null,
+      null,
+      null
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0
+  },
+  {
+    "case": "dielectric_rod-medium",
+    "problem": "dielectric_rod",
+    "size": 3.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 7440,
+    "field_dofs": 3720,
+    "backend": "cpu_refined",
+    "valid": true,
+    "median_seconds": 4.949256386607885,
+    "min_seconds": 4.725277155637741,
+    "max_seconds": 4.957983519881964,
+    "samples_seconds": [
+      4.949256386607885,
+      4.957983519881964,
+      4.725277155637741
+    ],
+    "max_residual": 2.8167308307147888e-14,
+    "max_eigenvalue_error": 2.5098469399749802e-15,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 0.9696399668604082
+  },
+  {
+    "case": "dielectric_rod-medium",
+    "problem": "dielectric_rod",
+    "size": 3.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 7440,
+    "field_dofs": 3720,
+    "backend": "cuda_cudss",
+    "valid": true,
+    "median_seconds": 0.35436563938856125,
+    "min_seconds": 0.3464699350297451,
+    "max_seconds": 0.4733283706009388,
+    "samples_seconds": [
+      0.4733283706009388,
+      0.3464699350297451,
+      0.35436563938856125
+    ],
+    "max_residual": 1.9247751267876349e-13,
+    "max_eigenvalue_error": 1.0900699763631046e-14,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 13.542500359161636
+  },
+  {
+    "case": "dielectric_rod-fine",
+    "problem": "dielectric_rod",
+    "size": 2.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 15614,
+    "field_dofs": 7807,
+    "backend": "cpu_eigs",
+    "valid": true,
+    "median_seconds": 33.37316622585058,
+    "min_seconds": 33.053839810192585,
+    "max_seconds": 33.68598749488592,
+    "samples_seconds": [
+      33.37316622585058,
+      33.68598749488592,
+      33.053839810192585
+    ],
+    "max_residual": 4.849890511041428e-14,
+    "max_eigenvalue_error": 0.0,
+    "steps": [
+      81,
+      81,
+      81
+    ],
+    "restarts": [
+      null,
+      null,
+      null
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0
+  },
+  {
+    "case": "dielectric_rod-fine",
+    "problem": "dielectric_rod",
+    "size": 2.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 15614,
+    "field_dofs": 7807,
+    "backend": "cpu_refined",
+    "valid": true,
+    "median_seconds": 32.69746955856681,
+    "min_seconds": 32.283676315099,
+    "max_seconds": 33.325105268508196,
+    "samples_seconds": [
+      32.283676315099,
+      33.325105268508196,
+      32.69746955856681
+    ],
+    "max_residual": 4.997439194953187e-14,
+    "max_eigenvalue_error": 1.487709209519727e-15,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0206651057835985
+  },
+  {
+    "case": "dielectric_rod-fine",
+    "problem": "dielectric_rod",
+    "size": 2.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 15614,
+    "field_dofs": 7807,
+    "backend": "cuda_cudss",
+    "valid": true,
+    "median_seconds": 0.6392658464610577,
+    "min_seconds": 0.6350445561110973,
+    "max_seconds": 0.6397106610238552,
+    "samples_seconds": [
+      0.6392658464610577,
+      0.6397106610238552,
+      0.6350445561110973
+    ],
+    "max_residual": 5.376045970119658e-13,
+    "max_eigenvalue_error": 1.5614552727109054e-14,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 52.20545788673474
+  },
+  {
+    "case": "iris-medium-threads10",
+    "problem": "iris",
+    "size": 3.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 10,
+    "pencil_dofs": 4844,
+    "field_dofs": 2422,
+    "backend": "cpu_eigs",
+    "valid": true,
+    "median_seconds": 1.062359943985939,
+    "min_seconds": 1.0596772246062756,
+    "max_seconds": 2.0281215012073517,
+    "samples_seconds": [
+      1.062359943985939,
+      1.0596772246062756,
+      2.0281215012073517
+    ],
+    "max_residual": 2.0891370652373917e-14,
+    "max_eigenvalue_error": 0.0,
+    "steps": [
+      81,
+      81,
+      81
+    ],
+    "restarts": [
+      null,
+      null,
+      null
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0
+  },
+  {
+    "case": "iris-medium-threads10",
+    "problem": "iris",
+    "size": 3.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 10,
+    "pencil_dofs": 4844,
+    "field_dofs": 2422,
+    "backend": "cpu_refined",
+    "valid": false,
+    "median_seconds": 1.0931035354733467,
+    "min_seconds": 1.0550599247217178,
+    "max_seconds": 1.268571987748146,
+    "samples_seconds": [
+      1.0931035354733467,
+      1.0550599247217178,
+      1.268571987748146
+    ],
+    "max_residual": 2.2511006010484468e-14,
+    "max_eigenvalue_error": 1.5639024067764122,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": null
+  },
+  {
+    "case": "iris-medium-threads10",
+    "problem": "iris",
+    "size": 3.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 10,
+    "pencil_dofs": 4844,
+    "field_dofs": 2422,
+    "backend": "cuda_cudss",
+    "valid": true,
+    "median_seconds": 0.26216961443424225,
+    "min_seconds": 0.23838288336992264,
+    "max_seconds": 0.265471413731575,
+    "samples_seconds": [
+      0.265471413731575,
+      0.26216961443424225,
+      0.23838288336992264
+    ],
+    "max_residual": 4.4817305312410667e-13,
+    "max_eigenvalue_error": 4.417608581753777e-14,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 4.052185629057336
+  },
+  {
+    "case": "iris-medium-modes14",
+    "problem": "iris",
+    "size": 3.0,
+    "modes": 14,
+    "ncv": 96,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 4844,
+    "field_dofs": 2422,
+    "backend": "cpu_eigs",
+    "valid": true,
+    "median_seconds": 1.2828505374491215,
+    "min_seconds": 1.1954592354595661,
+    "max_seconds": 1.5109773091971874,
+    "samples_seconds": [
+      1.2828505374491215,
+      1.1954592354595661,
+      1.5109773091971874
+    ],
+    "max_residual": 7.340015055132247e-14,
+    "max_eigenvalue_error": 0.0,
+    "steps": [
+      97,
+      97,
+      97
+    ],
+    "restarts": [
+      null,
+      null,
+      null
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0
+  },
+  {
+    "case": "iris-medium-modes14",
+    "problem": "iris",
+    "size": 3.0,
+    "modes": 14,
+    "ncv": 96,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 4844,
+    "field_dofs": 2422,
+    "backend": "cpu_refined",
+    "valid": true,
+    "median_seconds": 1.3889928683638573,
+    "min_seconds": 1.35077054053545,
+    "max_seconds": 1.4590823464095592,
+    "samples_seconds": [
+      1.35077054053545,
+      1.3889928683638573,
+      1.4590823464095592
+    ],
+    "max_residual": 6.570060168633174e-14,
+    "max_eigenvalue_error": 8.65840216453055e-14,
+    "steps": [
+      96,
+      96,
+      96
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 0.9235832426988884
+  },
+  {
+    "case": "iris-medium-modes14",
+    "problem": "iris",
+    "size": 3.0,
+    "modes": 14,
+    "ncv": 96,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 4844,
+    "field_dofs": 2422,
+    "backend": "cuda_cudss",
+    "valid": true,
+    "median_seconds": 0.42696911469101906,
+    "min_seconds": 0.4139147140085697,
+    "max_seconds": 0.437799908220768,
+    "samples_seconds": [
+      0.437799908220768,
+      0.4139147140085697,
+      0.42696911469101906
+    ],
+    "max_residual": 1.2310418194986148e-12,
+    "max_eigenvalue_error": 1.4374439975226046e-13,
+    "steps": [
+      96,
+      96,
+      96
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 3.0045511333471286
+  },
+  {
+    "case": "siw-medium-threads10",
+    "problem": "siw",
+    "size": 1.4,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 10,
+    "pencil_dofs": 7292,
+    "field_dofs": 3646,
+    "backend": "cpu_eigs",
+    "valid": true,
+    "median_seconds": 1.3537004888057709,
+    "min_seconds": 1.324819914996624,
+    "max_seconds": 1.3668311908841133,
+    "samples_seconds": [
+      1.3668311908841133,
+      1.324819914996624,
+      1.3537004888057709
+    ],
+    "max_residual": 5.8202451120258894e-15,
+    "max_eigenvalue_error": 0.0,
+    "steps": [
+      81,
+      81,
+      81
+    ],
+    "restarts": [
+      null,
+      null,
+      null
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0
+  },
+  {
+    "case": "siw-medium-threads10",
+    "problem": "siw",
+    "size": 1.4,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 10,
+    "pencil_dofs": 7292,
+    "field_dofs": 3646,
+    "backend": "cpu_refined",
+    "valid": true,
+    "median_seconds": 1.3643354810774326,
+    "min_seconds": 1.3438472747802734,
+    "max_seconds": 1.3684584721922874,
+    "samples_seconds": [
+      1.3684584721922874,
+      1.3438472747802734,
+      1.3643354810774326
+    ],
+    "max_residual": 6.438126908369341e-15,
+    "max_eigenvalue_error": 6.089479202864037e-15,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 0.992205002054727
+  },
+  {
+    "case": "siw-medium-threads10",
+    "problem": "siw",
+    "size": 1.4,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 10,
+    "pencil_dofs": 7292,
+    "field_dofs": 3646,
+    "backend": "cuda_cudss",
+    "valid": true,
+    "median_seconds": 0.2858513481914997,
+    "min_seconds": 0.28526443243026733,
+    "max_seconds": 0.2983931042253971,
+    "samples_seconds": [
+      0.2983931042253971,
+      0.2858513481914997,
+      0.28526443243026733
+    ],
+    "max_residual": 7.488467024063653e-14,
+    "max_eigenvalue_error": 4.904051148871921e-15,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 4.735679916747811
+  },
+  {
+    "case": "siw-medium-modes14",
+    "problem": "siw",
+    "size": 1.4,
+    "modes": 14,
+    "ncv": 96,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 7292,
+    "field_dofs": 3646,
+    "backend": "cpu_eigs",
+    "valid": true,
+    "median_seconds": 1.6244403049349785,
+    "min_seconds": 1.5912359952926636,
+    "max_seconds": 1.6414309702813625,
+    "samples_seconds": [
+      1.5912359952926636,
+      1.6244403049349785,
+      1.6414309702813625
+    ],
+    "max_residual": 9.495786209291573e-15,
+    "max_eigenvalue_error": 0.0,
+    "steps": [
+      97,
+      97,
+      97
+    ],
+    "restarts": [
+      null,
+      null,
+      null
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0
+  },
+  {
+    "case": "siw-medium-modes14",
+    "problem": "siw",
+    "size": 1.4,
+    "modes": 14,
+    "ncv": 96,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 7292,
+    "field_dofs": 3646,
+    "backend": "cpu_refined",
+    "valid": true,
+    "median_seconds": 1.755674947053194,
+    "min_seconds": 1.707478940486908,
+    "max_seconds": 2.0811870731413364,
+    "samples_seconds": [
+      2.0811870731413364,
+      1.755674947053194,
+      1.707478940486908
+    ],
+    "max_residual": 1.0990547006468096e-14,
+    "max_eigenvalue_error": 8.54305813235655e-15,
+    "steps": [
+      96,
+      96,
+      96
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 0.9252511734370387
+  },
+  {
+    "case": "siw-medium-modes14",
+    "problem": "siw",
+    "size": 1.4,
+    "modes": 14,
+    "ncv": 96,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 7292,
+    "field_dofs": 3646,
+    "backend": "cuda_cudss",
+    "valid": true,
+    "median_seconds": 0.4536622203886509,
+    "min_seconds": 0.4403654709458351,
+    "max_seconds": 0.4838097132742405,
+    "samples_seconds": [
+      0.4838097132742405,
+      0.4536622203886509,
+      0.4403654709458351
+    ],
+    "max_residual": 1.6108002663598707e-13,
+    "max_eigenvalue_error": 2.162976888666514e-14,
+    "steps": [
+      96,
+      96,
+      96
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 3.580726434622054
+  },
+  {
+    "case": "perforated_waveguide-medium-threads10",
+    "problem": "perforated_waveguide",
+    "size": 3.5,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 10,
+    "pencil_dofs": 19370,
+    "field_dofs": 9685,
+    "backend": "cpu_eigs",
+    "valid": true,
+    "median_seconds": 9.511431686580181,
+    "min_seconds": 8.9139972217381,
+    "max_seconds": 9.613231148570776,
+    "samples_seconds": [
+      9.511431686580181,
+      9.613231148570776,
+      8.9139972217381
+    ],
+    "max_residual": 6.445274770739891e-15,
+    "max_eigenvalue_error": 0.0,
+    "steps": [
+      81,
+      81,
+      81
+    ],
+    "restarts": [
+      null,
+      null,
+      null
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0
+  },
+  {
+    "case": "perforated_waveguide-medium-threads10",
+    "problem": "perforated_waveguide",
+    "size": 3.5,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 10,
+    "pencil_dofs": 19370,
+    "field_dofs": 9685,
+    "backend": "cpu_refined",
+    "valid": true,
+    "median_seconds": 9.185112800449133,
+    "min_seconds": 8.594677790999413,
+    "max_seconds": 9.201568130403757,
+    "samples_seconds": [
+      9.185112800449133,
+      9.201568130403757,
+      8.594677790999413
+    ],
+    "max_residual": 6.703406367432569e-15,
+    "max_eigenvalue_error": 6.667118051786499e-16,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0355269328989722
+  },
+  {
+    "case": "perforated_waveguide-medium-threads10",
+    "problem": "perforated_waveguide",
+    "size": 3.5,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 10,
+    "pencil_dofs": 19370,
+    "field_dofs": 9685,
+    "backend": "cuda_cudss",
+    "valid": true,
+    "median_seconds": 0.6159216091036797,
+    "min_seconds": 0.549015037715435,
+    "max_seconds": 1.1680719703435898,
+    "samples_seconds": [
+      0.6159216091036797,
+      1.1680719703435898,
+      0.549015037715435
+    ],
+    "max_residual": 7.694512372715396e-14,
+    "max_eigenvalue_error": 1.853981565811642e-14,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 15.442601048568013
+  },
+  {
+    "case": "perforated_waveguide-medium-modes14",
+    "problem": "perforated_waveguide",
+    "size": 3.5,
+    "modes": 14,
+    "ncv": 96,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 19370,
+    "field_dofs": 9685,
+    "backend": "cpu_eigs",
+    "valid": true,
+    "median_seconds": 9.992085568606853,
+    "min_seconds": 9.800646968185902,
+    "max_seconds": 10.071963347494602,
+    "samples_seconds": [
+      9.992085568606853,
+      9.800646968185902,
+      10.071963347494602
+    ],
+    "max_residual": 9.942622075927578e-14,
+    "max_eigenvalue_error": 0.0,
+    "steps": [
+      97,
+      97,
+      97
+    ],
+    "restarts": [
+      null,
+      null,
+      null
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0
+  },
+  {
+    "case": "perforated_waveguide-medium-modes14",
+    "problem": "perforated_waveguide",
+    "size": 3.5,
+    "modes": 14,
+    "ncv": 96,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 19370,
+    "field_dofs": 9685,
+    "backend": "cpu_refined",
+    "valid": true,
+    "median_seconds": 10.2579665184021,
+    "min_seconds": 9.412277765572071,
+    "max_seconds": 10.408334787935019,
+    "samples_seconds": [
+      9.412277765572071,
+      10.408334787935019,
+      10.2579665184021
+    ],
+    "max_residual": 8.600701005724175e-14,
+    "max_eigenvalue_error": 1.2176756381107659e-14,
+    "steps": [
+      96,
+      96,
+      96
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 0.9740805402982868
+  },
+  {
+    "case": "perforated_waveguide-medium-modes14",
+    "problem": "perforated_waveguide",
+    "size": 3.5,
+    "modes": 14,
+    "ncv": 96,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 19370,
+    "field_dofs": 9685,
+    "backend": "cuda_cudss",
+    "valid": true,
+    "median_seconds": 0.7561887502670288,
+    "min_seconds": 0.7540622241795063,
+    "max_seconds": 0.7910306304693222,
+    "samples_seconds": [
+      0.7561887502670288,
+      0.7540622241795063,
+      0.7910306304693222
+    ],
+    "max_residual": 1.3668463063068968e-12,
+    "max_eigenvalue_error": 3.988818692704265e-14,
+    "steps": [
+      96,
+      96,
+      96
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 13.213745331543748
+  },
+  {
+    "case": "dielectric_rod-medium-threads10",
+    "problem": "dielectric_rod",
+    "size": 3.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 10,
+    "pencil_dofs": 7440,
+    "field_dofs": 3720,
+    "backend": "cpu_eigs",
+    "valid": true,
+    "median_seconds": 5.522778633981943,
+    "min_seconds": 4.748113993555307,
+    "max_seconds": 5.528255831450224,
+    "samples_seconds": [
+      4.748113993555307,
+      5.522778633981943,
+      5.528255831450224
+    ],
+    "max_residual": 2.7393898045647713e-14,
+    "max_eigenvalue_error": 0.0,
+    "steps": [
+      81,
+      81,
+      81
+    ],
+    "restarts": [
+      null,
+      null,
+      null
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0
+  },
+  {
+    "case": "dielectric_rod-medium-threads10",
+    "problem": "dielectric_rod",
+    "size": 3.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 10,
+    "pencil_dofs": 7440,
+    "field_dofs": 3720,
+    "backend": "cpu_refined",
+    "valid": true,
+    "median_seconds": 4.959987826645374,
+    "min_seconds": 4.716018807142973,
+    "max_seconds": 6.496230326592922,
+    "samples_seconds": [
+      6.496230326592922,
+      4.716018807142973,
+      4.959987826645374
+    ],
+    "max_residual": 2.8429319904984204e-14,
+    "max_eigenvalue_error": 1.4655364458042816e-15,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.113466167056544
+  },
+  {
+    "case": "dielectric_rod-medium-threads10",
+    "problem": "dielectric_rod",
+    "size": 3.0,
+    "modes": 4,
+    "ncv": 80,
+    "tol": 1e-08,
+    "threads": 10,
+    "pencil_dofs": 7440,
+    "field_dofs": 3720,
+    "backend": "cuda_cudss",
+    "valid": true,
+    "median_seconds": 0.3886813297867775,
+    "min_seconds": 0.35330117866396904,
+    "max_seconds": 0.6010750383138657,
+    "samples_seconds": [
+      0.3886813297867775,
+      0.35330117866396904,
+      0.6010750383138657
+    ],
+    "max_residual": 1.8372474707509863e-13,
+    "max_eigenvalue_error": 1.9069373240239858e-14,
+    "steps": [
+      80,
+      80,
+      80
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 14.20901445668004
+  },
+  {
+    "case": "dielectric_rod-medium-modes14",
+    "problem": "dielectric_rod",
+    "size": 3.0,
+    "modes": 14,
+    "ncv": 96,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 7440,
+    "field_dofs": 3720,
+    "backend": "cpu_eigs",
+    "valid": true,
+    "median_seconds": 5.650953020900488,
+    "min_seconds": 5.5411576591432095,
+    "max_seconds": 5.691313818097115,
+    "samples_seconds": [
+      5.691313818097115,
+      5.650953020900488,
+      5.5411576591432095
+    ],
+    "max_residual": 3.436637594100095e-14,
+    "max_eigenvalue_error": 0.0,
+    "steps": [
+      97,
+      97,
+      97
+    ],
+    "restarts": [
+      null,
+      null,
+      null
+    ],
+    "error": null,
+    "speedup_vs_eigs": 1.0
+  },
+  {
+    "case": "dielectric_rod-medium-modes14",
+    "problem": "dielectric_rod",
+    "size": 3.0,
+    "modes": 14,
+    "ncv": 96,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 7440,
+    "field_dofs": 3720,
+    "backend": "cpu_refined",
+    "valid": true,
+    "median_seconds": 5.756819553673267,
+    "min_seconds": 5.7317849807441235,
+    "max_seconds": 5.954053808003664,
+    "samples_seconds": [
+      5.954053808003664,
+      5.7317849807441235,
+      5.756819553673267
+    ],
+    "max_residual": 3.2156920041348805e-14,
+    "max_eigenvalue_error": 5.888370060958489e-15,
+    "steps": [
+      96,
+      96,
+      96
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 0.9816102395105942
+  },
+  {
+    "case": "dielectric_rod-medium-modes14",
+    "problem": "dielectric_rod",
+    "size": 3.0,
+    "modes": 14,
+    "ncv": 96,
+    "tol": 1e-08,
+    "threads": 1,
+    "pencil_dofs": 7440,
+    "field_dofs": 3720,
+    "backend": "cuda_cudss",
+    "valid": true,
+    "median_seconds": 0.5640346072614193,
+    "min_seconds": 0.5515068843960762,
+    "max_seconds": 0.5745270103216171,
+    "samples_seconds": [
+      0.5745270103216171,
+      0.5640346072614193,
+      0.5515068843960762
+    ],
+    "max_residual": 2.436477615784042e-13,
+    "max_eigenvalue_error": 1.0799023566625639e-14,
+    "steps": [
+      96,
+      96,
+      96
+    ],
+    "restarts": [
+      0,
+      0,
+      0
+    ],
+    "error": null,
+    "speedup_vs_eigs": 10.018805491985315
+  }
+]
