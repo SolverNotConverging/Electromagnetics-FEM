@@ -1,4 +1,6 @@
 #include "main_window.hpp"
+#include "material_surface.hpp"
+#include "h5_reader.hpp"
 #include "../../../cmake/ViewerResults.hpp"
 
 #include <QApplication>
@@ -13,6 +15,7 @@
 #ifdef FEM_PERIODIC_MODE_VIEWER_WITH_VTK
 #include <QSurfaceFormat>
 #include <QVTKOpenGLNativeWidget.h>
+#include "vtk_field_view.hpp"
 #endif
 
 #include <cstdlib>
@@ -53,8 +56,58 @@ int main(int argc, char* argv[]) {
     QSurfaceFormat::setDefaultFormat(QVTKOpenGLNativeWidget::defaultFormat());
 #endif
     QApplication app(argc, argv);
-    if (argc != 3) return EXIT_FAILURE;
+    if (argc != 3 && argc != 4) return EXIT_FAILURE;
     try {
+        // Two tetrahedra share an interior material interface. The volume's
+        // exterior surface alone cannot display that interface.
+        femperiodic::MeshData mesh;
+        mesh.points = {{{0, 0, 0}}, {{1, 0, 0}}, {{0, 1, 0}},
+                       {{0, 0, 1}}, {{0, 0, -1}}};
+        mesh.cells = {{0, 1, 2, 3}, {0, 2, 1, 4}};
+        femperiodic::MaterialState material;
+        material.epsilonR = {{{6., 6., 6.}}, {{1., 1., 1.}}};
+        material.muR = {{{1., 1., 1.}}, {{1., 1., 1.}}};
+        auto faces = femperiodic::materialFaces(mesh, material);
+        const auto shared = std::array<std::int64_t, 3>{0, 1, 2};
+        require(std::count_if(faces.begin(), faces.end(), [&](const auto& face) {
+            return face.vertices == shared && face.owner == 0 && !face.boundary;
+        }) == 1, "Interior dielectric interface is missing or duplicated");
+        material.epsilonR[1] = material.epsilonR[0];
+        // Material samples are quadrature averages and can differ by roundoff.
+        material.epsilonR[1][0] += 1e-14;
+        faces = femperiodic::materialFaces(mesh, material);
+        require(std::none_of(faces.begin(), faces.end(), [&](const auto& face) {
+            return face.vertices == shared;
+        }), "Same-material tetrahedra expose an internal mesh face");
+#ifdef FEM_PERIODIC_MODE_VIEWER_WITH_VTK
+        if (argc == 4) {
+            const auto archive = femperiodic::H5Reader::loadIndex(argv[3]);
+            const auto& selected = archive->cases.front();
+            const auto meshData = femperiodic::H5Reader::loadMesh(*archive, selected.meshIndex);
+            const auto state = femperiodic::H5Reader::loadMaterialState(
+                *archive, selected.materialStateIndex);
+            const auto fields = femperiodic::H5Reader::loadModeFields(*archive, 0, 0);
+            const auto surfaces = femperiodic::materialFaces(*meshData, *state);
+            require(std::any_of(surfaces.begin(), surfaces.end(), [](const auto& face) {
+                return face.boundary;
+            }), "Excluded conductor surfaces are missing");
+            femperiodic::VtkFieldView view;
+            view.resize(1000, 800);
+            view.setMaterialOnly(true);
+            view.show();
+            view.setData(meshData, state, fields);
+            QEventLoop loop;
+            QTimer::singleShot(250, &loop, &QEventLoop::quit);
+            loop.exec();
+            auto* widget = view.findChild<QVTKOpenGLNativeWidget*>();
+            require(widget != nullptr, "Missing material viewport");
+            const auto output = qEnvironmentVariable("FEM_MATERIAL_SCREENSHOT");
+            if (!output.isEmpty())
+                require(widget->grabFramebuffer().save(output), "Cannot save material screenshot");
+            std::cout << "Material interfaces and excluded conductor surfaces: PASS\n";
+            return EXIT_SUCCESS;
+        }
+#endif
         QTemporaryDir directory;
         require(directory.isValid(), "Cannot create test folder");
         const auto root = directory.path();

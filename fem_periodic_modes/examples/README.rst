@@ -20,6 +20,17 @@ substantially longer. 3D cases also require more memory.
 2. `3d_uniform_cell.py <3d_uniform_cell.py>`_ — TE10 effective index in a uniform 3D cell. Single solve.
 3. `2d_leaky_wave_antenna.py <2d_leaky_wave_antenna.py>`_ — A leaky-wave cell with an outgoing PML. Single solve.
 4. `3d_iris_loaded_waveguide_filter.py <3d_iris_loaded_waveguide_filter.py>`_ — An iris-loaded rectangular waveguide cell. Single solve.
+5. `3d_leaky_wave_antenna.py <3d_leaky_wave_antenna.py>`_ — A dielectric rod with one PEC patch per z period, surrounded by air and transverse PML. Full-vector single solve.
+
+The 3D antenna example uses a 6 mm by 4 mm dielectric rod (relative
+permittivity 6), a 10 mm period, and a 4 mm by 3 mm metal patch on the
+rod's upper face at 20 GHz. ``build_solver()`` exposes the geometry for
+parameter changes. The search guess ``0.5 - 0.02j`` targets a fast-wave
+branch directly inside the air light cone (``|Re(neff)| < 1``).
+It prints complex effective indices, attenuation, PML
+energy fractions, and space harmonics inside the air light cone, then saves
+``results.h5`` and opens the viewer. This is an exploratory unit-cell model;
+check mesh, air-buffer, and PML convergence before interpreting leakage rates.
 
 Run a script from this directory, or pass its path from the repository root.
 Scripts that save results use

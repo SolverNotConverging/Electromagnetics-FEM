@@ -1,4 +1,5 @@
 #include "vtk_field_view.hpp"
+#include "material_surface.hpp"
 
 #include <QLabel>
 #include <QVBoxLayout>
@@ -18,7 +19,9 @@
 #include <vtkAxesActor.h>
 #include <vtkCellArray.h>
 #include <vtkCellData.h>
+#include <vtkCamera.h>
 #include <vtkCutter.h>
+#include <vtkCoordinate.h>
 #include <vtkDataSetMapper.h>
 #include <vtkDoubleArray.h>
 #include <vtkGenericOpenGLRenderWindow.h>
@@ -35,6 +38,7 @@
 #include <vtkScalarBarActor.h>
 #include <vtkSmartPointer.h>
 #include <vtkTextProperty.h>
+#include <vtkTextActor.h>
 #include <vtkUnstructuredGrid.h>
 #include <vtkVersion.h>
 #endif
@@ -213,6 +217,10 @@ private:
 #if defined(FEM_PERIODIC_MODE_VIEWER_WITH_VTK)
         renderer_->RemoveAllViewProps();
         scalarBar_->SetVisibility(false);
+        boundaryActor_ = nullptr;
+        domainActor_ = nullptr;
+        pmlActor_ = nullptr;
+        contextLabel_ = nullptr;
         renderer_->AddViewProp(scalarBar_);
         grid_ = nullptr;
         if (!mesh_ || mesh_->dimension != 3 || mesh_->topology != "tetra4" || !fields_) {
@@ -284,9 +292,13 @@ private:
         renderer_->AddActor(glyphActor_);
 
         grid_->GetBounds(bounds_.data());
+        if (materialOnly_) rebuildMaterialContext();
         rebuildScalars();
         updatePlane();
         renderer_->ResetCamera();
+        renderer_->GetActiveCamera()->Azimuth(30.0);
+        renderer_->GetActiveCamera()->Elevation(20.0);
+        renderer_->ResetCameraClippingRange();
         renderWindow_->Render();
 #else
         if (unavailable_) {
@@ -349,12 +361,17 @@ private:
             maximum = minimum + 1.0;
         }
         grid_->GetCellData()->SetScalars(scalars);
+        if (materialOnly_) {
+            rebuildMaterialSurface(values);
+        } else {
+            surfaceMapper_->SetInputData(grid_);
+        }
         surfaceMapper_->SetScalarRange(minimum, maximum);
         cutterMapper_->SetScalarRange(minimum, maximum);
         lookup_->SetTableRange(minimum, maximum);
         configureLookupTable(lookup_, materialOnly_);
         if (materialOnly_) {
-            scalarBar_->SetTitle("material |n_eff|");
+            scalarBar_->SetTitle("material |n|");
         } else {
             const auto selected = std::format(
                 "{}{}", family_ == FieldFamily::Electric ? "E" : "H",
@@ -378,8 +395,11 @@ private:
         }
         scalarBar_->SetLookupTable(lookup_);
         scalarBar_->SetVisibility(true);
-        surfaceActor_->GetProperty()->SetOpacity(materialOnly_ ? 0.72 : 0.22);
+        surfaceActor_->GetProperty()->SetOpacity(materialOnly_ ? 1.0 : 0.22);
+        surfaceActor_->GetProperty()->SetEdgeVisibility(!materialOnly_);
         surfaceActor_->SetVisibility(!sliceEnabled_);
+        if (boundaryActor_) boundaryActor_->SetVisibility(!sliceEnabled_);
+        setMaterialContextVisibility();
         cutterActor_->SetVisibility(sliceEnabled_);
         grid_->Modified();
         cutter_->Update();
@@ -394,6 +414,98 @@ private:
     }
 
 #if defined(FEM_PERIODIC_MODE_VIEWER_WITH_VTK)
+    void setMaterialContextVisibility() {
+        const auto visible = materialOnly_ && !sliceEnabled_;
+        if (domainActor_) domainActor_->SetVisibility(visible);
+        if (pmlActor_) pmlActor_->SetVisibility(visible);
+        if (contextLabel_) contextLabel_->SetVisibility(visible);
+    }
+
+    void rebuildMaterialContext() {
+        // Keep the full simulation extent visible without filling the air box.
+        vtkNew<vtkDataSetMapper> domainMapper;
+        domainMapper->SetInputData(grid_);
+        domainMapper->ScalarVisibilityOff();
+        domainActor_ = vtkSmartPointer<vtkActor>::New();
+        domainActor_->SetMapper(domainMapper);
+        domainActor_->GetProperty()->SetRepresentationToWireframe();
+        domainActor_->GetProperty()->SetColor(0.65, 0.68, 0.74);
+        domainActor_->GetProperty()->SetOpacity(0.22);
+        domainActor_->GetProperty()->LightingOff();
+        renderer_->AddActor(domainActor_);
+
+        // PML fractions belong to physical mesh cells. Extracting those cells
+        // displays both the exterior and the inner PML/air interface, including
+        // asymmetric PMLs, without assuming a particular thickness or axis.
+        vtkNew<vtkUnstructuredGrid> pmlGrid;
+        pmlGrid->SetPoints(grid_->GetPoints());
+        vtkNew<vtkCellArray> pmlCells;
+        if (material_ && material_->pmlFraction.size() == mesh_->cells.size()) {
+            for (std::size_t cell = 0; cell < mesh_->cells.size(); ++cell) {
+                if (material_->pmlFraction[cell] <= 0.0) continue;
+                const auto& vertices = mesh_->cells[cell];
+                if (vertices.size() != 4) continue;
+                std::array<vtkIdType, 4> ids{};
+                std::copy(vertices.begin(), vertices.end(), ids.begin());
+                pmlCells->InsertNextCell(4, ids.data());
+            }
+        }
+        pmlGrid->SetCells(VTK_TETRA, pmlCells);
+        const auto hasPml = pmlGrid->GetNumberOfCells() > 0;
+        if (hasPml) {
+            vtkNew<vtkDataSetMapper> pmlMapper;
+            pmlMapper->SetInputData(pmlGrid);
+            pmlMapper->ScalarVisibilityOff();
+            pmlActor_ = vtkSmartPointer<vtkActor>::New();
+            pmlActor_->SetMapper(pmlMapper);
+            pmlActor_->GetProperty()->SetRepresentationToWireframe();
+            pmlActor_->GetProperty()->SetColor(0.20, 0.80, 0.90);
+            pmlActor_->GetProperty()->SetOpacity(0.35);
+            pmlActor_->GetProperty()->LightingOff();
+            renderer_->AddActor(pmlActor_);
+        }
+        contextLabel_ = vtkSmartPointer<vtkTextActor>::New();
+        contextLabel_->SetInput(hasPml ? "Gray: simulation mesh   Cyan: PML" : "Gray: simulation mesh");
+        contextLabel_->GetPositionCoordinate()->SetCoordinateSystemToNormalizedViewport();
+        contextLabel_->SetPosition(0.02, 0.96);
+        contextLabel_->GetTextProperty()->SetFontSize(16);
+        contextLabel_->GetTextProperty()->SetColor(0.80, 0.85, 0.90);
+        renderer_->AddViewProp(contextLabel_);
+    }
+
+    void rebuildMaterialSurface(const std::vector<double>& values) {
+        vtkNew<vtkPolyData> surface;
+        vtkNew<vtkPolyData> boundaries;
+        surface->SetPoints(grid_->GetPoints());
+        boundaries->SetPoints(grid_->GetPoints());
+        vtkNew<vtkCellArray> triangles;
+        vtkNew<vtkCellArray> boundaryTriangles;
+        vtkNew<vtkDoubleArray> scalars;
+        scalars->SetName("material_index");
+        for (const auto& face : materialFaces(*mesh_, *material_)) {
+            std::array<vtkIdType, 3> ids{};
+            std::copy(face.vertices.begin(), face.vertices.end(), ids.begin());
+            if (face.boundary) {
+                boundaryTriangles->InsertNextCell(3, ids.data());
+            } else {
+                triangles->InsertNextCell(3, ids.data());
+                scalars->InsertNextValue(values[face.owner]);
+            }
+        }
+        surface->SetPolys(triangles);
+        surface->GetCellData()->SetScalars(scalars);
+        surfaceMapper_->SetInputData(surface);
+        boundaries->SetPolys(boundaryTriangles);
+        if (boundaryActor_) renderer_->RemoveActor(boundaryActor_);
+        vtkNew<vtkDataSetMapper> mapper;
+        mapper->SetInputData(boundaries);
+        mapper->ScalarVisibilityOff();
+        boundaryActor_ = vtkSmartPointer<vtkActor>::New();
+        boundaryActor_->SetMapper(mapper);
+        boundaryActor_->GetProperty()->SetColor(0.72, 0.75, 0.80);
+        renderer_->AddActor(boundaryActor_);
+    }
+
     void rebuildGlyphs(const std::vector<std::array<Complex, 3>>& source) {
         constexpr std::size_t maximumGlyphs = 1'200;
         glyphData_ = vtkSmartPointer<vtkPolyData>::New();
@@ -459,6 +571,8 @@ private:
         plane_->SetOrigin(origin.data());
         plane_->SetNormal(normal.data());
         surfaceActor_->SetVisibility(!sliceEnabled_);
+        if (boundaryActor_) boundaryActor_->SetVisibility(!sliceEnabled_);
+        setMaterialContextVisibility();
         if (sliceEnabled_) {
             glyphActor_->SetVisibility(false);
         }
@@ -490,6 +604,10 @@ private:
     vtkSmartPointer<vtkLookupTable> lookup_;
     vtkSmartPointer<vtkDataSetMapper> surfaceMapper_;
     vtkSmartPointer<vtkActor> surfaceActor_;
+    vtkSmartPointer<vtkActor> boundaryActor_;
+    vtkSmartPointer<vtkActor> domainActor_;
+    vtkSmartPointer<vtkActor> pmlActor_;
+    vtkSmartPointer<vtkTextActor> contextLabel_;
     vtkSmartPointer<vtkPlane> plane_;
     vtkSmartPointer<vtkCutter> cutter_;
     vtkSmartPointer<vtkDataSetMapper> cutterMapper_;
