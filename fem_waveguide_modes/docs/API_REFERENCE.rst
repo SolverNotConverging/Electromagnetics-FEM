@@ -397,7 +397,7 @@ Returns: the initial mesh stored in ``mesh_data``.
 
 .. code-block:: python
 
-    ModeSolver1D.solve(*, neff_guess: 'complex | None' = None, num_modes: 'int' = 4, eigensolver_tolerance: 'float' = 1e-10, residual_tolerance: 'float' = 1e-07, dense_limit: 'int' = 450, max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05)
+    ModeSolver1D.solve(*, neff_guess: 'complex | None' = None, num_modes: 'int' = 4, eigensolver_tolerance: 'float' = 1e-10, residual_tolerance: 'float' = 1e-07, dense_limit: 'int' = 450, backend: 'str' = 'auto', max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05)
 
 Solve and return modes with separate algebraic and adaptive controls.
 
@@ -984,7 +984,7 @@ Returns: the initial mesh stored in ``mesh_data``.
 
 .. code-block:: python
 
-    ModeSolver2D.solve(*, neff_guess: 'complex | None' = None, num_modes: 'int' = 4, direction: 'Direction' = 'forward', eigensolver_tolerance: 'float' = 1e-10, residual_tolerance: 'float' = 1e-08, divergence_tolerance: 'float' = 1e-07, propagation_ratio_tolerance: 'float' = 0.001, dense_linearization_limit: 'int' = 700, max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05)
+    ModeSolver2D.solve(*, neff_guess: 'complex | None' = None, num_modes: 'int' = 4, direction: 'Direction' = 'forward', eigensolver_tolerance: 'float' = 1e-10, residual_tolerance: 'float' = 1e-08, divergence_tolerance: 'float' = 1e-07, propagation_ratio_tolerance: 'float' = 0.001, dense_linearization_limit: 'int' = 700, backend: 'str' = 'auto', max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05)
 
 Solve and return modes with separate algebraic and adaptive controls.
 
@@ -1289,3 +1289,10 @@ parts of effective index, with one trace per mode and labels starting at Mode 1.
 sweep may use a one-dimensional array. Columns follow the supplied mode order.
 The function returns a Matplotlib Figure. Use ``show=False`` to save a figure
 without opening a window.
+
+Backend selection
+-----------------
+
+The ``backend`` keyword selects execution explicitly. ``"cpu"`` preserves
+the default CPU method; ``"auto"`` also retains CPU selection. Use ``"cuda"``
+for CuPy/cuDSS acceleration.

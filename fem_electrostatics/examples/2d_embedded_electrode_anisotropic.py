@@ -39,7 +39,7 @@ def main():
     # Resolve material interfaces and electrode boundaries on the initial mesh.
     mesh = solver.mesh(max_element_size=0.001, interface_refinement=0.65, boundary_refinement=0.4)
     # Zero refinements performs one solve; use the defaults for adaptive refinement.
-    result = solver.solve(max_refinements=0)
+    result = solver.solve(backend="cpu", max_refinements=0)
     print(f"nodes={mesh.info.nodes}, triangles={mesh.info.elements}")
     print(f"electrode charge={result.conductor_charge('electrode'):.6e} C/m")
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)

@@ -22,7 +22,7 @@ def main():
     charged.set_potential(potential=0.0, geometry='right')
     charged.add_charge_density(density=EPSILON_0, geometry=shapes.Rectangle(bounds=((0.0, 1.0), (0.0, 0.5))))
     charged.mesh(max_element_size=.12)
-    poisson = charged.solve(max_refinements=0)
+    poisson = charged.solve(backend="cpu", max_refinements=0)
     print("Charged guide peak potential (exact 0.125 V):", poisson.potential.max())
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     charged.result.save(OUTPUT_DIR / "results.h5")

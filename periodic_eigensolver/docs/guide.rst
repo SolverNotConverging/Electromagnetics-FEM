@@ -64,7 +64,7 @@ shifted pencil is invertible. It raises on missing dependencies or cuDSS
 failure and reports nonconvergence through ``converged=False``.
 
 In periodic FEM solvers, select ``eigensolver="refined"`` and
-``arnoldi_backend="cuda"``. ``eigensolver="auto"`` also selects refined
+``backend="cuda"``. ``eigensolver="auto"`` also selects refined
 Arnoldi when CUDA is explicitly requested. Dense QZ remains a CPU method.
 
 See `CUDA setup and benchmarks

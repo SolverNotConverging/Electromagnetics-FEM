@@ -33,7 +33,7 @@ def main() -> None:
     solver.add_pml(thickness=2.5 * MM, direction='x+')
     solver.mesh(max_element_size=0.35 * MM)
 
-    modes = solver.solve(
+    modes = solver.solve(backend="cpu",
         max_refinements=0,
         direction='all',
         eigensolver='auto',

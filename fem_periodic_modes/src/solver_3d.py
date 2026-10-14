@@ -473,10 +473,11 @@ class PeriodicModeSolver3D(PeriodicScene3D, ElectromagneticSolverMixin):
             },
         )
 
-    def solve(self, *, neff_guess: complex | None=None, num_modes: int=4, direction: Direction='forward', eigensolver: str="auto", arnoldi_backend: str="auto", eigensolver_tolerance: float=1e-10, residual_tolerance: float=1e-08, divergence_tolerance: float=1e-06, propagation_ratio_tolerance: float=0.001, max_pml_fraction: float | None=0.5, dense_linearization_limit: int=700, ncv: int | None=None, max_restarts: int=12, random_seed: int=0, max_refinements: int=2, adaptive_tolerance: float=0.05):
+    def solve(self, *, neff_guess: complex | None=None, num_modes: int=4, direction: Direction='forward', eigensolver: str="auto", backend: str="auto", eigensolver_tolerance: float=1e-10, residual_tolerance: float=1e-08, divergence_tolerance: float=1e-06, propagation_ratio_tolerance: float=0.001, max_pml_fraction: float | None=0.5, dense_linearization_limit: int=700, ncv: int | None=None, max_restarts: int=12, random_seed: int=0, max_refinements: int=2, adaptive_tolerance: float=0.05):
         """Solve and return modes with separate algebraic and adaptive controls."""
+        backend = "auto" if backend == "cpu" else backend
         from .adaptive import solve_periodic
-        options = {'neff_guess': neff_guess, 'num_modes': num_modes, 'direction': direction, 'eigensolver': eigensolver, 'arnoldi_backend': arnoldi_backend, 'eigensolver_tolerance': eigensolver_tolerance, 'residual_tolerance': residual_tolerance, 'divergence_tolerance': divergence_tolerance, 'propagation_ratio_tolerance': propagation_ratio_tolerance, 'max_pml_fraction': max_pml_fraction, 'dense_linearization_limit': dense_linearization_limit, 'ncv': ncv, 'max_restarts': max_restarts, 'random_seed': random_seed}
+        options = {'neff_guess': neff_guess, 'num_modes': num_modes, 'direction': direction, 'eigensolver': eigensolver, 'backend': backend, 'eigensolver_tolerance': eigensolver_tolerance, 'residual_tolerance': residual_tolerance, 'divergence_tolerance': divergence_tolerance, 'propagation_ratio_tolerance': propagation_ratio_tolerance, 'max_pml_fraction': max_pml_fraction, 'dense_linearization_limit': dense_linearization_limit, 'ncv': ncv, 'max_restarts': max_restarts, 'random_seed': random_seed}
         return self._finish_result(solve_periodic(self, 3, (), options, max_refinements, adaptive_tolerance))
 
 
@@ -487,7 +488,7 @@ class PeriodicModeSolver3D(PeriodicScene3D, ElectromagneticSolverMixin):
         *,
         direction: Direction = "forward",
         eigensolver: str | None = None,
-        arnoldi_backend: str | None = None,
+        backend: str | None = None,
         eigensolver_tolerance: float = 1e-10,
         residual_tolerance: float = 1e-8,
         divergence_tolerance: float = 1e-6,
@@ -513,9 +514,9 @@ class PeriodicModeSolver3D(PeriodicScene3D, ElectromagneticSolverMixin):
         method = str(eigensolver).strip().lower()
         if method not in ("auto", "dense", "refined"):
             raise ConfigurationError("eigensolver must be 'auto', 'dense', or 'refined'.")
-        backend = str(arnoldi_backend).strip().lower()
+        backend = str(backend).strip().lower()
         if backend not in ("auto", "cython", "python", "numpy", "cuda"):
-            raise ConfigurationError("arnoldi_backend must be auto, cython, python, or cuda.")
+            raise ConfigurationError("backend must be auto, cython, python, or cuda.")
         for value, name in (
             (eigensolver_tolerance, "eigensolver_tolerance"),
             (residual_tolerance, "residual_tolerance"),

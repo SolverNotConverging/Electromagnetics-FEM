@@ -24,7 +24,7 @@ for case, frequency in enumerate(tqdm(frequencies, desc="Frequency sweep", unit=
                         shape=shapes.Rectangle(bounds=((1.27e-3, 1.32e-3), (1e-3, 2e-3))))
     solver.add_pml(thickness=2.5e-3, direction="x+")
     solver.mesh(max_element_size=350e-6)
-    modes = solver.solve(max_refinements=0, direction="all", eigensolver="auto",
+    modes = solver.solve(backend="cpu", max_refinements=0, direction="all", eigensolver="auto",
                          max_pml_fraction=None, num_modes=4, neff_guess=0.)
     modes.save(OUTPUT / f"case_{case:03d}.h5")
     neff_sweep.append(modes.neff)

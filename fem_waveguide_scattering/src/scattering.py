@@ -1081,6 +1081,7 @@ class WaveguideScatteringSolver2D(ScatteringSceneMixin, ElectromagneticSolverMix
     def solve_modes(
         self,
         *,
+        backend: str = "cpu",
         side: Literal["left", "right"] = "left",
         num_modes: int = 4,
         neff_guess: complex | None = None,
@@ -1102,6 +1103,7 @@ class WaveguideScatteringSolver2D(ScatteringSceneMixin, ElectromagneticSolverMix
             num_elements=num_elements,
         )
         candidates = solver.solve(
+            backend=backend,
             num_modes=num_modes,
             neff_guess=neff_guess,
             direction="forward",
@@ -1189,6 +1191,7 @@ class WaveguideScatteringSolver2D(ScatteringSceneMixin, ElectromagneticSolverMix
         self,
         frequencies: Sequence[float],
         *,
+        backend: str = "cpu",
         linear_solver: Literal["direct"] = "direct",
         linear_solver_tolerance: float = 1e-10,
         projection_condition_limit: float = 1e12,
@@ -1210,6 +1213,8 @@ class WaveguideScatteringSolver2D(ScatteringSceneMixin, ElectromagneticSolverMix
         because their lead cross-section cannot be inferred automatically.
         """
 
+        if backend not in ("cpu", "auto"):
+            raise ConfigurationError("backend must be cpu or auto for scattering.")
         raw_frequencies = np.asarray(frequencies)
         if (
             raw_frequencies.ndim != 1
@@ -1296,7 +1301,7 @@ class WaveguideScatteringSolver2D(ScatteringSceneMixin, ElectromagneticSolverMix
                 reference_plane=reference_plane,
                 amplitude=amplitude,
             )
-            results.append(point.solve(linear_solver=linear_solver, linear_solver_tolerance=linear_solver_tolerance,
+            results.append(point.solve(backend=backend, linear_solver=linear_solver, linear_solver_tolerance=linear_solver_tolerance,
                 projection_condition_limit=projection_condition_limit, max_refinements=max_refinements, adaptive_tolerance=adaptive_tolerance))
 
         sweep = FrequencySweepResult(
@@ -1316,8 +1321,11 @@ class WaveguideScatteringSolver2D(ScatteringSceneMixin, ElectromagneticSolverMix
 
     def solve(self, *, linear_solver: Literal["direct"] = "direct",
               linear_solver_tolerance: float = 1e-10, projection_condition_limit: float = 1e12,
-              max_refinements: int = 2, adaptive_tolerance: float = 0.05) -> ScatteringResult:
+              max_refinements: int = 2, adaptive_tolerance: float = 0.05,
+              backend: str = "cpu") -> ScatteringResult:
         """Solve without saving or opening a viewer."""
+        if backend not in ("cpu", "auto"):
+            raise ConfigurationError("backend must be cpu or auto for scattering.")
         from .adaptive import solve_scattering
         self._solver_options = replace(self._solver_options, linear_solver=linear_solver,
             tolerance=linear_solver_tolerance, projection_condition_limit=projection_condition_limit,

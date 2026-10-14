@@ -917,10 +917,11 @@ class ModeSolver2D(WaveguideScene2D, ElectromagneticSolverMixin):
             return direction in ("forward", "right-decaying")
         return direction in ("backward", "left-decaying")
 
-    def solve(self, *, neff_guess: complex | None=None, num_modes: int=4, direction: Direction='forward', eigensolver_tolerance: float=1e-10, residual_tolerance: float=1e-08, divergence_tolerance: float=1e-07, propagation_ratio_tolerance: float=0.001, dense_linearization_limit: int=700, arnoldi_backend: str="auto", max_refinements: int=2, adaptive_tolerance: float=0.05):
+    def solve(self, *, neff_guess: complex | None=None, num_modes: int=4, direction: Direction='forward', eigensolver_tolerance: float=1e-10, residual_tolerance: float=1e-08, divergence_tolerance: float=1e-07, propagation_ratio_tolerance: float=0.001, dense_linearization_limit: int=700, backend: str="auto", max_refinements: int=2, adaptive_tolerance: float=0.05):
         """Solve and return modes with separate algebraic and adaptive controls."""
+        backend = "auto" if backend == "cpu" else backend
         from .adaptive import solve_2d
-        options = {'neff_guess': neff_guess, 'num_modes': num_modes, 'direction': direction, 'eigensolver_tolerance': eigensolver_tolerance, 'residual_tolerance': residual_tolerance, 'divergence_tolerance': divergence_tolerance, 'propagation_ratio_tolerance': propagation_ratio_tolerance, 'dense_linearization_limit': dense_linearization_limit, 'arnoldi_backend': arnoldi_backend}
+        options = {'neff_guess': neff_guess, 'num_modes': num_modes, 'direction': direction, 'eigensolver_tolerance': eigensolver_tolerance, 'residual_tolerance': residual_tolerance, 'divergence_tolerance': divergence_tolerance, 'propagation_ratio_tolerance': propagation_ratio_tolerance, 'dense_linearization_limit': dense_linearization_limit, 'backend': backend}
         return self._finish_result(solve_2d(self, (), options, max_refinements, adaptive_tolerance))
 
 
@@ -935,7 +936,7 @@ class ModeSolver2D(WaveguideScene2D, ElectromagneticSolverMixin):
         divergence_tolerance: float = 1e-7,
         propagation_ratio_tolerance: float = 1e-3,
         dense_linearization_limit: int = 700,
-        arnoldi_backend: str = "auto",
+        backend: str = "auto",
     ) -> ModeSet:
         """Solve the assembled QEP and return validated full-vector modes."""
 
@@ -967,7 +968,7 @@ class ModeSolver2D(WaveguideScene2D, ElectromagneticSolverMixin):
             candidate_count=candidate_count,
             tolerance=float(eigensolver_tolerance),
             dense_linearization_limit=dense_limit,
-            arnoldi_backend=arnoldi_backend,
+            backend=backend,
         )
 
         accepted: list[Mode] = []

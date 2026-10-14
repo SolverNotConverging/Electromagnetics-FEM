@@ -510,7 +510,7 @@ Returns: the initial mesh stored in ``mesh_data``.
 
 .. code-block:: python
 
-    ElectrostaticSolver.solve(*, linear_solver_tolerance: 'float' = 1e-10, max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05, marking_fraction: 'float' = 0.5, max_elements: 'int' = 200000) -> 'ElectrostaticResult'
+    ElectrostaticSolver.solve(*, linear_solver_tolerance: 'float' = 1e-10, max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05, marking_fraction: 'float' = 0.5, max_elements: 'int' = 200000, backend: 'str' = 'cpu')
 
 Solve with bounded, solution-driven local refinement by default.
 
@@ -752,3 +752,10 @@ Shared construction tools
 Import ``Material``, ``GoodConductor``, ``SurfaceImpedance``, ``materials``,
 ``shapes``, ``EPSILON_0``, ``MU_0``, and ``C_0`` directly from this solver family.
 They are the shared FEM definitions; examples do not need a separate common import.
+
+Backend selection
+-----------------
+
+The ``backend`` keyword selects execution explicitly. ``"cpu"`` preserves
+the default CPU method; ``"auto"`` also retains CPU selection. Use ``"cuda"``
+for CuPy/cuDSS acceleration.

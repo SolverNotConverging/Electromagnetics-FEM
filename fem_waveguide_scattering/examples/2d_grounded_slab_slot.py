@@ -54,14 +54,14 @@ def solve_single(output: Path) -> scattering.ScatteringResult:
 
     simulation = build_simulation()
     mesh = simulation.mesh(max_element_size=2.0 * MM, wavelength_elements=10)
-    modes = simulation.solve_modes(
+    modes = simulation.solve_modes(backend="cpu",
         max_refinements=0,
         num_modes=1,
         neff_guess=1.8,
         num_elements=96,
     )
     simulation.set_incident_mode(modes[0])
-    result = simulation.solve(max_refinements=0)
+    result = simulation.solve(backend="cpu", max_refinements=0)
     output_path = result.save(output)
 
     print("selected maximum edge (mm) =", mesh.info.requested_maximum_edge / MM)

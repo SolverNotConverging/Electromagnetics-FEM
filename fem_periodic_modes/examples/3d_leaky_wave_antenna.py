@@ -58,7 +58,7 @@ def build_solver() -> PeriodicModeSolver3D:
 def main() -> None:
     solver = build_solver()
     solver.mesh(max_element_size=3.0 * MM, wavelength_elements=6)
-    modes = solver.solve(
+    modes = solver.solve(backend="cpu",
         num_modes=2,
         # Target a fast-wave branch directly inside the air light cone.
         neff_guess=0.5 - 0.02j,

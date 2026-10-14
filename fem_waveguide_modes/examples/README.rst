@@ -58,3 +58,9 @@ From the repository folder:
 
     python fem_waveguide_modes/examples/post_processing/1d_plot_dispersion.py
     python fem_waveguide_modes/examples/post_processing/1d_plot_dispersion.py path/to/dispersion.csv
+
+Backend selection
+-----------------
+
+Solver calls explicitly select ``backend="cpu"``. Change this to ``backend="cuda"`` to use CuPy and cuDSS >= 0.8;
+set ``CUDSS_LIBRARY`` to your cuDSS shared library.
