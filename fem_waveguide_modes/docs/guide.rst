@@ -122,3 +122,12 @@ Import the plotting helper directly from this solver:
 
 Use frequencies in Hz and one row of complex effective indices per frequency.
 Each column is one plotted mode, using the supplied ordering.
+
+CUDA acceleration
+-----------------
+
+Both 1D and 2D solvers support ``solver.solve(arnoldi_backend="cuda")`` for refined CUDA Arnoldi with cuDSS shift-invert solves.
+Install the ``cuda12`` or ``cuda13`` extra and set ``CUDSS_LIBRARY`` to
+the cuDSS >= 0.8 shared library. GPU selection follows the current CuPy
+device. Assembly and adaptive refinement remain on the CPU. CPU defaults
+are unchanged; explicit CUDA requests raise errors if unavailable.
