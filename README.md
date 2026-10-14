@@ -334,3 +334,8 @@ FEM source is [MIT licensed](LICENSE). Bundled native dependencies retain their 
 licenses, included in the wheel. The Gmsh-linked calculator is distributed under
 GPL-3.0-or-later; Qt is dynamically linked under LGPL-3.0. Release assets include
 native dependency sources and build recipes.
+
+cuDSS library discovery checks `CUDSS_LIBRARY` first, then system paths,
+NVIDIA packages in the active Python environment, and the repository
+`build/cuda-deps` directory. With a local installation in that directory,
+`backend="cuda"` works without setting an environment variable.

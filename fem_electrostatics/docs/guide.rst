@@ -89,7 +89,8 @@ CUDA acceleration
 -----------------
 
 Use ``solver.solve(backend="cuda")`` for cuDSS factorization and solves.
-Install the ``cuda12`` or ``cuda13`` extra and set ``CUDSS_LIBRARY`` to
-the cuDSS >= 0.8 shared library. GPU selection follows the current CuPy
+Install the ``cuda12`` or ``cuda13`` extra and cuDSS >= 0.8. The runtime
+searches system paths, NVIDIA packages in the Python environment, and
+``build/cuda-deps``. Set ``CUDSS_LIBRARY`` to override discovery. GPU selection follows the current CuPy
 device. Assembly and adaptive refinement remain on the CPU. CPU defaults
 are unchanged; explicit CUDA requests raise errors if unavailable.
