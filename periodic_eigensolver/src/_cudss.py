@@ -1,6 +1,7 @@
 """Small ctypes binding to cuDSS's public C API (optional runtime).
 
-No NVIDIA binaries are bundled. Set CUDSS_LIBRARY to the shared library path.
+No NVIDIA binaries are bundled. CUDSS_LIBRARY overrides automatic discovery
+in system paths, the Python environment, and repository build/cuda-deps.
 Numeric factorization and triangular solves stay on the GPU; cuDSS performs
 its own host-side symbolic analysis. Buffers remain owned by CuPy.
 """
@@ -9,6 +10,7 @@ from __future__ import annotations
 import ctypes as ct
 import ctypes.util
 import os
+import sys
 from pathlib import Path
 
 # CUDA's compiler loads helper DLLs lazily, even after a factor is destroyed.
@@ -17,12 +19,47 @@ _dll_directories = {}
 _compiler_libraries = {}
 
 
+def find_cudss_library():
+    """Prefer an explicit override, then system and local dependency installs."""
+    override = os.environ.get("CUDSS_LIBRARY")
+    if override:
+        return override
+    system_library = ctypes.util.find_library("cudss")
+    if system_library:
+        return system_library
+    filename = "cudss64_0.dll" if os.name == "nt" else "libcudss.so*"
+    # Windows DLLs can be on PATH without find_library resolving them.
+    if os.name == "nt":
+        for directory in os.get_exec_path():
+            candidate = Path(directory) / filename
+            if candidate.is_file():
+                return str(candidate.resolve())
+    repository = Path(__file__).resolve().parents[2]
+    roots = [repository / "build" / "cuda-deps"]
+    # NVIDIA Python runtime packages use nvidia/cu12 or cu13/{bin,lib}.
+    roots.extend(Path(directory) / "nvidia" for directory in sys.path
+                 if directory and Path(directory).name in ("site-packages", "dist-packages"))
+    roots.extend([Path(sys.prefix) / "Lib" / "site-packages" / "nvidia",
+                  Path(sys.prefix) / "lib" / f"python{sys.version_info.major}.{sys.version_info.minor}" / "site-packages" / "nvidia"])
+    for root in roots:
+        if root.is_dir():
+            candidates = sorted(root.rglob(filename), reverse=True)
+            for candidate in candidates:
+                if candidate.is_file():
+                    return str(candidate.resolve())
+    raise ImportError(
+        "cuDSS was not found in system paths, the Python environment, or "
+        "build/cuda-deps. Set CUDSS_LIBRARY to cudss64_0.dll or libcudss.so "
+        "(cuDSS >= 0.8)."
+    )
+
+
 def configure_dll_search():
     if os.name != "nt":
         return
     import cupy as cp
     cuda_path = cp.cuda.get_cuda_path()
-    cudss_path = os.environ.get("CUDSS_LIBRARY")
+    cudss_path = find_cudss_library()
     directories = []
     if cuda_path:
         directories.append(str(Path(cuda_path) / "bin"))
@@ -47,9 +84,7 @@ class CudssFactor:
         self.stream = cp.cuda.get_current_stream()
         self.device = cp.cuda.Device()
         configure_dll_search()
-        path = os.environ.get("CUDSS_LIBRARY") or ctypes.util.find_library("cudss")
-        if not path:
-            raise ImportError("Set CUDSS_LIBRARY to cudss64_0.dll or libcudss.so (cuDSS >= 0.8).")
+        path = find_cudss_library()
         self.lib = (ct.WinDLL if os.name == "nt" else ct.CDLL)(path)
         p, i, n = ct.c_void_p, ct.c_int, ct.c_int64
         signatures = {
