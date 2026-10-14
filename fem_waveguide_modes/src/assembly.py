@@ -531,14 +531,25 @@ def solve_qep_candidates(
     candidate_count: int,
     tolerance: float,
     dense_linearization_limit: int = 700,
+    arnoldi_backend: str = "auto",
 ) -> tuple[ComplexArray, ComplexArray, str]:
     """Return finite candidate roots/vectors nearest ``target``."""
 
+    if arnoldi_backend not in ("auto", "cuda"):
+        raise ConfigurationError("arnoldi_backend must be auto or cuda.")
     if candidate_count < 1:
         raise ValueError("candidate_count must be positive.")
     n = system.ndofs
     size = 2 * n
 
+    if arnoldi_backend == "cuda":
+        from periodic_eigensolver import solve_generalized
+        left, right = linearized_pencil(system)
+        shift = complex(target) + 1e-6j * max(1.0, abs(target))
+        result = solve_generalized(left, right, sigma=shift,
+                       num_modes=min(candidate_count, size - 1), tol=tolerance,
+                       backend="cuda")
+        return result.eigenvalues, result.eigenvectors[:n], "refined-cuda"
     if size <= dense_linearization_limit or size <= 3:
         left, right = linearized_pencil(system)
         try:

@@ -570,9 +570,17 @@ class ModeSolver1D(WaveguideScene1D, ElectromagneticSolverMixin):
         requested: int,
         tolerance: float,
         dense_limit: int,
+        arnoldi_backend: str = "auto",
     ) -> tuple[ComplexArray, ComplexArray, str]:
         size = system.A.shape[0]
         candidate_count = min(size, max(2 * requested + 6, 10))
+        if arnoldi_backend == "cuda":
+            from periodic_eigensolver import solve_generalized
+            shift = complex(sigma) + 1e-6j * max(1.0, abs(sigma))
+            result = solve_generalized(system.A, system.B, sigma=shift,
+                           num_modes=min(candidate_count, size - 1), tol=tolerance,
+                           backend="cuda")
+            return result.eigenvalues, result.eigenvectors, "refined-cuda"
         use_dense = size <= dense_limit or candidate_count >= size - 1
         if use_dense:
             try:
@@ -784,10 +792,10 @@ class ModeSolver1D(WaveguideScene1D, ElectromagneticSolverMixin):
                 result &= centres <= xmax - pml.thickness
         return result
 
-    def solve(self, *, neff_guess: complex | None=None, num_modes: int=4, eigensolver_tolerance: float=1e-10, residual_tolerance: float=1e-07, dense_limit: int=450, max_refinements: int=2, adaptive_tolerance: float=0.05):
+    def solve(self, *, neff_guess: complex | None=None, num_modes: int=4, eigensolver_tolerance: float=1e-10, residual_tolerance: float=1e-07, dense_limit: int=450, arnoldi_backend: str="auto", max_refinements: int=2, adaptive_tolerance: float=0.05):
         """Solve and return modes with separate algebraic and adaptive controls."""
         from .adaptive import solve_1d
-        options = {'neff_guess': neff_guess, 'num_modes': num_modes, 'tol': eigensolver_tolerance, 'residual_tolerance': residual_tolerance, 'dense_limit': dense_limit}
+        options = {'neff_guess': neff_guess, 'num_modes': num_modes, 'tol': eigensolver_tolerance, 'residual_tolerance': residual_tolerance, 'dense_limit': dense_limit, 'arnoldi_backend': arnoldi_backend}
         return self._finish_result(solve_1d(self, (), options, max_refinements, adaptive_tolerance))
 
 
@@ -799,6 +807,7 @@ class ModeSolver1D(WaveguideScene1D, ElectromagneticSolverMixin):
         tol: float = 1e-10,
         residual_tolerance: float = 1e-7,
         dense_limit: int = 450,
+        arnoldi_backend: str = "auto",
     ) -> ModeSet:
         """Solve, merge, normalize, and return the requested TE/TM modes."""
 
@@ -806,6 +815,8 @@ class ModeSolver1D(WaveguideScene1D, ElectromagneticSolverMixin):
         tolerance = _finite_positive(tol, "tol")
         residual_limit = _finite_positive(residual_tolerance, "residual_tolerance")
         dense_threshold = _positive_integer(dense_limit, "dense_limit", minimum=2)
+        if arnoldi_backend not in ("auto", "cuda"):
+            raise ConfigurationError("arnoldi_backend must be auto or cuda.")
         te_system, tm_system = self._assemble_systems()
 
         supplied_guess = None if neff_guess is None else complex(neff_guess)
@@ -827,6 +838,7 @@ class ModeSolver1D(WaveguideScene1D, ElectromagneticSolverMixin):
                 requested,
                 tolerance,
                 dense_threshold,
+                arnoldi_backend,
             )
             methods[system.polarization] = method
             for eigenvalue, vector in zip(values, vectors.T, strict=True):
