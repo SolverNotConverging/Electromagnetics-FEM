@@ -95,6 +95,7 @@ class _SolverOptions:
     """Numerical controls for the sparse direct MVP solver."""
 
     linear_solver: Literal["direct"] = "direct"
+    backend: str = "cpu"
     tolerance: float = 1e-10
     quadrature_order: int = 4
     projection_condition_limit: float = 1e12
@@ -107,6 +108,8 @@ class _SolverOptions:
         validate_controls(self.max_refinements, self.adaptive_tolerance, ConfigurationError)
         if isinstance(self.element_order, (bool, np.bool_)) or self.element_order not in (1, 2):
             raise ConfigurationError("element_order must be 1 or 2.")
+        if self.backend not in ("cpu", "auto", "cuda"):
+            raise ConfigurationError("backend must be cpu, auto, or cuda.")
         if self.linear_solver != "direct":
             raise ConfigurationError("The initial solver supports linear_solver='direct' only.")
         if not np.isfinite(self.tolerance) or self.tolerance <= 0.0:
@@ -193,7 +196,7 @@ class WaveguideScatteringSolver2D(ScatteringSceneMixin, ElectromagneticSolverMix
         self.modes: ModeSet | None = None
         self.incident: IncidentMode | None = None
         self._incident_mode_index: int | None = None
-        self._angle_mode_request: tuple[int, int, int, float] | None = None
+        self._angle_mode_request: tuple[int, int, int, float, str] | None = None
         self._angle_modes_resolved = self.angle is None or self.angle == 0.0
         self.left_monitor: float | None = None
         self.right_monitor: float | None = None
@@ -1021,7 +1024,7 @@ class WaveguideScatteringSolver2D(ScatteringSceneMixin, ElectromagneticSolverMix
                 "The incident family used to resolve angle must be a forward "
                 "propagating mode with positive effective index."
             )
-        num_modes, num_elements, max_refinements, adaptive_tolerance = self._angle_mode_request
+        num_modes, num_elements, max_refinements, adaptive_tolerance, backend = self._angle_mode_request
         total_neff = float(seed.neff.real)
         angle_radians = radians(self.angle)
         self.ky = float(
@@ -1035,6 +1038,7 @@ class WaveguideScatteringSolver2D(ScatteringSceneMixin, ElectromagneticSolverMix
             num_elements=num_elements,
         )
         candidates = solver.solve(
+            backend=backend,
             num_modes=num_modes,
             neff_guess=expected_z_neff,
             direction="forward",
@@ -1042,7 +1046,7 @@ class WaveguideScatteringSolver2D(ScatteringSceneMixin, ElectromagneticSolverMix
             adaptive_tolerance=adaptive_tolerance,
         )
         resolved = self.set_modes(candidates)
-        self._angle_mode_request = (num_modes, num_elements, max_refinements, adaptive_tolerance)
+        self._angle_mode_request = (num_modes, num_elements, max_refinements, adaptive_tolerance, backend)
         propagating = [
             index for index, candidate in enumerate(resolved)
             if candidate.classification == "propagating" and candidate.neff.real > 0.0
@@ -1115,7 +1119,7 @@ class WaveguideScatteringSolver2D(ScatteringSceneMixin, ElectromagneticSolverMix
             self._angle_mode_request = (
                 int(num_modes), int(num_elements),
                 max_refinements,
-                adaptive_tolerance,
+                adaptive_tolerance, backend,
             )
             self._angle_modes_resolved = False
         return selected
@@ -1213,8 +1217,8 @@ class WaveguideScatteringSolver2D(ScatteringSceneMixin, ElectromagneticSolverMix
         because their lead cross-section cannot be inferred automatically.
         """
 
-        if backend not in ("cpu", "auto"):
-            raise ConfigurationError("backend must be cpu or auto for scattering.")
+        if backend not in ("cpu", "auto", "cuda"):
+            raise ConfigurationError("backend must be cpu, auto, or cuda.")
         raw_frequencies = np.asarray(frequencies)
         if (
             raw_frequencies.ndim != 1
@@ -1259,6 +1263,7 @@ class WaveguideScatteringSolver2D(ScatteringSceneMixin, ElectromagneticSolverMix
         try:
             mesh_kwargs = dict(self._mesh_settings if mesh_options is None and hasattr(self, "_mesh_settings") else mesh_options or {})
             mode_kwargs = dict(mode_options or {})
+            mode_kwargs.setdefault("backend", backend)
             mode_kwargs.setdefault("max_refinements", max_refinements)
             mode_kwargs.setdefault("adaptive_tolerance", adaptive_tolerance)
         except (TypeError, ValueError) as exc:
@@ -1324,10 +1329,10 @@ class WaveguideScatteringSolver2D(ScatteringSceneMixin, ElectromagneticSolverMix
               max_refinements: int = 2, adaptive_tolerance: float = 0.05,
               backend: str = "cpu") -> ScatteringResult:
         """Solve without saving or opening a viewer."""
-        if backend not in ("cpu", "auto"):
-            raise ConfigurationError("backend must be cpu or auto for scattering.")
+        if backend not in ("cpu", "auto", "cuda"):
+            raise ConfigurationError("backend must be cpu, auto, or cuda.")
         from .adaptive import solve_scattering
-        self._solver_options = replace(self._solver_options, linear_solver=linear_solver,
+        self._solver_options = replace(self._solver_options, linear_solver=linear_solver, backend=backend,
             tolerance=linear_solver_tolerance, projection_condition_limit=projection_condition_limit,
             max_refinements=max_refinements, adaptive_tolerance=adaptive_tolerance)
         return self._finish_result(solve_scattering(self, max_refinements, adaptive_tolerance))
@@ -1385,6 +1390,7 @@ class WaveguideScatteringSolver2D(ScatteringSceneMixin, ElectromagneticSolverMix
             inserted_pec_facets=self.mesh_data.inserted_pec_facets,
             incident_magnetic=self.incident.H,
             residual_tolerance=self._solver_options.tolerance,
+            backend=self._solver_options.backend,
         )
         coefficients = scattered.field.coefficients
         from .nf2ff import capture_contour

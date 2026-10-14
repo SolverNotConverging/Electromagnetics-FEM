@@ -484,6 +484,7 @@ def solve_prescribed_pec(
     *,
     boundary_values: ArrayLike,
     residual_tolerance: float = 1e-7,
+    backend: str = "cpu",
 ) -> MixedFieldSolution:
     """Solve with prescribed values on outer and registered PEC trace DOFs.
 
@@ -493,6 +494,8 @@ def solve_prescribed_pec(
     constrained trace is ``E_sc,t = -E_inc,t`` instead of zero.
     """
 
+    if backend not in ("cpu", "auto", "cuda"):
+        raise ValueError("backend must be cpu, auto, or cuda.")
     if not np.isfinite(residual_tolerance) or residual_tolerance <= 0.0:
         raise ValueError("residual_tolerance must be finite and positive.")
     rhs = np.asarray(load, dtype=np.complex128)
@@ -521,14 +524,16 @@ def solve_prescribed_pec(
     try:
         with warnings.catch_warnings():
             warnings.simplefilter("error", MatrixRankWarning)
-            coefficients = solve(
-                *condense(
-                    system.matrix,
-                    rhs,
-                    x=prescribed,
-                    D=constrained,
-                )
+            reduced, reduced_rhs, coefficients, free_dofs = condense(
+                system.matrix, rhs, x=prescribed, D=constrained,
             )
+            if backend == "cuda":
+                from fem_common.cuda import solve_sparse
+                coefficients = coefficients.copy()
+                if len(free_dofs):
+                    coefficients[free_dofs] = solve_sparse(reduced, reduced_rhs)
+            else:
+                coefficients = solve(reduced, reduced_rhs, coefficients, free_dofs)
     except (MatrixRankWarning, RuntimeError, ValueError) as exc:
         raise SolverError(
             "The PEC Maxwell system could not be solved; it may be singular "
@@ -556,7 +561,8 @@ def solve_prescribed_pec(
         basis=system.basis,
         coefficients=coefficients,
         solve_info={
-            "method": "scipy-direct",
+            "method": "cudss-direct" if backend == "cuda" else "scipy-direct",
+            "backend": "cuda" if backend == "cuda" else "cpu",
             "relative_residual": relative_residual,
             "prescribed_pec_dof_count": int(np.count_nonzero(prescribed[constrained])),
         },
@@ -568,6 +574,7 @@ def solve_homogeneous_pec(
     load: NDArray[np.generic],
     *,
     residual_tolerance: float = 1e-7,
+    backend: str = "cpu",
 ) -> MixedFieldSolution:
     """Solve with homogeneous PEC conditions on outer and registered facets."""
 
@@ -576,6 +583,7 @@ def solve_homogeneous_pec(
         load,
         boundary_values=np.zeros(system.ndofs, dtype=np.complex128),
         residual_tolerance=residual_tolerance,
+        backend=backend,
     )
 
 

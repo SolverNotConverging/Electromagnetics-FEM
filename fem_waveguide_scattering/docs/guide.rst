@@ -167,3 +167,15 @@ The layered reciprocal approach follows the principle described by
 `Yang, Hugonin, and Lalanne, Near-to-Far Field Transformations for Radiative and
 Guided Waves <https://arxiv.org/abs/1510.06344>`_; the implementation uses the
 project's 2.5D geometry and positive-time phasor convention.
+
+CUDA acceleration
+-----------------
+
+Use ``solve_modes(backend="cuda")`` for GPU shift-invert lead modes and
+``solve(backend="cuda")`` for the condensed Maxwell system with cuDSS.
+``sweep(backend="cuda")`` applies CUDA to both stages by default. CPU defaults
+and the existing residual, Gauss-law, port, and power checks are retained.
+ARPACK iteration, assembly, meshing, adaptation, field sampling, and small
+projections stay on the CPU; lead-mode matrices and shifted solves use cuDSS
+on the GPU, with vector transfers each iteration. Install a CuPy extra and cuDSS >= 0.8; library discovery checks the
+Python environment and ``build/cuda-deps`` or accepts ``CUDSS_LIBRARY``.

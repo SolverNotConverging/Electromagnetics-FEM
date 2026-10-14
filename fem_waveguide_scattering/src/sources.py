@@ -412,6 +412,7 @@ def solve_scattered_pec(
     inserted_pec_facets: ArrayLike = (),
     incident_magnetic: IncidentField | None = None,
     residual_tolerance: float = 1e-7,
+    backend: str = "cpu",
 ) -> ScatteredFieldSolution:
     """Solve with released-background and inserted-actual PEC perturbations."""
 
@@ -434,6 +435,7 @@ def solve_scattered_pec(
         source.load,
         boundary_values=boundary_values,
         residual_tolerance=residual_tolerance,
+        backend=backend,
     )
     return ScatteredFieldSolution(field=field, source=source)
 
