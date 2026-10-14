@@ -1313,8 +1313,10 @@ class ModeSolver:
         return mode.direction in ("backward", "left-decaying")
 
     def solve(self, *, max_refinements: int = 2,
-              adaptive_tolerance: float = 0.05, **options) -> ModeSet:
+              adaptive_tolerance: float = 0.05, backend: str = "cpu", **options) -> ModeSet:
         """Adapt the mixed line mesh using normal-D/tangential-H residuals."""
+        if backend not in ("cpu", "auto"):
+            raise ConfigurationError("backend must be cpu or auto for scattering lead modes.")
         from .adaptive import solve_modes
         return solve_modes(self, options, max_refinements, adaptive_tolerance)
 

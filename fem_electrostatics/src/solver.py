@@ -329,7 +329,7 @@ class ElectrostaticSolver(ElectrostaticSceneMixin, SolverMixin):
     def solve(
         self, *, linear_solver_tolerance: float = 1e-10, max_refinements: int = 2,
         adaptive_tolerance: float = 0.05, marking_fraction: float = 0.5,
-        max_elements: int = 200_000, linear_solver_backend: str = "cpu",
+        max_elements: int = 200_000, backend: str = "cpu",
     ) -> ElectrostaticResult:
         """Solve with bounded, solution-driven local refinement by default.
 
@@ -362,7 +362,7 @@ class ElectrostaticSolver(ElectrostaticSceneMixin, SolverMixin):
                 raise SolverError(f"{name} must be finite and positive.")
         if marking_fraction > 1.0:
             raise SolverError("marking_fraction must be in (0, 1].")
-        result = self._solve_once(linear_solver_tolerance, linear_solver_backend)
+        result = self._solve_once(linear_solver_tolerance, backend)
         history = []
         for step in range(int(max_refinements) + 1):
             centers = result.coordinates[result.elements].mean(axis=1)
@@ -396,7 +396,7 @@ class ElectrostaticSolver(ElectrostaticSceneMixin, SolverMixin):
             previous_mask = self.fixed_mask
             self.mesh_data = candidate
             try:
-                result = self._solve_once(linear_solver_tolerance, linear_solver_backend)
+                result = self._solve_once(linear_solver_tolerance, backend)
             except Exception:
                 self.mesh_data = result.mesh
                 self._result = result
@@ -406,10 +406,11 @@ class ElectrostaticSolver(ElectrostaticSceneMixin, SolverMixin):
         result = replace(result, adaptive_history=tuple(history))
         return self._finish_result(result)
 
-    def _solve_once(self, tol: float, linear_solver_backend: str = "cpu") -> ElectrostaticResult:
+    def _solve_once(self, tol: float, backend: str = "cpu") -> ElectrostaticResult:
         """Assemble and solve one linear electrostatic boundary-value problem."""
-        if linear_solver_backend not in ("cpu", "cuda"):
-            raise SolverError("linear_solver_backend must be cpu or cuda.")
+        backend = "cpu" if backend == "auto" else backend
+        if backend not in ("cpu", "cuda"):
+            raise SolverError("backend must be cpu or cuda.")
         tolerance = float(tol)
         if not np.isfinite(tolerance) or tolerance <= 0.0:
             raise SolverError("tol must be finite and positive.")
@@ -427,7 +428,7 @@ class ElectrostaticSolver(ElectrostaticSceneMixin, SolverMixin):
                 reduced_rhs = rhs[free] - matrix[free][:, fixed] @ potential[fixed]
                 with warnings.catch_warnings():
                     warnings.simplefilter("error", MatrixRankWarning)
-                    if linear_solver_backend == "cuda":
+                    if backend == "cuda":
                         from fem_common.cuda import solve_sparse
                         potential[free] = solve_sparse(matrix[free][:, free], reduced_rhs).real
                     else:

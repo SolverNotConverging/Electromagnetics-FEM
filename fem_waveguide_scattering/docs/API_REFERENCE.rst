@@ -654,7 +654,7 @@ Returns: the initial mesh stored in ``mesh_data``.
 
 .. code-block:: python
 
-    WaveguideScatteringSolver2D.solve_modes(*, side: "Literal['left', 'right']" = 'left', num_modes: 'int' = 4, neff_guess: 'complex | None' = None, num_elements: 'int | None' = None, max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05) -> 'ModeSet'
+    WaveguideScatteringSolver2D.solve_modes(*, backend: 'str' = 'cpu', side: "Literal['left', 'right']" = 'left', num_modes: 'int' = 4, neff_guess: 'complex | None' = None, num_elements: 'int | None' = None, max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05)
 
 .. list-table:: Arguments
    :header-rows: 1
@@ -742,7 +742,7 @@ Returns: the configured geometry/excitation handle, or None for in-place configu
 
 .. code-block:: python
 
-    WaveguideScatteringSolver2D.solve(*, linear_solver: "Literal['direct']" = 'direct', linear_solver_tolerance: 'float' = 1e-10, projection_condition_limit: 'float' = 1000000000000.0, max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05) -> 'ScatteringResult'
+    WaveguideScatteringSolver2D.solve(*, linear_solver: "Literal['direct']" = 'direct', linear_solver_tolerance: 'float' = 1e-10, projection_condition_limit: 'float' = 1000000000000.0, max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05, backend: 'str' = 'cpu')
 
 Solve without saving or opening a viewer.
 
@@ -788,7 +788,7 @@ Returns: the physics-specific result stored in ``result``.
 
 .. code-block:: python
 
-    WaveguideScatteringSolver2D.sweep(frequencies: 'Sequence[float]', *, linear_solver: "Literal['direct']" = 'direct', linear_solver_tolerance: 'float' = 1e-10, projection_condition_limit: 'float' = 1000000000000.0, max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05, mesh_options: 'Mapping[str, object] | None' = None, mode_options: 'Mapping[str, object] | None' = None, incident_mode: 'int' = 0, amplitude: 'complex' = 1.0, reference_plane: 'float | None' = None, mode_factory: 'Callable[[float], ModeSet] | None' = None) -> 'FrequencySweepResult'
+    WaveguideScatteringSolver2D.sweep(frequencies: 'Sequence[float]', *, backend: 'str' = 'cpu', linear_solver: "Literal['direct']" = 'direct', linear_solver_tolerance: 'float' = 1e-10, projection_condition_limit: 'float' = 1000000000000.0, max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05, mesh_options: 'Mapping[str, object] | None' = None, mode_options: 'Mapping[str, object] | None' = None, incident_mode: 'int' = 0, amplitude: 'complex' = 1.0, reference_plane: 'float | None' = None, mode_factory: 'Callable[[float], ModeSet] | None' = None)
 
 Solve independent points on an increasing ordinary-frequency grid.
 
@@ -1277,3 +1277,10 @@ Shared construction tools
 Import ``Material``, ``GoodConductor``, ``SurfaceImpedance``, ``materials``,
 ``shapes``, ``EPSILON_0``, ``MU_0``, and ``C_0`` directly from this solver family.
 They are the shared FEM definitions; examples do not need a separate common import.
+
+Backend selection
+-----------------
+
+The ``backend`` keyword selects execution explicitly. ``"cpu"`` preserves
+the default CPU method; ``"auto"`` also retains CPU selection. Scattering
+and its lead-mode solver currently support CPU execution only.

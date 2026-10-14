@@ -271,7 +271,7 @@ the requested ``neff_guess``.
         neff_guess=0.5 - 0.02j,
         num_modes=2,
         eigensolver="refined",
-        arnoldi_backend="cuda",
+        backend="cuda",
         ncv=80,
         eigensolver_tolerance=1e-8,
         max_refinements=0,

@@ -4,11 +4,11 @@ fem_periodic_modes user API
 Version 1.1.0. This reference covers the deliberately supported user API.
 Implementation helpers are documented in their source modules.
 
-Both periodic solvers accept ``arnoldi_backend="cuda"`` with
+Both periodic solvers accept ``backend="cuda"`` with
 ``eigensolver="refined"`` or ``"auto"``. This optional path requires CuPy
 and cuDSS >= 0.8; see the `CUDA setup and benchmark guide
 <../../benchmarks/periodic_eigensolver/README.md>`_. Explicit dense QZ remains
-a CPU method. The default ``arnoldi_backend="auto"`` retains CPU selection.
+a CPU method. The default ``backend="auto"`` retains CPU selection.
 
 Workflow and units
 ------------------
@@ -531,7 +531,7 @@ Returns: the initial mesh stored in ``mesh_data``.
 
 .. code-block:: python
 
-    PeriodicModeSolver2D.solve(*, neff_guess: 'complex | None' = None, num_modes: 'int' = 4, direction: 'Direction' = 'forward', eigensolver: 'str' = 'auto', arnoldi_backend: 'str' = 'auto', eigensolver_tolerance: 'float' = 1e-10, residual_tolerance: 'float' = 1e-08, propagation_ratio_tolerance: 'float' = 0.001, max_pml_fraction: 'float | None' = 0.5, dense_linearization_limit: 'int' = 700, max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05)
+    PeriodicModeSolver2D.solve(*, neff_guess: 'complex | None' = None, num_modes: 'int' = 4, direction: 'Direction' = 'forward', eigensolver: 'str' = 'auto', backend: 'str' = 'auto', eigensolver_tolerance: 'float' = 1e-10, residual_tolerance: 'float' = 1e-08, propagation_ratio_tolerance: 'float' = 0.001, max_pml_fraction: 'float | None' = 0.5, dense_linearization_limit: 'int' = 700, max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05)
 
 Solve and return modes with separate algebraic and adaptive controls.
 
@@ -564,7 +564,7 @@ Solve and return modes with separate algebraic and adaptive controls.
      - Optional
      - ``'auto'``
      - Eigensolver control for this operation.
-   * - ``arnoldi_backend``
+   * - ``backend``
      - ``str``
      - Optional
      - ``'auto'``
@@ -1122,7 +1122,7 @@ Returns: the initial mesh stored in ``mesh_data``.
 
 .. code-block:: python
 
-    PeriodicModeSolver3D.solve(*, neff_guess: 'complex | None' = None, num_modes: 'int' = 4, direction: 'Direction' = 'forward', eigensolver: 'str' = 'auto', arnoldi_backend: 'str' = 'auto', eigensolver_tolerance: 'float' = 1e-10, residual_tolerance: 'float' = 1e-08, divergence_tolerance: 'float' = 1e-06, propagation_ratio_tolerance: 'float' = 0.001, max_pml_fraction: 'float | None' = 0.5, dense_linearization_limit: 'int' = 700, ncv: 'int | None' = None, max_restarts: 'int' = 12, random_seed: 'int' = 0, max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05)
+    PeriodicModeSolver3D.solve(*, neff_guess: 'complex | None' = None, num_modes: 'int' = 4, direction: 'Direction' = 'forward', eigensolver: 'str' = 'auto', backend: 'str' = 'auto', eigensolver_tolerance: 'float' = 1e-10, residual_tolerance: 'float' = 1e-08, divergence_tolerance: 'float' = 1e-06, propagation_ratio_tolerance: 'float' = 0.001, max_pml_fraction: 'float | None' = 0.5, dense_linearization_limit: 'int' = 700, ncv: 'int | None' = None, max_restarts: 'int' = 12, random_seed: 'int' = 0, max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05)
 
 Solve and return modes with separate algebraic and adaptive controls.
 
@@ -1155,7 +1155,7 @@ Solve and return modes with separate algebraic and adaptive controls.
      - Optional
      - ``'auto'``
      - Eigensolver control for this operation.
-   * - ``arnoldi_backend``
+   * - ``backend``
      - ``str``
      - Optional
      - ``'auto'``
@@ -1575,3 +1575,10 @@ at Mode 1. Modes can exchange places, so samples are not joined.
 sweep may use a one-dimensional array. Columns give the returned mode order at each frequency.
 The function returns a Matplotlib Figure. Use ``show=False`` to save a figure
 without opening a window.
+
+Backend selection
+-----------------
+
+The ``backend`` keyword selects execution explicitly. ``"cpu"`` preserves
+the default CPU method; ``"auto"`` also retains CPU selection. Use ``"cuda"``
+for CuPy/cuDSS acceleration.

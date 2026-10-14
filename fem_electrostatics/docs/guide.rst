@@ -88,7 +88,7 @@ for learning order, output locations, and viewer requirements.
 CUDA acceleration
 -----------------
 
-Use ``solver.solve(linear_solver_backend="cuda")`` for cuDSS factorization and solves.
+Use ``solver.solve(backend="cuda")`` for cuDSS factorization and solves.
 Install the ``cuda12`` or ``cuda13`` extra and set ``CUDSS_LIBRARY`` to
 the cuDSS >= 0.8 shared library. GPU selection follows the current CuPy
 device. Assembly and adaptive refinement remain on the CPU. CPU defaults

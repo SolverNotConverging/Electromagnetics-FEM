@@ -69,3 +69,9 @@ From the repository folder:
     python fem_periodic_modes/examples/post_processing/2d_plot_dispersion.py path/to/dispersion.csv
 
 Periodic dispersion uses scatter markers because modes can exchange places.
+
+Backend selection
+-----------------
+
+Solver calls explicitly select ``backend="cpu"``. Change this to ``backend="cuda"`` to use CuPy and cuDSS >= 0.8;
+set ``CUDSS_LIBRARY`` to your cuDSS shared library.

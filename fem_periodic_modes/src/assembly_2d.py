@@ -254,7 +254,7 @@ def _refined_candidates(
     target: complex,
     candidate_count: int,
     tolerance: float,
-    arnoldi_backend: str,
+    backend: str,
 ) -> tuple[ComplexArray, ComplexArray, NDArray[np.float64], str]:
     left, right = linearized_pencil(system)
     try:
@@ -263,7 +263,7 @@ def _refined_candidates(
         raise SolverError(
             "The refined eigensolver requires the periodic-eigensolver distribution."
         ) from exc
-    public_backend = "python" if arnoldi_backend == "numpy" else arnoldi_backend
+    public_backend = "python" if backend == "numpy" else backend
     result = periodic_eigensolver.solve_generalized(
         left,
         right,
@@ -292,7 +292,7 @@ def solve_qep_candidates(
     candidate_count: int,
     tolerance: float = 1e-10,
     eigensolver: str = "auto",
-    arnoldi_backend: str = "auto",
+    backend: str = "auto",
     dense_linearization_limit: int = 700,
 ) -> tuple[ComplexArray, ComplexArray, NDArray[np.float64], str]:
     """Return roots and scalar coefficient vectors nearest ``target``."""
@@ -302,9 +302,9 @@ def solve_qep_candidates(
     method = str(eigensolver).strip().lower()
     if method not in ("auto", "dense", "refined"):
         raise ConfigurationError("eigensolver must be 'auto', 'dense', or 'refined'.")
-    backend = str(arnoldi_backend).strip().lower()
+    backend = str(backend).strip().lower()
     if backend not in ("auto", "cython", "python", "numpy", "cuda"):
-        raise ConfigurationError("arnoldi_backend must be 'auto', 'cython', 'python', or 'cuda'.")
+        raise ConfigurationError("backend must be 'auto', 'cython', 'python', or 'cuda'.")
     size = 2 * system.ndofs
     if method == "auto":
         method = "dense" if backend != "cuda" and size <= int(dense_linearization_limit) else "refined"

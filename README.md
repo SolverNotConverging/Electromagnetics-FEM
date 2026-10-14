@@ -250,7 +250,7 @@ builds and native dependency sources.
 Periodic FEM solves can use refined shift-and-invert Arnoldi by passing
 `eigensolver="refined"` to `solver.solve(...)`. The CPU implementation is
 included in FEM and needs no separate solver package. Select
-`arnoldi_backend="python"` for NumPy/SciPy, `"cython"` for the compiled kernel,
+`backend="python"` for NumPy/SciPy, `"cython"` for the compiled kernel,
 or `"auto"` to use Cython when available and otherwise Python.
 The Windows/macOS wheels and `pip install .` source builds include the Cython kernel.
 
@@ -306,14 +306,14 @@ $env:CUDSS_LIBRARY="C:/path/to/cudss/bin/cudss64_0.dll"
 ```
 
 CuPy and cuDSS are not bundled in the FEM wheels. CUDA is selected explicitly;
-`arnoldi_backend="auto"` keeps CPU selection. In a periodic FEM solve, use:
+`backend="auto"` keeps CPU selection. In a periodic FEM solve, use:
 
 ```python
 modes = solver.solve(
     neff_guess=0.5 - 0.02j,
     num_modes=2,
     eigensolver="refined",
-    arnoldi_backend="cuda",  # Use "auto", "python", or "cython" for CPU.
+    backend="cuda",  # Use "auto", "python", or "cython" for CPU.
 )
 ```
 

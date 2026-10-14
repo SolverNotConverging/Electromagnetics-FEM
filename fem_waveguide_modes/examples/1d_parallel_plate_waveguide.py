@@ -18,7 +18,7 @@ def main():
     frequency = 299_792_458.0  # vacuum wavelength = 1 metre
     line = ModeSolver1D(frequency=frequency, x_range=1.0)
     line.mesh(resolution=48)
-    line_modes = line.solve(max_refinements=0, num_modes=3)
+    line_modes = line.solve(backend="cpu", max_refinements=0, num_modes=3)
     print("1D effective indices (TEM and TE/TM cutoff pair):", line_modes.neff)
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)

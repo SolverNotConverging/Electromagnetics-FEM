@@ -554,10 +554,11 @@ class PeriodicModeSolver2D(PeriodicScene2D, ElectromagneticSolverMixin):
             return direction in ("forward", "right-decaying", "indeterminate")
         return direction in ("backward", "left-decaying")
 
-    def solve(self, *, neff_guess: complex | None=None, num_modes: int=4, direction: Direction='forward', eigensolver: str="auto", arnoldi_backend: str="auto", eigensolver_tolerance: float=1e-10, residual_tolerance: float=1e-08, propagation_ratio_tolerance: float=0.001, max_pml_fraction: float | None=0.5, dense_linearization_limit: int=700, max_refinements: int=2, adaptive_tolerance: float=0.05):
+    def solve(self, *, neff_guess: complex | None=None, num_modes: int=4, direction: Direction='forward', eigensolver: str="auto", backend: str="auto", eigensolver_tolerance: float=1e-10, residual_tolerance: float=1e-08, propagation_ratio_tolerance: float=0.001, max_pml_fraction: float | None=0.5, dense_linearization_limit: int=700, max_refinements: int=2, adaptive_tolerance: float=0.05):
         """Solve and return modes with separate algebraic and adaptive controls."""
+        backend = "auto" if backend == "cpu" else backend
         from .adaptive import solve_periodic
-        options = {'neff_guess': neff_guess, 'num_modes': num_modes, 'direction': direction, 'eigensolver': eigensolver, 'arnoldi_backend': arnoldi_backend, 'eigensolver_tolerance': eigensolver_tolerance, 'residual_tolerance': residual_tolerance, 'propagation_ratio_tolerance': propagation_ratio_tolerance, 'max_pml_fraction': max_pml_fraction, 'dense_linearization_limit': dense_linearization_limit}
+        options = {'neff_guess': neff_guess, 'num_modes': num_modes, 'direction': direction, 'eigensolver': eigensolver, 'backend': backend, 'eigensolver_tolerance': eigensolver_tolerance, 'residual_tolerance': residual_tolerance, 'propagation_ratio_tolerance': propagation_ratio_tolerance, 'max_pml_fraction': max_pml_fraction, 'dense_linearization_limit': dense_linearization_limit}
         return self._finish_result(solve_periodic(self, 2, (), options, max_refinements, adaptive_tolerance))
 
 
@@ -568,7 +569,7 @@ class PeriodicModeSolver2D(PeriodicScene2D, ElectromagneticSolverMixin):
         *,
         direction: Direction = "forward",
         eigensolver: str | None = None,
-        arnoldi_backend: str | None = None,
+        backend: str | None = None,
         eigensolver_tolerance: float = 1e-10,
         residual_tolerance: float = 1e-8,
         propagation_ratio_tolerance: float = 1e-3,
@@ -604,7 +605,7 @@ class PeriodicModeSolver2D(PeriodicScene2D, ElectromagneticSolverMixin):
             neff_guess, "neff_guess"
         )
         method = str(eigensolver).strip().lower()
-        backend = str(arnoldi_backend).strip().lower()
+        backend = str(backend).strip().lower()
         candidate_count = max(4 * requested, requested + 12)
         candidates: list[tuple[float, complex, ComplexArray, float, str, PeriodicFEMSystem2D]] = []
         for system in systems.values():
@@ -614,7 +615,7 @@ class PeriodicModeSolver2D(PeriodicScene2D, ElectromagneticSolverMixin):
                 candidate_count=min(candidate_count, max(1, 2 * system.ndofs - 2)),
                 tolerance=float(eigensolver_tolerance),
                 eigensolver=method,
-                arnoldi_backend=backend,
+                backend=backend,
                 dense_linearization_limit=_positive_integer(dense_linearization_limit, "dense_linearization_limit", 4),
             )
             for value, vector in zip(values, vectors.T, strict=True):
@@ -688,7 +689,7 @@ class PeriodicModeSolver2D(PeriodicScene2D, ElectromagneticSolverMixin):
             dimension=2,
             metadata={
                 "eigensolver": method,
-                "arnoldi_backend": backend,
+                "backend": backend,
                 "geometry_revision": self.geometry.revision,
                 "mesh_element_tags": self.mesh_data.element_tags,
                 "periodic_node_pairs": np.column_stack(

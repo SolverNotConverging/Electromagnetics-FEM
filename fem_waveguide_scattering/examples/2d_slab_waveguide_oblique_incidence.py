@@ -35,9 +35,9 @@ def main() -> None:
     simulation.add_pml(thickness=6.5e-07, direction='z')
     simulation.mesh(wavelength_elements=9)
 
-    modes = simulation.solve_modes(max_refinements=0, num_modes=1, neff_guess=3.2, num_elements=54)
+    modes = simulation.solve_modes(backend="cpu", max_refinements=0, num_modes=1, neff_guess=3.2, num_elements=54)
     incident = simulation.set_incident_mode(modes[0])
-    result = simulation.solve(max_refinements=0, linear_solver_tolerance=1e-08)
+    result = simulation.solve(backend="cpu", max_refinements=0, linear_solver_tolerance=1e-08)
     output_path = result.save(OUTPUT_DIR / 'results.h5')
 
     print("propagation angle (deg) =", simulation.angle)

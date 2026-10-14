@@ -21,10 +21,10 @@ def main():
     simulation.add_pml(thickness=0.5, direction='z')
     simulation.mesh(max_element_size=0.15, element_order=2)
     # First solve the lead modes, then choose the zero-based incident mode.
-    modes = simulation.solve_modes(num_modes=1, neff_guess=1., num_elements=16, max_refinements=0)
+    modes = simulation.solve_modes(backend="cpu", num_modes=1, neff_guess=1., num_elements=16, max_refinements=0)
     simulation.set_incident_mode(0)
     # The scattering solve returns power-normalized reflection and transmission.
-    result = simulation.solve(max_refinements=0)
+    result = simulation.solve(backend="cpu", max_refinements=0)
     print("TEM effective index (exact 1):", modes[0].neff)
     print("Reflection (exact 0):", result.reflection)
     print("Transmission (exact 1):", result.transmission)

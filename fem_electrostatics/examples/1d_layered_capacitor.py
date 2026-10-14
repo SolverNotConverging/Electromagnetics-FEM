@@ -23,7 +23,7 @@ def main():
     capacitor.set_potential(potential=0.0, name='ground', geometry='left')
     capacitor.set_potential(potential=1.0, name='drive', geometry='right')
     capacitor.mesh(max_element_size=.1)
-    dielectric = capacitor.solve(max_refinements=0)
+    dielectric = capacitor.solve(backend="cpu", max_refinements=0)
     print("Layered capacitor energy:", dielectric.energy)
     print("Expected energy:", .5 * EPSILON_0 / (.5 + .5 / 4.))
 

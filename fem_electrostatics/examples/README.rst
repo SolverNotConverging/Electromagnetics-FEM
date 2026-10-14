@@ -24,3 +24,9 @@ substantially longer. 3D cases also require more memory.
 Run a script from this directory, or pass its path from the repository root.
 Scripts that save results use
 ``fem_electrostatics/outputs/<example>/`` in the downloaded repository.
+
+Backend selection
+-----------------
+
+Solver calls explicitly select ``backend="cpu"``. Change this to ``backend="cuda"`` to use CuPy and cuDSS >= 0.8;
+set ``CUDSS_LIBRARY`` to your cuDSS shared library.
