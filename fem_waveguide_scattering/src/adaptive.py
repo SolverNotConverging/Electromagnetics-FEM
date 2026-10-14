@@ -60,7 +60,7 @@ def solve_scattering(simulation, max_refinements, adaptive_tolerance):
     if simulation.mesh_data is None:
         simulation.mesh(**getattr(simulation, "_mesh_settings", {"wavelength_elements": 4}))
     if simulation.modes is None:
-        simulation.solve_modes(num_modes=1, max_refinements=limit, adaptive_tolerance=tolerance)
+        simulation.solve_modes(backend=controls.backend, num_modes=1, max_refinements=limit, adaptive_tolerance=tolerance)
     if simulation.incident is None:
         simulation.set_incident_mode(0)
 

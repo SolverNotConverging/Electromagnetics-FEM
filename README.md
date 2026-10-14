@@ -339,3 +339,17 @@ cuDSS library discovery checks `CUDSS_LIBRARY` first, then system paths,
 NVIDIA packages in the active Python environment, and the repository
 `build/cuda-deps` directory. With a local installation in that directory,
 `backend="cuda"` works without setting an environment variable.
+
+Waveguide scattering also supports cuDSS acceleration:
+
+```python
+simulation.solve_modes(backend="cuda", num_modes=1, neff_guess=1.0)
+simulation.set_incident_mode(0)
+result = simulation.solve(backend="cuda")
+# Or accelerate both stages at every frequency:
+sweep = simulation.sweep(frequencies_hz, backend="cuda")
+```
+
+Scattering assembly and ARPACK lead-mode iteration run on the CPU;
+cuDSS performs the sparse factorizations and shifted/direct solves on CUDA.
+Lead-mode iteration transfers vectors between host and device.

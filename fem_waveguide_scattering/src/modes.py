@@ -1036,11 +1036,12 @@ class ModeSolver:
         sigma: complex,
         count: int,
         tolerance: float,
+        backend: str = "cpu",
     ) -> tuple[ComplexArray, ComplexArray, str]:
         n = system.ndofs
         size = 2 * n
 
-        if size <= self.dense_linearization_limit or size <= 3:
+        if backend != "cuda" and (size <= self.dense_linearization_limit or size <= 3):
             identity = eye(n, format="csr", dtype=np.complex128)
             zero = _zero(n, n)
             pencil_a = bmat(
@@ -1077,49 +1078,74 @@ class ModeSolver:
         shift = complex(sigma)
         perturbation = 1e-6j * max(1.0, abs(shift))
         shifted = shift + perturbation
+        from contextlib import ExitStack
+        resources = ExitStack()
         try:
-            factor = splu(csc_matrix(system.polynomial(shifted)))
-        except RuntimeError as exc:
-            raise ModeSolverError(
-                f"Shifted mode pencil could not be factorized near neff={sigma!r}."
-            ) from exc
+            if backend == "cuda":
+                try:
+                    import cupy as cp
+                    from cupyx.scipy.sparse import csr_matrix as gpu_csr
+                except ImportError as exc:
+                    raise ImportError("CUDA lead modes require optional CuPy.") from exc
+                from periodic_eigensolver._cudss import CudssFactor
+                factor = resources.enter_context(CudssFactor(gpu_csr(system.polynomial(shifted))))
+                coupling_gpu = gpu_csr(system.A1 + shifted * system.A2)
+                a2_gpu = gpu_csr(system.A2)
 
-        # Eliminate the companion block analytically: only the original
-        # n-by-n quadratic polynomial needs a sparse LU factorization.
-        coupling = system.A1 + shifted * system.A2
+                def apply_shift_invert(vector: ComplexArray) -> ComplexArray:
+                    device_vector = cp.asarray(vector)
+                    first = factor.solve(-(coupling_gpu @ device_vector[:n] + a2_gpu @ device_vector[n:]))
+                    return cp.asnumpy(cp.concatenate((first, device_vector[:n] + shifted * first)))
+            else:
+                try:
+                    factor = splu(csc_matrix(system.polynomial(shifted)))
+                except RuntimeError as exc:
+                    raise ModeSolverError(
+                        f"Shifted mode pencil could not be factorized near neff={sigma!r}."
+                    ) from exc
+                coupling = system.A1 + shifted * system.A2
 
-        def apply_shift_invert(vector: ComplexArray) -> ComplexArray:
-            first = factor.solve(-(coupling @ vector[:n] + system.A2 @ vector[n:]))
-            return np.concatenate((first, vector[:n] + shifted * first))
+                def apply_shift_invert(vector: ComplexArray) -> ComplexArray:
+                    first = factor.solve(-(coupling @ vector[:n] + system.A2 @ vector[n:]))
+                    return np.concatenate((first, vector[:n] + shifted * first))
+        except BaseException:
+            resources.close()
+            raise
 
-        operator = LinearOperator(
-            (size, size), matvec=apply_shift_invert, dtype=np.complex128
-        )
-        rng = np.random.default_rng(20260827)
-        initial = rng.standard_normal(size) + 1j * rng.standard_normal(size)
+        # Eliminate the companion block: factor only the n-by-n polynomial.
+        # ARPACK owns the host iteration; cuDSS handles GPU factorization and
+        # each shifted solve. Keeping this operator matches the CPU algorithm.
         try:
-            theta, eigenvectors = eigs(
-                operator,
-                k=requested,
-                which="LM",
-                v0=initial,
-                tol=tolerance,
-                maxiter=max(3000, 20 * size),
+            operator = LinearOperator(
+                (size, size), matvec=apply_shift_invert, dtype=np.complex128
             )
-        except ArpackNoConvergence as exc:
-            if exc.eigenvalues is None or exc.eigenvectors is None:
-                raise ModeSolverError("Sparse mode iteration did not converge.") from exc
-            theta = exc.eigenvalues
-            eigenvectors = exc.eigenvectors
-        valid = np.abs(theta) > np.finfo(float).eps
-        values = shift + perturbation + 1.0 / theta[valid]
-        vectors = eigenvectors[:n, valid]
-        order = np.argsort(np.abs(values - sigma))
-        return (
-            np.asarray(values[order], dtype=np.complex128),
-            np.asarray(vectors[:, order], dtype=np.complex128),
-            "sparse-shift-invert",
-        )
+            rng = np.random.default_rng(20260827)
+            initial = rng.standard_normal(size) + 1j * rng.standard_normal(size)
+            try:
+                theta, eigenvectors = eigs(
+                    operator,
+                    k=requested,
+                    which="LM",
+                    v0=initial,
+                    tol=tolerance,
+                    maxiter=max(3000, 20 * size),
+                )
+            except ArpackNoConvergence as exc:
+                if exc.eigenvalues is None or exc.eigenvectors is None:
+                    raise ModeSolverError("Sparse mode iteration did not converge.") from exc
+                theta = exc.eigenvalues
+                eigenvectors = exc.eigenvectors
+            valid = np.abs(theta) > np.finfo(float).eps
+            values = shift + perturbation + 1.0 / theta[valid]
+            vectors = eigenvectors[:n, valid]
+            order = np.argsort(np.abs(values - sigma))
+            return (
+                np.asarray(values[order], dtype=np.complex128),
+                np.asarray(vectors[:, order], dtype=np.complex128),
+                "cudss-shift-invert" if backend == "cuda" else "sparse-shift-invert",
+            )
+        finally:
+            resources.close()
 
     def _default_guess(self, system: ModeFEMSystem) -> complex:
         sample = 0.5 * (system.x_nodes[:-1] + system.x_nodes[1:])
@@ -1315,14 +1341,15 @@ class ModeSolver:
     def solve(self, *, max_refinements: int = 2,
               adaptive_tolerance: float = 0.05, backend: str = "cpu", **options) -> ModeSet:
         """Adapt the mixed line mesh using normal-D/tangential-H residuals."""
-        if backend not in ("cpu", "auto"):
-            raise ConfigurationError("backend must be cpu or auto for scattering lead modes.")
+        if backend not in ("cpu", "auto", "cuda"):
+            raise ConfigurationError("backend must be cpu, auto, or cuda.")
         from .adaptive import solve_modes
-        return solve_modes(self, options, max_refinements, adaptive_tolerance)
+        return solve_modes(self, dict(options, backend=backend), max_refinements, adaptive_tolerance)
 
     def _solve_once(
         self,
         *,
+        backend: str = "cpu",
         num_modes: int = 4,
         neff_guess: complex | None = None,
         direction: RequestedDirection = "forward",
@@ -1355,6 +1382,7 @@ class ModeSolver:
             sigma,
             candidate_count,
             eigensolver_tolerance,
+            backend,
         )
         accepted: list[Mode] = []
         rejected_residual = 0

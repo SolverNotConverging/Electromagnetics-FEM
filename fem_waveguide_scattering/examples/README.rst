@@ -30,4 +30,4 @@ Scripts that save results use
 Backend selection
 -----------------
 
-Solver calls explicitly select ``backend="cpu"``. Scattering and lead-mode solves currently support CPU execution only.
+Solver calls explicitly select ``backend="cpu"``. Change to ``backend="cuda"`` for cuDSS scattering solves and CUDA lead modes.

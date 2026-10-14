@@ -1282,5 +1282,7 @@ Backend selection
 -----------------
 
 The ``backend`` keyword selects execution explicitly. ``"cpu"`` preserves
-the default CPU method; ``"auto"`` also retains CPU selection. Scattering
-and its lead-mode solver currently support CPU execution only.
+the default CPU method; ``"auto"`` also retains CPU selection. Use ``"cuda"`` for cuDSS scattering solves and cuDSS shift-invert lead modes.
+``sweep(backend="cuda")`` selects both; an explicit ``mode_options["backend"]``
+can override the lead-mode selection. Automatic lead-mode generation and
+oblique-incidence resolution retain the selected backend.
