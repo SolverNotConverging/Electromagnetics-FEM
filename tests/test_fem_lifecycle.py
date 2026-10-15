@@ -12,7 +12,8 @@ from fem_periodic_modes import PeriodicModeSolver2D, PeriodicModeSolver3D
     (ModeSolver1D, dict(x_range=.02), dict(resolution=24), {}),
     (ModeSolver2D, dict(x_range=.02, y_range=.01), dict(resolution=(4, 3)), {}),
     (PeriodicModeSolver2D, dict(x_range=.02, z_range=.005), dict(max_element_size=.004), {}),
-    (PeriodicModeSolver3D, dict(x_range=.02, y_range=.01, z_range=.005), dict(max_element_size=.006), dict(eigensolver='dense')),
+    # Resolve the physical mode below the Gauss tolerance on both Linux and Windows meshes.
+    (PeriodicModeSolver3D, dict(x_range=.02, y_range=.01, z_range=.005), dict(max_element_size=.003), dict(eigensolver='dense')),
 ])
 def test_modal_lifecycle(solver_type, ranges, mesh_settings, solve_settings, tmp_path):
     solver = solver_type(frequency=10e9, **ranges)
