@@ -1,7 +1,5 @@
-"""Fem Periodic Modes. Public user API for version 1.1.0."""
+"""Fem Periodic Modes. Public user API."""
 
-from pathlib import Path as _Path
-__path__.append(str(_Path(__file__).parent / "src"))
 
 from .solver_2d import PeriodicModeSolver2D
 from .solver_3d import PeriodicModeSolver3D
@@ -19,7 +17,7 @@ from fem_common.errors import SolverError
 from .result_api import load_result
 from fem_common import NoResultError
 
-__version__ = "1.1.3"
+from fem._version import __version__
 __all__ = ['PeriodicModeSolver2D', 'PeriodicModeSolver3D', 'PeriodicMode', 'PeriodicModeSet', 'PeriodicSampledFields', 'PeriodicSweepResult', 'BackendCapabilityError', 'ConfigurationError', 'FEMPeriodicSolverError', 'GeometryError', 'MeshError', 'PersistenceError', 'SolverError', 'load_result', 'NoResultError']
 
 # Shared construction tools are available directly from the solver family.

@@ -14,9 +14,9 @@ def main():
     if args.command == "info":
         if remaining:
             parser.error(f"Unrecognized arguments: {' '.join(remaining)}")
-        from periodic_eigensolver import native_backend_available
+        from fem_common.linalg import resolve_backend
         print(f"FEM {__version__}")
-        print(f"Compiled periodic eigensolver: {native_backend_available()}")
+        print(f"Automatic solver backend: {resolve_backend()}")
         for name in ("transmission-line-calculator", "fem-periodic-mode-viewer", "fem-waveguide-scattering-viewer"):
             print(f"{name}: {bundled_executable(name) or 'not bundled'}")
         return 0

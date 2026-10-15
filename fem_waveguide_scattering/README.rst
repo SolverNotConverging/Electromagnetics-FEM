@@ -1,7 +1,7 @@
 fem waveguide scattering
 ========================
 
-Source is under ``src/``. Install only the Python dependencies from the
+Python modules live directly in this package directory. Install only the Python dependencies from the
 `root README <../README.md>`_, then import this folder directly.
 
 * `Guide <docs/guide.rst>`_

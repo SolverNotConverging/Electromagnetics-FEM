@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 3.24)
 
 include("${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/WindowsToolchain.cmake")
 
-project(FEMWaveguideScatteringViewer VERSION 1.1.2 LANGUAGES C CXX)
+include("${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/ProjectVersion.cmake")
+
+project(FEMWaveguideScatteringViewer VERSION ${FEM_VERSION} LANGUAGES C CXX)
 include("${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/NativeRuntime.cmake")
 
 set(CMAKE_CXX_STANDARD 20)

@@ -21,7 +21,7 @@ def main():
                   background_material=dielectric)
     scalar = PeriodicModeSolver2D(**common, polarization='TM')
     scalar.mesh(max_element_size=0.003, wavelength_elements=8)
-    tem = scalar.solve(backend="cpu", num_modes=1, max_refinements=0, neff_guess=1.5)
+    tem = scalar.solve(backend="auto", num_modes=1, max_refinements=0, neff_guess=1.5)
     print("2D TEM effective index (exact 1.5):", tem[0].neff)
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)

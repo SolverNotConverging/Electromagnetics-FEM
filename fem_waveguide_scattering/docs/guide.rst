@@ -40,7 +40,6 @@ Working with the solver
 Before the scattering solve, use ``solve_modes()`` and ``set_incident_mode(0)``
 to configure the first lead mode. The mesh is 2D; the fields are 2.5D full-vector.
 
-Version 1.1.0.
 
 A **2.5D full-vector** scattered-field solver on a two-dimensional x/z mesh.
 The invariant-direction factor is ``exp(-i*ky*y)``.
@@ -171,10 +170,11 @@ project's 2.5D geometry and positive-time phasor convention.
 CUDA acceleration
 -----------------
 
-Use ``solve_modes(backend="cuda")`` for GPU shift-invert lead modes and
-``solve(backend="cuda")`` for the condensed Maxwell system with cuDSS.
-``sweep(backend="cuda")`` applies CUDA to both stages by default. CPU defaults
-and the existing residual, Gauss-law, port, and power checks are retained.
+Use ``solve_modes(backend="gpu")`` for GPU shift-invert lead modes and
+``solve(backend="gpu")`` for the condensed Maxwell system with cuDSS.
+``sweep(backend="gpu")`` applies CUDA to both stages by default. The default
+``backend="auto"`` tries GPU first, falling back to SciPy CPU when unavailable.
+Residual, Gauss-law, port, and power checks apply to both backends.
 ARPACK iteration, assembly, meshing, adaptation, field sampling, and small
 projections stay on the CPU; lead-mode matrices and shifted solves use cuDSS
 on the GPU, with vector transfers each iteration. Install a CuPy extra and cuDSS >= 0.8; library discovery checks the

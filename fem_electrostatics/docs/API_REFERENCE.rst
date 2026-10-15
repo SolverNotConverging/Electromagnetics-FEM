@@ -1,7 +1,7 @@
 fem_electrostatics user API
 ===========================
 
-Version 1.1.0. This reference covers the deliberately supported user API.
+Version 2.0.0. This reference covers the deliberately supported user API.
 Implementation helpers are documented in their source modules.
 
 Workflow and units
@@ -36,7 +36,7 @@ fields. ``electric_field`` and ``displacement_field`` are nodal averages.
 Supported exports
 -----------------
 
-``ElectrostaticSolver``, ``ElectrostaticResult``, ``ElectrostaticSolverError``, ``GeometryError``, ``MeshError``, ``SolverError``, ``NoResultError``, ``PersistenceError``, ``load_result``.
+``ElectrostaticSolver``, ``ElectrostaticResult``, ``ElectrostaticSolverError``, ``GeometryError``, ``MeshError``, ``SolverError``, ``NoResultError``, ``PersistenceError``, ``load_result``, ``Material``, ``GoodConductor``, ``SurfaceImpedance``, ``materials``, ``shapes``, ``EPSILON_0``, ``MU_0``, ``C_0``.
 
 Solver construction and operations
 ----------------------------------
@@ -486,22 +486,22 @@ Discretize after geometry; high-Dk regions and boundaries refine locally.
      - ``float | None``
      - Optional
      - ``0.7``
-     - Interface refinement control for this operation.
+     - Material-interface mesh-size multiplier in (0, 1]; None disables interface refinement.
    * - ``boundary_refinement``
      - ``float | None``
      - Optional
      - ``0.5``
-     - Boundary refinement control for this operation.
+     - Boundary mesh-size multiplier in (0, 1]; None disables boundary refinement.
    * - ``interface_refinement_width``
      - ``float | None``
      - Optional
      - ``None``
-     - Interface refinement width control for this operation.
+     - Width in metres over which interface refinement transitions to the bulk size; None selects the mesher default.
    * - ``boundary_refinement_width``
      - ``float | None``
      - Optional
      - ``None``
-     - Boundary refinement width control for this operation.
+     - Width in metres over which boundary mesh refinement transitions to the bulk size; None selects the mesher default.
 
 Returns: the initial mesh stored in ``mesh_data``.
 
@@ -510,7 +510,7 @@ Returns: the initial mesh stored in ``mesh_data``.
 
 .. code-block:: python
 
-    ElectrostaticSolver.solve(*, linear_solver_tolerance: 'float' = 1e-10, max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05, marking_fraction: 'float' = 0.5, max_elements: 'int' = 200000, backend: 'str' = 'cpu')
+    ElectrostaticSolver.solve(*, linear_solver_tolerance: 'float' = 1e-10, max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05, marking_fraction: 'float' = 0.5, max_elements: 'int' = 200000, backend: 'str' = 'auto') -> 'ElectrostaticResult'
 
 Solve with bounded, solution-driven local refinement by default.
 
@@ -548,6 +548,11 @@ Solve with bounded, solution-driven local refinement by default.
      - Optional
      - ``200000``
      - Adaptive mesh element budget.
+   * - ``backend``
+     - ``str``
+     - Optional
+     - ``'auto'``
+     - Execution backend: auto (default) selects GPU when available, otherwise SciPy CPU; cpu and gpu force the selected backend.
 
 Returns: the physics-specific result stored in ``result``.
 
@@ -710,7 +715,7 @@ Use ``Material(name=..., epsilon=..., mu=...)`` for bulk media,
 ``materials.PEC`` or ``materials.PMC`` for ideal boundaries, and the
 documented ``materials.copper``-style presets where SIBC is supported.
 Continuous primitives and Boolean/transformed shapes live in
-``fem_common.shapes``. Solver packages do not re-export these shared values.
+``fem_common.shapes``. Solver packages also re-export Material, materials, and shapes.
 
 ``load_result``
 ~~~~~~~~~~~~~~~
@@ -746,16 +751,8 @@ Mesh and numerical failures raise the corresponding ``MeshError`` or
 Viewer errors include the executable path or installation setting needed to
 correct a launch failure. Saving and loading do not require an active GUI.
 
-Shared construction tools
--------------------------
-
-Import ``Material``, ``GoodConductor``, ``SurfaceImpedance``, ``materials``,
-``shapes``, ``EPSILON_0``, ``MU_0``, and ``C_0`` directly from this solver family.
-They are the shared FEM definitions; examples do not need a separate common import.
-
 Backend selection
 -----------------
 
-The ``backend`` keyword selects execution explicitly. ``"cpu"`` preserves
-the default CPU method; ``"auto"`` also retains CPU selection. Use ``"cuda"``
-for CuPy/cuDSS acceleration.
+``backend="auto"`` selects GPU when available, otherwise SciPy CPU. ``backend="gpu"`` requests
+CuPy/cuDSS explicitly. See the solver guide for supported algorithms.

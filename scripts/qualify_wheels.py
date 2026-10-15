@@ -32,18 +32,17 @@ import numpy as np
 import scipy.sparse as sp
 from fem_common import Material, materials, shapes
 
-packages = ('fem_common', 'fem_adaptivity', 'periodic_eigensolver',
+packages = ('fem_common', 'fem_adaptivity',
     'fem_waveguide_modes', 'fem_periodic_modes', 'fem_waveguide_scattering', 'fem_electrostatics')
 for name in packages:
     module = import_module(name)
     assert module.__version__ == version('electromagnetics-fem'), name
     assert Path(module.__file__).is_relative_to(Path(sys.prefix)), module.__file__
 
-from periodic_eigensolver import native_backend_available, solve_generalized
-assert native_backend_available(), 'The release wheel must activate the native eigensolver.'
-result = solve_generalized(sp.diags(np.arange(1., 21.), format='csc'), sp.eye(20, format='csc'),
-    sigma=3.1, num_modes=2, backend='cython')
-assert np.max(result.residuals) < 1e-8
+from fem_common.linalg import generalized_eigenpairs
+values, vectors, method = generalized_eigenpairs(
+    sp.diags(np.arange(1., 21.)), sp.eye(20), target=3.1, count=2, backend='cpu')
+np.testing.assert_allclose(np.sort(values.real), [3., 4.], atol=1e-8)
 
 import importlib.util
 assert importlib.util.find_spec('cem_common') is None
@@ -153,17 +152,14 @@ def main():
     args = parser.parse_args()
     wheels = sorted(args.dist.resolve().glob('*.whl'))
     if sys.platform == 'win32' and platform.machine().lower() in ('amd64', 'x86_64'):
-        expected = f'electromagnetics_fem-{VERSION}-cp312-cp312-win_amd64.whl'
+        expected = f'electromagnetics_fem-{VERSION}-py3-none-win_amd64.whl'
     elif sys.platform == 'darwin' and platform.machine() == 'arm64':
-        expected = f'electromagnetics_fem-{VERSION}-cp312-cp312-macosx_15_0_arm64.whl'
+        expected = f'electromagnetics_fem-{VERSION}-py3-none-macosx_15_0_arm64.whl'
     else:
         raise SystemExit('Wheel qualification supports Windows x64 and macOS Apple silicon.')
     if len(wheels) != 1 or wheels[0].name != expected:
         raise SystemExit(f'Expected the complete {expected} wheel, found {wheels}.')
     native = wheels[0]
-    with zipfile.ZipFile(native) as archive:
-        if not any(name.endswith(('.pyd', '.so')) for name in archive.namelist()):
-            raise SystemExit('The periodic eigensolver wheel lacks its compiled extension.')
     with tempfile.TemporaryDirectory(prefix='fem-wheel-qualification-') as temporary:
         work = Path(temporary)
         venv.EnvBuilder(with_pip=True, system_site_packages=not args.fresh).create(work/'env')
@@ -176,11 +172,9 @@ def main():
         subprocess.run([str(python), '-I', '-c', NATIVE_SMOKE], cwd=work, check=True)
         source_smoke = (
             f"import sys; sys.path.insert(0, {str(ROOT)!r}); "
-            "import periodic_eigensolver; "
-            "assert periodic_eigensolver.native_backend_available(); "
             "from fem_common._native import bundled_executable; "
             "assert bundled_executable('fem-periodic-mode-viewer').is_file(); "
-            "print('Direct source examples find installed native runtime and kernel: PASS')"
+            "print('Direct source examples find installed native runtime: PASS')"
         )
         subprocess.run([str(python), '-I', '-c', source_smoke], cwd=work, check=True)
 

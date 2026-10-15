@@ -1,7 +1,7 @@
 fem_waveguide_modes user API
 ============================
 
-Version 1.1.0. This reference covers the deliberately supported user API.
+Version 2.0.0. This reference covers the deliberately supported user API.
 Implementation helpers are documented in their source modules.
 
 Workflow and units
@@ -39,7 +39,7 @@ field envelopes; the Bloch phase is recorded separately from these fields.
 Supported exports
 -----------------
 
-``ModeSolver1D``, ``ModeSolver2D``, ``Mode``, ``ModeSet``, ``SampledFields``, ``BackendCapabilityError``, ``ConfigurationError``, ``FEMModeSolverError``, ``GeometryError``, ``MeshError``, ``SolverError``, ``NoResultError``, ``PersistenceError``, ``load_result``.
+``ModeSolver1D``, ``ModeSolver2D``, ``Mode``, ``ModeSet``, ``SampledFields``, ``BackendCapabilityError``, ``ConfigurationError``, ``FEMModeSolverError``, ``GeometryError``, ``MeshError``, ``SolverError``, ``NoResultError``, ``PersistenceError``, ``load_result``, ``Material``, ``GoodConductor``, ``SurfaceImpedance``, ``materials``, ``shapes``, ``EPSILON_0``, ``MU_0``, ``C_0``, ``plot_dispersion``.
 
 Solver construction and operations
 ----------------------------------
@@ -337,7 +337,7 @@ Remesh the current geometry with ``factor`` times the density.
      - ``float``
      - Optional
      - ``2.0``
-     - Factor control for this operation.
+     - Mesh refinement factor greater than one.
 
 Returns: the configured geometry/excitation handle, or None for in-place configuration.
 
@@ -434,7 +434,12 @@ Solve and return modes with separate algebraic and adaptive controls.
      - ``int``
      - Optional
      - ``450``
-     - Dense limit control for this operation.
+     - Largest system dimension allowed for dense eigensolution.
+   * - ``backend``
+     - ``str``
+     - Optional
+     - ``'auto'``
+     - Execution backend: auto (default) selects GPU when available, otherwise SciPy CPU; cpu and gpu force the selected backend.
    * - ``max_refinements``
      - ``int``
      - Optional
@@ -806,7 +811,7 @@ Place a local mesh-size control without changing the physics.
      - ``float``
      - Optional
      - ``0.0``
-     - Transition width control for this operation.
+     - Distance in metres over which local mesh sizing transitions to the background size.
    * - ``name``
      - ``str | None``
      - Optional
@@ -904,7 +909,7 @@ Remesh with ``factor`` times the density and rebuild the system.
      - ``float``
      - Optional
      - ``2.0``
-     - Factor control for this operation.
+     - Mesh refinement factor greater than one.
 
 Returns: the configured geometry/excitation handle, or None for in-place configuration.
 
@@ -950,22 +955,22 @@ Build the initial mesh; solve() may subsequently refine it.
      - ``float | None``
      - Optional
      - ``0.7``
-     - Interface refinement control for this operation.
+     - Material-interface mesh-size multiplier in (0, 1]; None disables interface refinement.
    * - ``interface_refinement_width``
      - ``float | None``
      - Optional
      - ``None``
-     - Interface refinement width control for this operation.
+     - Width in metres over which interface refinement transitions to the bulk size; None selects the mesher default.
    * - ``boundary_refinement``
      - ``float | None``
      - Optional
      - ``0.5``
-     - Boundary refinement control for this operation.
+     - Boundary mesh-size multiplier in (0, 1]; None disables boundary refinement.
    * - ``boundary_refinement_width``
      - ``float | None``
      - Optional
      - ``None``
-     - Boundary refinement width control for this operation.
+     - Width in metres over which boundary mesh refinement transitions to the bulk size; None selects the mesher default.
    * - ``element_order``
      - ``int``
      - Optional
@@ -1031,12 +1036,17 @@ Solve and return modes with separate algebraic and adaptive controls.
      - ``float``
      - Optional
      - ``0.001``
-     - Propagation ratio tolerance control for this operation.
+     - Minimum real-power fraction used to classify a mode as propagating.
    * - ``dense_linearization_limit``
      - ``int``
      - Optional
      - ``700``
-     - Dense linearization limit control for this operation.
+     - Largest linearized eigenproblem dimension allowed for dense eigensolution.
+   * - ``backend``
+     - ``str``
+     - Optional
+     - ``'auto'``
+     - Execution backend: auto (default) selects GPU when available, otherwise SciPy CPU; cpu and gpu force the selected backend.
    * - ``max_refinements``
      - ``int``
      - Optional
@@ -1210,7 +1220,7 @@ Returns: the selected mode.
      - ``str``
      - Required
      - ``—``
-     - Polarization control for this operation.
+     - TE, TM, or both for the 2D periodic solver; result filtering selects the named polarization.
 
 Returns: the selected data or diagnostic report.
 
@@ -1237,7 +1247,7 @@ Use ``Material(name=..., epsilon=..., mu=...)`` for bulk media,
 ``materials.PEC`` or ``materials.PMC`` for ideal boundaries, and the
 documented ``materials.copper``-style presets where SIBC is supported.
 Continuous primitives and Boolean/transformed shapes live in
-``fem_common.shapes``. Solver packages do not re-export these shared values.
+``fem_common.shapes``. Solver packages also re-export Material, materials, and shapes.
 
 ``load_result``
 ~~~~~~~~~~~~~~~
@@ -1273,26 +1283,52 @@ Mesh and numerical failures raise the corresponding ``MeshError`` or
 Viewer errors include the executable path or installation setting needed to
 correct a launch failure. Saving and loading do not require an active GUI.
 
-Shared construction tools
--------------------------
+Backend selection
+-----------------
 
-Import ``Material``, ``GoodConductor``, ``SurfaceImpedance``, ``materials``,
-``shapes``, ``EPSILON_0``, ``MU_0``, and ``C_0`` directly from this solver family.
-They are the shared FEM definitions; examples do not need a separate common import.
+``backend="auto"`` selects GPU when available, otherwise SciPy CPU. ``backend="gpu"`` requests
+CuPy/cuDSS explicitly. See the solver guide for supported algorithms.
 
 Dispersion plots
 ----------------
 
-``plot_dispersion``: ``plot_dispersion(frequencies, neff, *, show=True)`` plots the real and imaginary
-parts of effective index, with one trace per mode and labels starting at Mode 1.
-``frequencies`` is in Hz. ``neff`` has shape (frequencies, modes); a single-mode
-sweep may use a one-dimensional array. Columns follow the supplied mode order.
-The function returns a Matplotlib Figure. Use ``show=False`` to save a figure
-without opening a window.
+``plot_dispersion``
+~~~~~~~~~~~~~~~~~~~
 
-Backend selection
------------------
+.. code-block:: python
 
-The ``backend`` keyword selects execution explicitly. ``"cpu"`` preserves
-the default CPU method; ``"auto"`` also retains CPU selection. Use ``"cuda"``
-for CuPy/cuDSS acceleration.
+    plot_dispersion(frequencies, neff, *, show=True, connect=True)
+
+Plot Re(neff) and Im(neff), with a trace per mode on each panel.
+
+.. list-table:: Arguments
+   :header-rows: 1
+   :widths: 16 20 12 16 36
+
+   * - Argument
+     - Type / units
+     - Required / optional
+     - Default
+     - Meaning
+   * - ``frequencies``
+     - ``array-like or scalar``
+     - Required
+     - ``—``
+     - Strictly increasing positive frequencies in hertz.
+   * - ``neff``
+     - ``array-like or scalar``
+     - Required
+     - ``—``
+     - Effective indices with shape (frequencies, modes), or a vector for a single mode.
+   * - ``show``
+     - ``bool``
+     - Optional
+     - ``True``
+     - Open the plot window when true.
+   * - ``connect``
+     - ``bool``
+     - Optional
+     - ``True``
+     - Connect adjacent frequency samples when true; preserve mode ordering before connecting.
+
+Returns: a Matplotlib Figure.

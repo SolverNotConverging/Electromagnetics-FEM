@@ -62,5 +62,5 @@ From the repository folder:
 Backend selection
 -----------------
 
-Solver calls explicitly select ``backend="cpu"``. Change this to ``backend="cuda"`` to use CuPy and cuDSS >= 0.8;
-set ``CUDSS_LIBRARY`` to your cuDSS shared library.
+Solver calls use ``backend="auto"``. FEM selects GPU when CuPy, the CUDA device,
+and cuDSS are available, otherwise it uses SciPy CPU.

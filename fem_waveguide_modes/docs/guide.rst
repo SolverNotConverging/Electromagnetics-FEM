@@ -59,7 +59,6 @@ elements. The benchmark records budget exhaustion separately from convergence.
 4. Call ``solve(...)`` to obtain a typed result; ``max_refinements=0`` uses one fixed mesh.
 5. Inspect diagnostics, then call ``show()``, ``plot()``, or ``save(path)`` explicitly.
 
-Version 1.1.0.
 
 Workflow
 --------
@@ -126,9 +125,9 @@ Each column is one plotted mode, using the supplied ordering.
 CUDA acceleration
 -----------------
 
-Both 1D and 2D solvers support ``solver.solve(backend="cuda")`` for refined CUDA Arnoldi with cuDSS shift-invert solves.
+Both 1D and 2D solvers support ``solver.solve(backend="gpu")`` for refined CUDA Arnoldi with cuDSS shift-invert solves.
 Install the ``cuda12`` or ``cuda13`` extra and cuDSS >= 0.8. The runtime
 searches system paths, NVIDIA packages in the Python environment, and
 ``build/cuda-deps``. Set ``CUDSS_LIBRARY`` to override discovery. GPU selection follows the current CuPy
-device. Assembly and adaptive refinement remain on the CPU. CPU defaults
-are unchanged; explicit CUDA requests raise errors if unavailable.
+device. Assembly and adaptive refinement remain on the CPU. The default ``backend="auto"`` selects GPU when available and SciPy CPU otherwise.
+Explicit ``backend="gpu"`` requests raise errors if unavailable.

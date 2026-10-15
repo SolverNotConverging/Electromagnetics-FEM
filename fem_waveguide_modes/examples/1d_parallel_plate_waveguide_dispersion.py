@@ -17,7 +17,7 @@ neff_sweep = []
 for case, frequency in enumerate(tqdm(frequencies, desc="Frequency sweep", unit="frequency"), start=1):
     solver = ModeSolver1D(frequency=frequency, x_range=1e0)
     solver.mesh(resolution=48)
-    modes = solver.solve(backend="cpu", max_refinements=0, num_modes=3)
+    modes = solver.solve(backend="auto", max_refinements=0, num_modes=3)
     modes.save(OUTPUT / f"case_{case:03d}.h5")
     neff_sweep.append(modes.neff)
 

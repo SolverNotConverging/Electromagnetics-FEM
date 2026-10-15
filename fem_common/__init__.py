@@ -1,7 +1,5 @@
 """Shared materials, shapes, result metadata, and actionable errors."""
 
-from pathlib import Path as _Path
-__path__.append(str(_Path(__file__).parent / "src"))
 
 from .contracts import MeshSnapshot
 from .errors import CEMError, ConfigurationError, GeometryError, MeshError, SolverError, NoResultError, PersistenceError, ViewerError
@@ -11,7 +9,7 @@ from . import materials, shapes
 from scipy.constants import epsilon_0 as EPSILON_0, mu_0 as MU_0, c as C_0
 
 TIME_CONVENTION = "exp(+i*omega*t)"
-__version__ = "1.1.3"
+from fem._version import __version__
 __all__ = ["Material", "GoodConductor", "SurfaceImpedance", "materials", "shapes", "CEMError", "BackendCapabilityError", "ConfigurationError", "GeometryError", "MeshError", "SolverError", "NoResultError", "PersistenceError", "ViewerError", "MeshSnapshot"]
 
 __all__ += ["EPSILON_0", "MU_0", "C_0"]

@@ -58,16 +58,15 @@ def build_solver() -> PeriodicModeSolver3D:
 def main() -> None:
     solver = build_solver()
     solver.mesh(max_element_size=3.0 * MM, wavelength_elements=6)
-    modes = solver.solve(backend="cpu",
+    modes = solver.solve(backend="auto",
         num_modes=2,
         # Target a fast-wave branch directly inside the air light cone.
         neff_guess=0.5 - 0.02j,
         direction="forward",
         eigensolver="auto",
         eigensolver_tolerance=1.0e-8,
-        # Include enough radiation candidates for the restarted Arnoldi solve.
+        # Include enough radiation candidates for the ARPACK shift-invert solve.
         ncv=80,
-        max_restarts=24,
         max_refinements=0,
         max_pml_fraction=0.5,
     )

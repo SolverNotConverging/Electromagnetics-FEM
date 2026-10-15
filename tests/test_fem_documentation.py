@@ -55,3 +55,15 @@ def test_release_environment_is_uv_managed():
         for path in (ROOT / directory).rglob('*'):
             if path.is_file() and path.suffix in ('.rst', '.ps1', '.yml', '.yaml'):
                 assert 'RF_Engineering_env' not in path.read_text(encoding='utf-8'), path
+
+
+def test_generated_reference_matches_current_signatures_and_descriptions():
+    from scripts.generate_api_reference import render_references
+    for path, expected in render_references():
+        assert path.read_text(encoding="utf-8") == expected, f"Regenerate {path}"
+
+
+def test_generated_metadata_is_current():
+    from scripts.sync_metadata import generated_files
+    for path, expected in generated_files().items():
+        assert path.read_text(encoding="utf-8") == expected, f"Regenerate {path}"

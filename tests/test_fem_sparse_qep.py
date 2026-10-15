@@ -30,8 +30,10 @@ def test_sparse_qep_elimination_handles_complex_and_singular_mass(backend, monke
     right = bmat(((identity, zero), (zero, a2))).toarray()
     target = 0.7 - 0.2j
     factor_shapes = []
-    original_splu = backend.splu
-    original_eigs = backend.eigs
+    import fem_common.linalg as shared
+    implementation = standalone if backend is standalone else shared
+    original_splu = implementation.splu
+    original_eigs = implementation.eigs
 
     def factor(matrix):
         factor_shapes.append(matrix.shape)
@@ -47,17 +49,17 @@ def test_sparse_qep_elimination_handles_complex_and_singular_mass(backend, monke
         np.testing.assert_allclose(actual, expected, rtol=1e-11, atol=1e-11)
         return original_eigs(operator, **kwargs)
 
-    monkeypatch.setattr(backend, "splu", factor)
-    monkeypatch.setattr(backend, "eigs", iterate)
+    monkeypatch.setattr(implementation, "splu", factor)
+    monkeypatch.setattr(implementation, "eigs", iterate)
     if backend is standalone:
         values, vectors, method = standalone.solve_qep_candidates(
             system, target=target, candidate_count=3,
-            tolerance=1e-11, dense_linearization_limit=4,
+            tolerance=1e-11, dense_linearization_limit=4, backend="cpu",
         )
     else:
         solver = SimpleNamespace(dense_linearization_limit=4)
         values, vectors, method = wave_modes.ModeSolver._linearized_candidates(
-            solver, system, target, 6, 1e-11,
+            solver, system, target, 6, 1e-11, backend="cpu",
         )
     assert factor_shapes == [(n, n)]
     assert method == "sparse-shift-invert"

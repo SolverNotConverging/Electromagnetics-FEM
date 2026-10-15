@@ -1,8 +1,14 @@
 cmake_minimum_required(VERSION 3.24)
 
-include(cmake/WindowsToolchain.cmake)
+option(FEM_BUILD_NATIVE_APPS "Build and package the native desktop applications" ON)
 
-project(FEM VERSION 1.1.3 LANGUAGES C CXX)
+include(cmake/ProjectVersion.cmake)
+if(FEM_BUILD_NATIVE_APPS)
+    include(cmake/WindowsToolchain.cmake)
+    project(FEM VERSION ${FEM_VERSION} LANGUAGES C CXX)
+else()
+    project(FEM VERSION ${FEM_VERSION} LANGUAGES NONE)
+endif()
 
 # A Command Line Tools upgrade can leave an obsolete, incomplete libc++ header
 # directory beside the compiler. Apple Clang prefers that directory over the
@@ -35,41 +41,6 @@ if(DEFINED SKBUILD)
 endif()
 include(CTest)
 
-set(FEM_BUILD_PYTHON_DEFAULT OFF)
-if(DEFINED SKBUILD)
-    set(FEM_BUILD_PYTHON_DEFAULT ON)
-endif()
-option(FEM_BUILD_PYTHON
-    "Build the Cython extension for the active Python interpreter"
-    ${FEM_BUILD_PYTHON_DEFAULT})
-if(FEM_BUILD_PYTHON)
-    # scikit-build-core provides the active uv interpreter and makes build
-    # requirements such as cython-cmake visible through CMAKE_PREFIX_PATH.
-    find_package(Python 3.11...<3.14 REQUIRED COMPONENTS Interpreter Development.Module)
-    find_package(Cython 3 MODULE REQUIRED)
-    include(UseCython)
-
-    set(FEM_CYTHON_SOURCE
-        "${CMAKE_CURRENT_SOURCE_DIR}/periodic_eigensolver/src/_cython_kernels.pyx")
-    cython_transpile(
-        "${FEM_CYTHON_SOURCE}"
-        LANGUAGE C
-        MODULE_NAME periodic_eigensolver._cython_kernels
-        CYTHON_ARGS -X language_level=3
-        OUTPUT_VARIABLE FEM_CYTHON_GENERATED_SOURCE
-    )
-    Python_add_library(fem-cython-kernels MODULE
-        "${FEM_CYTHON_GENERATED_SOURCE}"
-        WITH_SOABI
-    )
-    set_target_properties(fem-cython-kernels PROPERTIES
-        OUTPUT_NAME "_cython_kernels"
-    )
-    install(TARGETS fem-cython-kernels
-        LIBRARY DESTINATION periodic_eigensolver
-        RUNTIME DESTINATION periodic_eigensolver
-    )
-endif()
 
 if(SKBUILD)
     set(FEM_NATIVE_INSTALL_DIR "fem/native/bin")
@@ -81,7 +52,9 @@ else()
     set(FEM_NATIVE_LICENSE_INSTALL_DIR "share/licenses")
 endif()
 
-include(cmake/NativeRuntime.cmake)
+if(FEM_BUILD_NATIVE_APPS)
+    include(cmake/NativeRuntime.cmake)
+endif()
 
 # Release builds may reuse an already qualified, self-contained runtime bundle.
 # Ordinary source installs compile the applications in this same CMake build.
@@ -94,6 +67,15 @@ option(CEM_BUILD_FEM_WAVEGUIDE_SCATTERING_VIEWER
     "Build the FEM waveguide scattering viewer" ON)
 option(CEM_BUILD_FEM_PERIODIC_MODE_VIEWER
     "Build the standalone periodic-FEM HDF5 viewer and inspector" ON)
+
+if(NOT FEM_BUILD_NATIVE_APPS)
+    if(FEM_NATIVE_BUNDLE)
+        message(FATAL_ERROR "FEM_NATIVE_BUNDLE requires FEM_BUILD_NATIVE_APPS=ON")
+    endif()
+    set(CEM_BUILD_TRANSMISSION_LINE_CALCULATOR OFF)
+    set(CEM_BUILD_FEM_WAVEGUIDE_SCATTERING_VIEWER OFF)
+    set(CEM_BUILD_FEM_PERIODIC_MODE_VIEWER OFF)
+endif()
 
 if(FEM_NATIVE_BUNDLE)
     if(NOT EXISTS "${FEM_NATIVE_BUNDLE}/bin")
@@ -129,5 +111,5 @@ if(NOT FEM_NATIVE_BUNDLE
    AND NOT CEM_BUILD_TRANSMISSION_LINE_CALCULATOR
    AND NOT CEM_BUILD_FEM_WAVEGUIDE_SCATTERING_VIEWER
    AND NOT CEM_BUILD_FEM_PERIODIC_MODE_VIEWER)
-    message(WARNING "All native applications are disabled; there is nothing to build.")
+    message(STATUS "Native applications disabled; packaging Python solvers only.")
 endif()

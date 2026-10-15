@@ -1,7 +1,5 @@
-"""Fem Waveguide Scattering. Public user API for version 1.1.0."""
+"""Fem Waveguide Scattering. Public user API."""
 
-from pathlib import Path as _Path
-__path__.append(str(_Path(__file__).parent / "src"))
 
 from .scattering import WaveguideScatteringSolver2D
 from .results import ScatteringResult
@@ -23,7 +21,7 @@ from .result_api import load_result
 from fem_common import NoResultError
 from fem_common import PersistenceError
 
-__version__ = "1.1.3"
+from fem._version import __version__
 _FARFIELD_EXPORTS = ["ClosedContourFields", "LayeredExterior", "FarFieldResult"]
 __all__ = ['WaveguideScatteringSolver2D', 'ScatteringResult', 'FrequencySweepResult', 'IncidentMode', 'Mode', 'ModeSet', 'Diagnostic', 'DiagnosticReport', 'BackendCapabilityError', 'ConfigurationError', 'GeometryError', 'MaterialError', 'MeshError', 'ModeProjectionError', 'ModeSolverError', 'SolverError', 'ViewerError', 'load_result', 'NoResultError', 'PersistenceError']
 __all__ += _FARFIELD_EXPORTS

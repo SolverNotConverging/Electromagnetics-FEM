@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 3.24)
 
 include("${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/WindowsToolchain.cmake")
 
-project(TransmissionLineCalculator VERSION 1.1.0 LANGUAGES CXX)
+include("${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/ProjectVersion.cmake")
+
+project(TransmissionLineCalculator VERSION ${FEM_VERSION} LANGUAGES CXX)
 include("${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/NativeRuntime.cmake")
 
 set(CMAKE_CXX_STANDARD 20)

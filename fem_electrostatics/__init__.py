@@ -1,7 +1,5 @@
-"""Fem Electrostatics. Public user API for version 1.1.0."""
+"""Fem Electrostatics. Public user API."""
 
-from pathlib import Path as _Path
-__path__.append(str(_Path(__file__).parent / "src"))
 
 from .solver import ElectrostaticSolver
 from .results import ElectrostaticResult
@@ -13,7 +11,7 @@ from .result_api import load_result
 from fem_common import NoResultError
 from fem_common import PersistenceError
 
-__version__ = "1.1.3"
+from fem._version import __version__
 __all__ = ['ElectrostaticSolver', 'ElectrostaticResult', 'ElectrostaticSolverError', 'GeometryError', 'MeshError', 'SolverError', 'load_result', 'NoResultError', 'PersistenceError']
 
 # Shared construction tools are available directly from the solver family.

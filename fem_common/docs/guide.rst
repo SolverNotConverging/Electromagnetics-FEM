@@ -65,3 +65,18 @@ the common read-only mesh view stored on completed FEM results.
 
 See `API_REFERENCE.rst <API_REFERENCE.rst>`_ for supported constructors and
 units. Solver-specific capabilities are documented in each solver guide.
+
+Numeric controls and diagnostics
+--------------------------------
+
+Shared validators in ``fem_common.validation`` accept Python and NumPy numeric
+scalars. Real controls reject complex values, strings, booleans, and arrays.
+Integral floats are accepted for integer counts. ``MeshSnapshot`` checks exact
+integer connectivity before conversion and owns read-only coordinate arrays.
+
+Modal ``solve_info`` exposes an explicit set of execution and convergence keys,
+including backend/method details when recorded, requested target/direction,
+residual tolerances, and adaptive history/status. Metadata remains available for
+mesh and physics-specific data. Electrostatics and scattering retain their
+specialized diagnostic reports. New modal diagnostic fields must be added to
+the result contract explicitly.

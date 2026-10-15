@@ -1,14 +1,8 @@
 fem_periodic_modes user API
 ===========================
 
-Version 1.1.0. This reference covers the deliberately supported user API.
+Version 2.0.0. This reference covers the deliberately supported user API.
 Implementation helpers are documented in their source modules.
-
-Both periodic solvers accept ``backend="cuda"`` with
-``eigensolver="refined"`` or ``"auto"``. This optional path requires CuPy
-and cuDSS >= 0.8; see the `CUDA setup and benchmark guide
-<../../benchmarks/periodic_eigensolver/README.md>`_. Explicit dense QZ remains
-a CPU method. The default ``backend="auto"`` retains CPU selection.
 
 Workflow and units
 ------------------
@@ -45,7 +39,7 @@ field envelopes; the Bloch phase is recorded separately from these fields.
 Supported exports
 -----------------
 
-``PeriodicModeSolver2D``, ``PeriodicModeSolver3D``, ``PeriodicMode``, ``PeriodicModeSet``, ``PeriodicSampledFields``, ``PeriodicSweepResult``, ``BackendCapabilityError``, ``ConfigurationError``, ``FEMPeriodicSolverError``, ``GeometryError``, ``MeshError``, ``PersistenceError``, ``SolverError``, ``NoResultError``, ``load_result``.
+``PeriodicModeSolver2D``, ``PeriodicModeSolver3D``, ``PeriodicMode``, ``PeriodicModeSet``, ``PeriodicSampledFields``, ``PeriodicSweepResult``, ``BackendCapabilityError``, ``ConfigurationError``, ``FEMPeriodicSolverError``, ``GeometryError``, ``MeshError``, ``PersistenceError``, ``SolverError``, ``NoResultError``, ``load_result``, ``Material``, ``GoodConductor``, ``SurfaceImpedance``, ``materials``, ``shapes``, ``EPSILON_0``, ``MU_0``, ``C_0``, ``plot_dispersion``.
 
 Solver construction and operations
 ----------------------------------
@@ -87,7 +81,7 @@ Solve complex Floquet propagation constants in one ``x-z`` unit cell.
      - ``str``
      - Optional
      - ``'both'``
-     - Polarization control for this operation.
+     - TE, TM, or both for the 2D periodic solver; result filtering selects the named polarization.
    * - ``background_material``
      - ``materials.Material``
      - Optional
@@ -476,7 +470,7 @@ Returns: the configured geometry/excitation handle, or None for in-place configu
      - ``float``
      - Optional
      - ``2.0``
-     - Factor control for this operation.
+     - Mesh refinement factor greater than one.
 
 Returns: the configured geometry/excitation handle, or None for in-place configuration.
 
@@ -563,12 +557,12 @@ Solve and return modes with separate algebraic and adaptive controls.
      - ``str``
      - Optional
      - ``'auto'``
-     - Eigensolver control for this operation.
+     - Eigenproblem algorithm: auto, dense, or sparse where supported.
    * - ``backend``
      - ``str``
      - Optional
      - ``'auto'``
-     - Arnoldi backend control for this operation.
+     - Execution backend: auto (default) selects GPU when available, otherwise SciPy CPU; cpu and gpu force the selected backend.
    * - ``eigensolver_tolerance``
      - ``float``
      - Optional
@@ -583,17 +577,17 @@ Solve and return modes with separate algebraic and adaptive controls.
      - ``float``
      - Optional
      - ``0.001``
-     - Propagation ratio tolerance control for this operation.
+     - Minimum real-power fraction used to classify a mode as propagating.
    * - ``max_pml_fraction``
      - ``float | None``
      - Optional
      - ``0.5``
-     - Max pml fraction control for this operation.
+     - Maximum permitted modal PML fraction; None disables PML-mode filtering.
    * - ``dense_linearization_limit``
      - ``int``
      - Optional
      - ``700``
-     - Dense linearization limit control for this operation.
+     - Largest linearized eigenproblem dimension allowed for dense eigensolution.
    * - ``max_refinements``
      - ``int``
      - Optional
@@ -1072,7 +1066,7 @@ Returns: the configured geometry/excitation handle, or None for in-place configu
      - ``float``
      - Optional
      - ``2.0``
-     - Factor control for this operation.
+     - Mesh refinement factor greater than one.
 
 Returns: the configured geometry/excitation handle, or None for in-place configuration.
 
@@ -1122,7 +1116,7 @@ Returns: the initial mesh stored in ``mesh_data``.
 
 .. code-block:: python
 
-    PeriodicModeSolver3D.solve(*, neff_guess: 'complex | None' = None, num_modes: 'int' = 4, direction: 'Direction' = 'forward', eigensolver: 'str' = 'auto', backend: 'str' = 'auto', eigensolver_tolerance: 'float' = 1e-10, residual_tolerance: 'float' = 1e-08, divergence_tolerance: 'float' = 1e-06, propagation_ratio_tolerance: 'float' = 0.001, max_pml_fraction: 'float | None' = 0.5, dense_linearization_limit: 'int' = 700, ncv: 'int | None' = None, max_restarts: 'int' = 12, random_seed: 'int' = 0, max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05)
+    PeriodicModeSolver3D.solve(*, neff_guess: 'complex | None' = None, num_modes: 'int' = 4, direction: 'Direction' = 'forward', eigensolver: 'str' = 'auto', backend: 'str' = 'auto', eigensolver_tolerance: 'float' = 1e-10, residual_tolerance: 'float' = 1e-08, divergence_tolerance: 'float' = 1e-06, propagation_ratio_tolerance: 'float' = 0.001, max_pml_fraction: 'float | None' = 0.5, dense_linearization_limit: 'int' = 700, ncv: 'int | None' = None, max_iterations: 'int | None' = None, random_seed: 'int' = 0, max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05)
 
 Solve and return modes with separate algebraic and adaptive controls.
 
@@ -1154,12 +1148,12 @@ Solve and return modes with separate algebraic and adaptive controls.
      - ``str``
      - Optional
      - ``'auto'``
-     - Eigensolver control for this operation.
+     - Eigenproblem algorithm: auto, dense, or sparse where supported.
    * - ``backend``
      - ``str``
      - Optional
      - ``'auto'``
-     - Arnoldi backend control for this operation.
+     - Execution backend: auto (default) selects GPU when available, otherwise SciPy CPU; cpu and gpu force the selected backend.
    * - ``eigensolver_tolerance``
      - ``float``
      - Optional
@@ -1179,32 +1173,32 @@ Solve and return modes with separate algebraic and adaptive controls.
      - ``float``
      - Optional
      - ``0.001``
-     - Propagation ratio tolerance control for this operation.
+     - Minimum real-power fraction used to classify a mode as propagating.
    * - ``max_pml_fraction``
      - ``float | None``
      - Optional
      - ``0.5``
-     - Max pml fraction control for this operation.
+     - Maximum permitted modal PML fraction; None disables PML-mode filtering.
    * - ``dense_linearization_limit``
      - ``int``
      - Optional
      - ``700``
-     - Dense linearization limit control for this operation.
+     - Largest linearized eigenproblem dimension allowed for dense eigensolution.
    * - ``ncv``
      - ``int | None``
      - Optional
      - ``None``
-     - Ncv control for this operation.
-   * - ``max_restarts``
-     - ``int``
+     - Arnoldi subspace dimension; None lets the eigensolver choose.
+   * - ``max_iterations``
+     - ``int | None``
      - Optional
-     - ``12``
-     - Max restarts control for this operation.
+     - ``None``
+     - Maximum ARPACK iterations; None selects a problem-size-dependent limit.
    * - ``random_seed``
      - ``int``
      - Optional
      - ``0``
-     - Random seed control for this operation.
+     - Seed for reproducible eigensolver starting vectors.
    * - ``max_refinements``
      - ``int``
      - Optional
@@ -1376,7 +1370,7 @@ Returns: the selected mode.
      - ``str``
      - Required
      - ``—``
-     - Polarization control for this operation.
+     - TE, TM, or both for the 2D periodic solver; result filtering selects the named polarization.
 
 Returns: the selected data or diagnostic report.
 
@@ -1522,7 +1516,7 @@ Use ``Material(name=..., epsilon=..., mu=...)`` for bulk media,
 ``materials.PEC`` or ``materials.PMC`` for ideal boundaries, and the
 documented ``materials.copper``-style presets where SIBC is supported.
 Continuous primitives and Boolean/transformed shapes live in
-``fem_common.shapes``. Solver packages do not re-export these shared values.
+``fem_common.shapes``. Solver packages also re-export Material, materials, and shapes.
 
 ``load_result``
 ~~~~~~~~~~~~~~~
@@ -1558,27 +1552,47 @@ Mesh and numerical failures raise the corresponding ``MeshError`` or
 Viewer errors include the executable path or installation setting needed to
 correct a launch failure. Saving and loading do not require an active GUI.
 
-Shared construction tools
--------------------------
+Backend selection
+-----------------
 
-Import ``Material``, ``GoodConductor``, ``SurfaceImpedance``, ``materials``,
-``shapes``, ``EPSILON_0``, ``MU_0``, and ``C_0`` directly from this solver family.
-They are the shared FEM definitions; examples do not need a separate common import.
+``backend="auto"`` selects GPU when available, otherwise SciPy CPU. ``backend="gpu"`` requests
+CuPy/cuDSS explicitly. See the solver guide for supported algorithms.
 
 Dispersion plots
 ----------------
 
-``plot_dispersion``: ``plot_dispersion(frequencies, neff, *, show=True)`` plots the real and imaginary
-parts of effective index as unconnected scatter markers, with labels starting
-at Mode 1. Modes can exchange places, so samples are not joined.
-``frequencies`` is in Hz. ``neff`` has shape (frequencies, modes); a single-mode
-sweep may use a one-dimensional array. Columns give the returned mode order at each frequency.
-The function returns a Matplotlib Figure. Use ``show=False`` to save a figure
-without opening a window.
+``plot_dispersion``
+~~~~~~~~~~~~~~~~~~~
 
-Backend selection
------------------
+.. code-block:: python
 
-The ``backend`` keyword selects execution explicitly. ``"cpu"`` preserves
-the default CPU method; ``"auto"`` also retains CPU selection. Use ``"cuda"``
-for CuPy/cuDSS acceleration.
+    plot_dispersion(frequencies, neff, *, show=True)
+
+Scatter Re(neff) and Im(neff) without connecting exchanging modes.
+
+.. list-table:: Arguments
+   :header-rows: 1
+   :widths: 16 20 12 16 36
+
+   * - Argument
+     - Type / units
+     - Required / optional
+     - Default
+     - Meaning
+   * - ``frequencies``
+     - ``array-like or scalar``
+     - Required
+     - ``—``
+     - Strictly increasing positive frequencies in hertz.
+   * - ``neff``
+     - ``array-like or scalar``
+     - Required
+     - ``—``
+     - Effective indices with shape (frequencies, modes), or a vector for a single mode.
+   * - ``show``
+     - ``bool``
+     - Optional
+     - ``True``
+     - Open the plot window when true.
+
+Returns: a Matplotlib Figure.

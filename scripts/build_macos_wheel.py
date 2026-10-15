@@ -1,4 +1,4 @@
-"""Build and validate the complete macOS arm64 CPython 3.12 release wheel."""
+"""Build and validate the complete macOS arm64 Python 3 release wheel."""
 
 from __future__ import annotations
 
@@ -30,7 +30,7 @@ from delocate.wheeltools import InWheel
 
 ROOT = Path(__file__).resolve().parents[1]
 VERSION = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
-WHEEL_NAME = f"electromagnetics_fem-{VERSION}-cp312-cp312-macosx_15_0_arm64.whl"
+WHEEL_NAME = f"electromagnetics_fem-{VERSION}-py3-none-macosx_15_0_arm64.whl"
 APPLICATIONS = (
     "transmission-line-calculator",
     "fem-periodic-mode-viewer",
@@ -41,7 +41,7 @@ EXECUTABLES = (
     "fem-periodic-mode-inspect",
     "fem-waveguide-scattering-viewer-inspect",
 )
-SOURCE_ROOTS = tuple(ROOT / name for name in ('fem', 'fem_common', 'fem_adaptivity', 'fem_electrostatics', 'fem_periodic_modes', 'fem_waveguide_modes', 'fem_waveguide_scattering', 'periodic_eigensolver'))
+SOURCE_ROOTS = tuple(ROOT / name for name in ('fem', 'fem_common', 'fem_adaptivity', 'fem_electrostatics', 'fem_periodic_modes', 'fem_waveguide_modes', 'fem_waveguide_scattering'))
 
 
 def extract_preserving_modes(wheel: Path, destination: Path) -> None:
@@ -118,16 +118,11 @@ def validate_wheel(wheel: Path) -> None:
         expected_sources = {
             path.relative_to(ROOT).as_posix()
             for source in SOURCE_ROOTS
-            for path in source.rglob("*.py") if path.relative_to(ROOT).parts[0] in ('fem', 'fem_common', 'fem_adaptivity', 'fem_electrostatics', 'fem_periodic_modes', 'fem_waveguide_modes', 'fem_waveguide_scattering', 'periodic_eigensolver') and not any(part in ("examples", "scripts", "docs", "__pycache__") for part in path.relative_to(ROOT).parts)
+            for path in source.rglob("*.py") if path.relative_to(ROOT).parts[0] in ('fem', 'fem_common', 'fem_adaptivity', 'fem_electrostatics', 'fem_periodic_modes', 'fem_waveguide_modes', 'fem_waveguide_scattering') and not any(part in ("examples", "scripts", "docs", "__pycache__") for part in path.relative_to(ROOT).parts)
         }
         packaged_sources = {name for name in members if name.endswith(".py")}
         if packaged_sources != expected_sources:
             raise SystemExit(f"Wheel source mismatch: {packaged_sources ^ expected_sources}")
-        if not any(
-            name.startswith("periodic_eigensolver/_cython_kernels") and name.endswith(".so")
-            for name in members
-        ):
-            raise SystemExit("The compiled periodic eigensolver is missing.")
         for application in APPLICATIONS:
             prefix = f"fem/native/{application}.app/Contents"
             required = (
@@ -187,9 +182,8 @@ def main() -> None:
     if (
         sys.platform != "darwin"
         or platform.machine() != "arm64"
-        or sys.version_info[:2] != (3, 12)
     ):
-        parser.error("The macOS release wheel targets Apple silicon / CPython 3.12.")
+        parser.error("The macOS release wheel targets Apple silicon / Python 3.11-3.13.")
     if shutil.which("delocate-wheel") is None:
         parser.error("Install the macOS development dependencies with `uv sync` first.")
 

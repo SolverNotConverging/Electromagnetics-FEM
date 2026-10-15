@@ -3,19 +3,29 @@
 # Run directly from the checkout without installing solver packages.
 import sys as _sys
 from pathlib import Path as _Path
-_ROOT = next(parent for parent in _Path(__file__).resolve().parents
-             if (parent / "fem_common" / "__init__.py").is_file())
+
+_ROOT = next(
+    parent
+    for parent in _Path(__file__).resolve().parents
+    if (parent / "fem_common" / "__init__.py").is_file()
+)
 if str(_ROOT) not in _sys.path:
     _sys.path.insert(0, str(_ROOT))
 
 from importlib import import_module
+import argparse
 import inspect
 import json
 import re
 from pathlib import Path
 
+from fem import __version__
+
 ROOT = Path(__file__).resolve().parents[1]
 DESCRIPTIONS = {
+    "neff": "Effective indices with shape (frequencies, modes), or a vector for a single mode.",
+    "show": "Open the plot window when true.",
+    "connect": "Connect adjacent frequency samples when true; preserve mode ordering before connecting.",
     "frequency": "Operating frequency in hertz; finite and positive.",
     "x_range": "Physical x extent or increasing bounds, in metres.",
     "y_range": "Physical y extent or increasing bounds, in metres.",
@@ -79,16 +89,69 @@ DESCRIPTIONS = {
     "number": "Zero-based mode index.",
     "num_points": "Number of field sampling points; positive integer.",
 }
-TYPES = {"block": "bool", "case": "int", "mode": "int", "number": "int",
-    "center": "tuple[float, ...] / m", "points": "sequence[tuple[float, ...]] / m",
-    "component": "str | None", "quantity": "str", "path": "str | PathLike",
-    "epsilon": "float | complex | array-like / relative", "mu": "float | complex | array-like / relative",
-    "x_range": "float | tuple[float, float] / m", "y_range": "float | tuple[float, float] / m",
-    "results": "Sequence[PeriodicModeSet]"}
+DESCRIPTIONS.update(
+    {
+        "backend": "Execution backend: auto (default) selects GPU when available, otherwise SciPy CPU; cpu and gpu force the selected backend.",
+        "boundary_refinement": "Boundary mesh-size multiplier in (0, 1]; None disables boundary refinement.",
+        "boundary_refinement_width": "Width in metres over which boundary mesh refinement transitions to the bulk size; None selects the mesher default.",
+        "interface_refinement": "Material-interface mesh-size multiplier in (0, 1]; None disables interface refinement.",
+        "interface_refinement_width": "Width in metres over which interface refinement transitions to the bulk size; None selects the mesher default.",
+        "dense_limit": "Largest system dimension allowed for dense eigensolution.",
+        "dense_linearization_limit": "Largest linearized eigenproblem dimension allowed for dense eigensolution.",
+        "eigensolver": "Eigenproblem algorithm: auto, dense, or sparse where supported.",
+        "factor": "Mesh refinement factor greater than one.",
+        "polarization": "TE, TM, or both for the 2D periodic solver; result filtering selects the named polarization.",
+        "transition_width": "Distance in metres over which local mesh sizing transitions to the background size.",
+        "propagation_ratio_tolerance": "Minimum real-power fraction used to classify a mode as propagating.",
+        "max_pml_fraction": "Maximum permitted modal PML fraction; None disables PML-mode filtering.",
+        "ncv": "Arnoldi subspace dimension; None lets the eigensolver choose.",
+        "max_iterations": "Maximum ARPACK iterations; None selects a problem-size-dependent limit.",
+        "random_seed": "Seed for reproducible eigensolver starting vectors.",
+        "refine_interfaces": "Enable local refinement at dielectric interfaces.",
+        "dielectric_refinement_factor": "Mesh-size multiplier near dielectric interfaces.",
+        "pec_refinement_factor": "Mesh-size multiplier near PEC boundaries.",
+        "pec_refinement_distance": "Distance in metres over which PEC mesh refinement applies.",
+        "num_elements": "Number of elements in the lead-mode cross-section discretization.",
+        "linear_solver": "Sparse linear-system algorithm; currently direct.",
+        "projection_condition_limit": "Maximum permitted condition number for port-mode projection.",
+        "mesh_options": "Keyword arguments forwarded to mesh() for each frequency case.",
+        "mode_options": "Keyword arguments forwarded to solve_modes() for each frequency case.",
+        "incident_mode": "Zero-based incident lead-mode index.",
+        "mode_factory": "Callback constructing incident-mode data at each frequency; see the sweep guide.",
+        "out_mode": "Zero-based outgoing mode index.",
+        "in_mode": "Zero-based incident mode index.",
+        "power_balance_tolerance": "Maximum acceptable absolute power-balance error in diagnostics.",
+        "projection_condition_warning": "Projection condition-number threshold for a diagnostic warning.",
+        "projection_residual_warning": "Projection relative-residual threshold for a diagnostic warning.",
+        "incoming_projection_warning": "Incoming-wave projection relative-error threshold for a diagnostic warning.",
+        "port_gram_diagonal_warning": "Port Gram-matrix diagonal-error threshold for a diagnostic warning.",
+        "s_parameter_power_tolerance": "Tolerance for disagreement between S-parameter and integrated power ratios.",
+        "enabled": "Enable or disable near-to-far-field recording.",
+        "exterior": "LayeredExterior description of the medium outside the near-to-far-field contour.",
+        "theta": "Observation angles in radians for far-field evaluation.",
+    }
+)
+
+TYPES = {
+    "block": "bool",
+    "case": "int",
+    "mode": "int",
+    "number": "int",
+    "center": "tuple[float, ...] / m",
+    "points": "sequence[tuple[float, ...]] / m",
+    "component": "str | None",
+    "quantity": "str",
+    "path": "str | PathLike",
+    "epsilon": "float | complex | array-like / relative",
+    "mu": "float | complex | array-like / relative",
+    "x_range": "float | tuple[float, float] / m",
+    "y_range": "float | tuple[float, float] / m",
+    "results": "Sequence[PeriodicModeSet]",
+}
 
 
 def section(name, character="-"):
-    return name+"\n"+character*len(name)+"\n\n"
+    return name + "\n" + character * len(name) + "\n\n"
 
 
 def entry(name, obj, returned):
@@ -96,91 +159,170 @@ def entry(name, obj, returned):
     parameters = [p for p in signature.parameters.values() if p.name not in ("self", "cls")]
     signature = signature.replace(parameters=parameters)
     result = section(f"``{name}``", "~")
-    result += ".. code-block:: python\n\n    "+name+str(signature)+"\n\n"
+    result += ".. code-block:: python\n\n    " + name + str(signature) + "\n\n"
     doc = inspect.getdoc(obj)
     if doc:
         first = doc.split("\n\n", 1)[0].replace("\n", " ")
-        first = re.sub(r'(?<!`)\|([^|`\n]+)\|(?!`)', r'``|\1|``', first)
+        first = re.sub(r"(?<!`)\|([^|`\n]+)\|(?!`)", r"``|\1|``", first)
         if not any(s in first for s in (":meth:", "legacy", "compatibility")):
-            result += first+"\n\n"
+            result += first + "\n\n"
     if parameters:
         result += ".. list-table:: Arguments\n   :header-rows: 1\n   :widths: 16 20 12 16 36\n\n   * - Argument\n     - Type / units\n     - Required / optional\n     - Default\n     - Meaning\n"
         for p in parameters:
-            annotation = str(p.annotation).replace("typing.", "") if p.annotation is not inspect.Parameter.empty else TYPES.get(p.name, type(p.default).__name__ if p.default is not inspect.Parameter.empty and p.default is not None else "array-like or scalar")
-            if annotation.startswith("<class '"): annotation = annotation[8:-2]
+            annotation = (
+                str(p.annotation).replace("typing.", "")
+                if p.annotation is not inspect.Parameter.empty
+                else TYPES.get(
+                    p.name,
+                    type(p.default).__name__
+                    if p.default is not inspect.Parameter.empty and p.default is not None
+                    else "array-like or scalar",
+                )
+            )
+            if annotation.startswith("<class '"):
+                annotation = annotation[8:-2]
             default = "—" if p.default is inspect.Parameter.empty else repr(p.default)
-            meaning = DESCRIPTIONS.get(p.name, f"{p.name.replace('_', ' ').capitalize()} control for this operation.")
+            meaning = DESCRIPTIONS[p.name]
             result += f"   * - ``{p.name}``\n     - ``{annotation}``\n     - {'Required' if p.default is inspect.Parameter.empty else 'Optional'}\n     - ``{default}``\n     - {meaning}\n"
         result += "\n"
-    return result+"Returns: "+returned+".\n\n"
+    return result + "Returns: " + returned + ".\n\n"
 
 
-def main():
-    inventory = json.loads((ROOT/'tests/public_api.json').read_text())
+def render_references():
+    inventory = json.loads((ROOT / "tests/public_api.json").read_text())
     for package, spec in inventory.items():
         module = import_module(package)
-        out = section(package+" user API", "=")
-        out += "Version 1.1.0. This reference covers the deliberately supported user API.\nImplementation helpers are documented in their source modules.\n\n"
+        out = section(package + " user API", "=")
+        out += f"Version {__version__}. This reference covers the deliberately supported user API.\nImplementation helpers are documented in their source modules.\n\n"
         out += section("Workflow and units")
-        out += ("All lengths are in metres, frequencies in hertz, and constitutive values are relative.\n"
-                "Construction and configuration use keyword arguments. Call ``mesh()`` to build\n"
-                "the initial mesh, ``solve()`` to obtain and store a typed result, and ``show()``\n"
-                "to inspect it interactively. ``mesh_data`` and ``result`` are initially None.\n"
-                "Geometry edits invalidate both; remeshing invalidates the result. Automatic\n"
-                "meshing reuses the last explicit settings. Calling ``show()`` without a result\n"
-                "raises ``NoResultError``.\n\n"
-                "Adaptive defaults are ``max_refinements=2`` and ``adaptive_tolerance=0.05``.\n"
-                "Zero refinements performs one solve. ``solve_info`` distinguishes algebraic\n"
-                "residuals from adaptive discretization residuals and records stopping reasons.\n"
-                "Python mode and case indices are zero-based.\n\n"
-                "``solve()`` and frequency sweeps neither save nor open windows. Call\n"
-                "``result.save(path)`` explicitly. ``load_result(path)`` returns inspection-ready\n"
-                "results without solving. Archives use ``cem-fem-results`` schema ``1.0``;\n"
-                "old or convention-incompatible files raise ``PersistenceError``. Loaded\n"
-                "results can plot, show, and save; they do not restart a solver or restore callbacks.\n"
-                "``plot()`` returns a Matplotlib Figure without opening a window.\n"
-                "``show(block=True)`` waits for the viewer; ``block=False`` returns immediately.\n\n")
-        if package=='fem_electrostatics':
+        out += (
+            "All lengths are in metres, frequencies in hertz, and constitutive values are relative.\n"
+            "Construction and configuration use keyword arguments. Call ``mesh()`` to build\n"
+            "the initial mesh, ``solve()`` to obtain and store a typed result, and ``show()``\n"
+            "to inspect it interactively. ``mesh_data`` and ``result`` are initially None.\n"
+            "Geometry edits invalidate both; remeshing invalidates the result. Automatic\n"
+            "meshing reuses the last explicit settings. Calling ``show()`` without a result\n"
+            "raises ``NoResultError``.\n\n"
+            "Adaptive defaults are ``max_refinements=2`` and ``adaptive_tolerance=0.05``.\n"
+            "Zero refinements performs one solve. ``solve_info`` distinguishes algebraic\n"
+            "residuals from adaptive discretization residuals and records stopping reasons.\n"
+            "Python mode and case indices are zero-based.\n\n"
+            "``solve()`` and frequency sweeps neither save nor open windows. Call\n"
+            "``result.save(path)`` explicitly. ``load_result(path)`` returns inspection-ready\n"
+            "results without solving. Archives use ``cem-fem-results`` schema ``1.0``;\n"
+            "old or convention-incompatible files raise ``PersistenceError``. Loaded\n"
+            "results can plot, show, and save; they do not restart a solver or restore callbacks.\n"
+            "``plot()`` returns a Matplotlib Figure without opening a window.\n"
+            "``show(block=True)`` waits for the viewer; ``block=False`` returns immediately.\n\n"
+        )
+        if package == "fem_electrostatics":
             out += "Electrostatic fields are static. ``epsilon`` accepts a positive scalar, a\npositive diagonal, or a real symmetric positive-definite tensor. Potential is\nnodal; ``element_electric_field`` and ``element_displacement_field`` are cell\nfields. ``electric_field`` and ``displacement_field`` are nodal averages.\n\n"
         else:
             out += "The time convention is ``exp(+i*omega*t)`` with guided propagation\n``exp(-i*beta*z)``. Passive materials have nonpositive imaginary constitutive\nvalues; passive forward attenuation is ``-Im(beta)``.\n\n"
-            out += ("Scattering uses a two-dimensional x/z mesh for **2.5D full-vector** fields,\nwith invariant factor ``exp(-i*ky*y)``. Scalar epsilon and mu are supported.\nIntegrated power accounting requires passive materials and a lossless uniform\nlead. Port modes remain a separate implementation from standalone mode solvers.\nPML supports x, z, or all; it applies at both ends of the selected axis.\n\n" if package=='fem_waveguide_scattering' else
-                    "Materials support scalar or diagonal epsilon and mu. Unsupported off-diagonal\nforms raise an explicit configuration error. Periodic archives store periodic\nfield envelopes; the Bloch phase is recorded separately from these fields.\n\n")
-        out += section("Supported exports")+", ".join(f"``{name}``" for name in spec['exports'])+".\n\n"
+            out += (
+                "Scattering uses a two-dimensional x/z mesh for **2.5D full-vector** fields,\nwith invariant factor ``exp(-i*ky*y)``. Scalar epsilon and mu are supported.\nIntegrated power accounting requires passive materials and a lossless uniform\nlead. Port modes remain a separate implementation from standalone mode solvers.\nPML supports x, z, or all; it applies at both ends of the selected axis.\n\n"
+                if package == "fem_waveguide_scattering"
+                else "Materials support scalar or diagonal epsilon and mu. Unsupported off-diagonal\nforms raise an explicit configuration error. Periodic archives store periodic\nfield envelopes; the Bloch phase is recorded separately from these fields.\n\n"
+            )
+        out += (
+            section("Supported exports")
+            + ", ".join(f"``{name}``" for name in spec["exports"])
+            + ".\n\n"
+        )
         out += section("Solver construction and operations")
-        for solver, methods in spec['solvers'].items():
-            cls=getattr(module,solver)
+        for solver, methods in spec["solvers"].items():
+            cls = getattr(module, solver)
             for method in methods:
-                name=solver if method=='__init__' else solver+'.'+method
-                obj=cls if method=='__init__' else getattr(cls,method)
-                returned={'__init__':f"a configured ``{solver}``",'mesh':'the initial mesh stored in ``mesh_data``','solve':'the physics-specific result stored in ``result``','show':'the viewer controller or native process','sweep':'a frequency sweep result'}.get(method,'the configured geometry/excitation handle, or None for in-place configuration')
-                out += entry(name,obj,returned)
+                name = solver if method == "__init__" else solver + "." + method
+                obj = cls if method == "__init__" else getattr(cls, method)
+                returned = {
+                    "__init__": f"a configured ``{solver}``",
+                    "mesh": "the initial mesh stored in ``mesh_data``",
+                    "solve": "the physics-specific result stored in ``result``",
+                    "show": "the viewer controller or native process",
+                    "sweep": "a frequency sweep result",
+                }.get(
+                    method,
+                    "the configured geometry/excitation handle, or None for in-place configuration",
+                )
+                out += entry(name, obj, returned)
         out += section("Returned results")
         out += "Result objects are returned by solving or loading. Their constructors are\nimplementation details. Inspect ``mesh_data``, ``metadata``, ``solve_info``, and\n``frequency`` where applicable. Modal sets support iteration, indexing, ``neff``\nand ``beta``; each mode provides sampled fields and residual diagnostics.\n\n"
-        for kind,methods in spec['results'].items():
-            cls=getattr(module,kind)
+        for kind, methods in spec["results"].items():
+            cls = getattr(module, kind)
             for method in methods:
-                out+=entry(kind+'.'+method,getattr(cls,method),{'save':'the written Path','plot':'a Matplotlib Figure','show':'the viewer controller or native process','mode':'the selected mode','deembed':'a result with updated reference planes','conductor_charge':'conductor charge in coulombs (per metre for a 2D cross-section)'}.get(method,'the selected data or diagnostic report'))
+                out += entry(
+                    kind + "." + method,
+                    getattr(cls, method),
+                    {
+                        "save": "the written Path",
+                        "plot": "a Matplotlib Figure",
+                        "show": "the viewer controller or native process",
+                        "mode": "the selected mode",
+                        "deembed": "a result with updated reference planes",
+                        "conductor_charge": "conductor charge in coulombs (per metre for a 2D cross-section)",
+                    }.get(method, "the selected data or diagnostic report"),
+                )
         out += section("Result data and diagnostics")
         out += "``mesh_data.coordinates`` stores physical nodes in metres; ``elements`` stores\nzero-based connectivity. ``axes`` identifies physical coordinate order.\n``mesh_data.metadata['context']`` records material and boundary configuration.\nThe result is an inspection snapshot; editing it cannot restart a solver.\n\n"
-        if package == 'fem_electrostatics':
+        if package == "fem_electrostatics":
             out += "``potential`` is nodal potential in V. ``electric_field`` and\n``displacement_field`` are recovered nodal arrays (V/m and C/m²);\n``element_electric_field`` and ``element_displacement_field`` retain cell fields.\n``conductor_charges`` maps configured conductor names to charge, and\n``energy`` records electrostatic energy (per unit transverse area in 1D,\nper unit length in 2D). ``residual_norm`` is the algebraic residual;\n``adaptive_history`` records mesh sizes, error indicators, and stopping status.\n\n"
-        elif package == 'fem_waveguide_scattering':
+        elif package == "fem_waveguide_scattering":
             out += "``E_total``, ``E_incident``, ``E_scattered`` and the matching ``H_*``\narrays have shape (3, samples), in V/m and A/m. ``coordinates`` uses (x, z),\nin metres. ``S(side, out_mode, in_mode)`` returns a complex modal amplitude;\n``S11`` and ``S21`` select the fundamental ports. ``reflection``,\n``transmission``, ``absorption`` and ``power_balance_error`` are power ratios.\n``reference_planes`` stores positions in m; ``port_betas`` stores complex\nwavenumbers in rad/m. ``solve_info`` retains projection, algebraic, and\nadaptive diagnostics. Sweep ``results[index]`` loads one case;\n``frequencies_hz`` is the ordered frequency array. Sweep plotting accepts\nS11/S21 and quantity real, imag, phase, magnitude, abs, or db.\n\n"
         else:
             out += "Each selected mode exposes ``neff`` (dimensionless), ``beta`` (rad/m),\n``fields`` (sampled E/H in V/m and A/m), ``coefficients`` (FEM expansion),\nand ``residual`` (algebraic eigenproblem residual). Field component names\ninclude Ex, Ey, Ez, Hx, Hy, and Hz. Coordinate and cell ownership arrays\npreserve field locations; they must not be interpreted as interchangeable\nnodal or cell values. ``solve_info`` records adaptive history separately.\n\n"
-            if package == 'fem_periodic_modes':
+            if package == "fem_periodic_modes":
                 out += "Periodic fields are Bloch envelopes. ``period`` is in m; each mode also\nprovides ``gamma``, ``bloch_multiplier``, folded propagation quantities,\nand Gauss-law/PML filtering diagnostics. Combine solved cases with\n``PeriodicSweepResult.from_results(results)`` and call ``save(path)``.\nLoaded multi-case archives index cases lazily.\n\n"
         out += section("Geometry and material values")
-        out += ("Define reusable materials and shapes with ``fem_common`` before assigning them.\n"
-                "Use ``Material(name=..., epsilon=..., mu=...)`` for bulk media,\n"
-                "``materials.PEC`` or ``materials.PMC`` for ideal boundaries, and the\n"
-                "documented ``materials.copper``-style presets where SIBC is supported.\n"
-                "Continuous primitives and Boolean/transformed shapes live in\n"
-                "``fem_common.shapes``. Solver packages do not re-export these shared values.\n\n")
-        out += entry('load_result',module.load_result,'a typed result; multi-case archives provide lazy case access')
-        out += section("Errors")+"Invalid inputs raise ``ConfigurationError`` or ``GeometryError`` where available.\nMesh and numerical failures raise the corresponding ``MeshError`` or\n``SolverError``. ``NoResultError`` requires a successful solve first.\n``PersistenceError`` identifies an incompatible or unreadable archive.\nViewer errors include the executable path or installation setting needed to\ncorrect a launch failure. Saving and loading do not require an active GUI.\n\n"
-        (ROOT/spec['documentation']/'API_REFERENCE.rst').write_text(out.rstrip() + '\n',encoding='utf-8')
+        out += (
+            "Define reusable materials and shapes with ``fem_common`` before assigning them.\n"
+            "Use ``Material(name=..., epsilon=..., mu=...)`` for bulk media,\n"
+            "``materials.PEC`` or ``materials.PMC`` for ideal boundaries, and the\n"
+            "documented ``materials.copper``-style presets where SIBC is supported.\n"
+            "Continuous primitives and Boolean/transformed shapes live in\n"
+            "``fem_common.shapes``. Solver packages also re-export Material, materials, and shapes.\n\n"
+        )
+        out += entry(
+            "load_result",
+            module.load_result,
+            "a typed result; multi-case archives provide lazy case access",
+        )
+        out += (
+            section("Errors")
+            + "Invalid inputs raise ``ConfigurationError`` or ``GeometryError`` where available.\nMesh and numerical failures raise the corresponding ``MeshError`` or\n``SolverError``. ``NoResultError`` requires a successful solve first.\n``PersistenceError`` identifies an incompatible or unreadable archive.\nViewer errors include the executable path or installation setting needed to\ncorrect a launch failure. Saving and loading do not require an active GUI.\n\n"
+        )
+        out += section("Backend selection")
+        out += (
+            '``backend="auto"`` selects GPU when available, otherwise SciPy CPU. ``backend="gpu"`` requests\n'
+            "CuPy/cuDSS explicitly. See the solver guide for supported algorithms.\n\n"
+        )
+        if package == "fem_waveguide_scattering":
+            out += (
+                '``sweep(backend="gpu")`` selects both device and lead-mode solves;\n'
+                '``mode_options["backend"]`` overrides the lead-mode backend.\n\n'
+            )
+        if hasattr(module, "plot_dispersion"):
+            out += section("Dispersion plots")
+            out += entry("plot_dispersion", module.plot_dispersion, "a Matplotlib Figure")
+        yield ROOT / spec["documentation"] / "API_REFERENCE.rst", out.rstrip() + "\n"
 
 
-if __name__=='__main__':main()
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--check", action="store_true", help="Fail if generated references differ; write nothing."
+    )
+    args = parser.parse_args()
+    stale = []
+    for path, content in render_references():
+        if args.check:
+            if not path.exists() or path.read_text(encoding="utf-8") != content:
+                stale.append(str(path.relative_to(ROOT)))
+        else:
+            path.write_text(content, encoding="utf-8")
+    if stale:
+        raise SystemExit("Run python scripts/generate_api_reference.py: " + ", ".join(stale))
+
+
+if __name__ == "__main__":
+    main()

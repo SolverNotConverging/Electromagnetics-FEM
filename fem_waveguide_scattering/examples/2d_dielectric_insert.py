@@ -34,9 +34,9 @@ def main() -> None:
     mesh = simulation.mesh(wavelength_elements=8)
     print("selected max element size =", mesh.info.requested_maximum_edge)
 
-    modes = simulation.solve_modes(backend="cpu", max_refinements=0, num_modes=1, neff_guess=1.0)
+    modes = simulation.solve_modes(backend="auto", max_refinements=0, num_modes=1, neff_guess=1.0)
     simulation.set_incident_mode(modes[0])
-    result = simulation.solve(backend="cpu", max_refinements=0)
+    result = simulation.solve(backend="auto", max_refinements=0)
     output_path = result.save(OUTPUT_DIR / 'results.h5')
 
     print("beta =", modes[0].beta)

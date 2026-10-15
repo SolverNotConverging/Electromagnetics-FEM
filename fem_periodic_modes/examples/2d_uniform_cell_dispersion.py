@@ -19,7 +19,7 @@ for case, frequency in enumerate(tqdm(frequencies, desc="Frequency sweep", unit=
     solver = PeriodicModeSolver2D(frequency=frequency, x_range=20e-3, z_range=5e-3,
         background_material=dielectric, polarization="TM")
     solver.mesh(max_element_size=3e-3, wavelength_elements=8)
-    modes = solver.solve(backend="cpu", num_modes=1, max_refinements=0, neff_guess=1.5)
+    modes = solver.solve(backend="auto", num_modes=1, max_refinements=0, neff_guess=1.5)
     modes.save(OUTPUT / f"case_{case:03d}.h5")
     neff_sweep.append(modes.neff)
 

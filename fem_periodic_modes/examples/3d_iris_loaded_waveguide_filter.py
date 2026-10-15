@@ -28,7 +28,7 @@ def main() -> None:
 
     # The fixed-mesh Arnoldi solve can plateau around 2e-10; use a practical
     # eigensolver tolerance while retaining the independent QEP/Gauss filters.
-    modes = solver.solve(backend="cpu",
+    modes = solver.solve(backend="auto",
         direction='all',
         eigensolver='auto',
         max_refinements=0,

@@ -51,9 +51,8 @@ def main():
             artifacts[f'{case}/{filename}'] = hashlib.sha256(source.read_bytes()).hexdigest()
     source_hash = hashlib.sha256()
     sources = list((ROOT / 'benchmarks/analytical').glob('*.py'))
-    for parent in ('fem_common', 'fem_adaptivity', 'fem_electrostatics', 'fem_periodic_modes', 'fem_waveguide_modes', 'fem_waveguide_scattering', 'periodic_eigensolver'):
-        sources.extend(p for p in (ROOT / parent).rglob('*')
-                       if 'src' in p.parts and p.suffix in ('.py', '.cpp', '.h', '.hpp'))
+    for parent in ('fem_common', 'fem_adaptivity', 'fem_electrostatics', 'fem_periodic_modes', 'fem_waveguide_modes', 'fem_waveguide_scattering'):
+        sources.extend((ROOT / parent).glob('*.py'))
     for source in sorted(sources):
         source_hash.update(source.relative_to(ROOT).as_posix().encode() + b'\0' + source.read_bytes() + b'\0')
     git = ['git', '-c', f'safe.directory={ROOT.as_posix()}']

@@ -30,4 +30,6 @@ Scripts that save results use
 Backend selection
 -----------------
 
-Solver calls explicitly select ``backend="cpu"``. Change to ``backend="cuda"`` for cuDSS scattering solves and CUDA lead modes.
+Solver calls use ``backend="auto"``. FEM selects GPU when CuPy, the CUDA device,
+and cuDSS are available, otherwise it uses SciPy CPU. Frequency sweeps use
+this selection for both the lead modes and scattering solve.

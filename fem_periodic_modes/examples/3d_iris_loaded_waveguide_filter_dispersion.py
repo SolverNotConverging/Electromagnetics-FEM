@@ -23,7 +23,7 @@ for case, frequency in enumerate(tqdm(frequencies, desc="Frequency sweep", unit=
     solver.add_geometry(name="right_iris", material=materials.PEC,
         shape=shapes.Box(bounds=((18.86e-3, 22.86e-3), (0., 10.16e-3), (3.6e-3, 4.4e-3))))
     solver.mesh(max_element_size=4e-3)
-    modes = solver.solve(backend="cpu", direction="all", eigensolver="auto", max_refinements=0,
+    modes = solver.solve(backend="auto", direction="all", eigensolver="auto", max_refinements=0,
         eigensolver_tolerance=1e-8, num_modes=2, neff_guess=0.7)
     modes.save(OUTPUT / f"case_{case:03d}.h5")
     neff_sweep.append(modes.neff)

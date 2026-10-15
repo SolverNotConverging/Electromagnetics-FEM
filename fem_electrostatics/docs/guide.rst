@@ -44,7 +44,6 @@ units, the no-fringing boundary conditions, and interpolation-error convergence.
 4. Call ``solve(...)`` to obtain a typed result; ``max_refinements=0`` uses one fixed mesh.
 5. Inspect diagnostics, then call ``show()``, ``plot()``, or ``save(path)`` explicitly.
 
-Version 1.1.0.
 
 Workflow
 --------
@@ -88,9 +87,9 @@ for learning order, output locations, and viewer requirements.
 CUDA acceleration
 -----------------
 
-Use ``solver.solve(backend="cuda")`` for cuDSS factorization and solves.
+Use ``solver.solve(backend="gpu")`` for cuDSS factorization and solves.
 Install the ``cuda12`` or ``cuda13`` extra and cuDSS >= 0.8. The runtime
 searches system paths, NVIDIA packages in the Python environment, and
 ``build/cuda-deps``. Set ``CUDSS_LIBRARY`` to override discovery. GPU selection follows the current CuPy
-device. Assembly and adaptive refinement remain on the CPU. CPU defaults
-are unchanged; explicit CUDA requests raise errors if unavailable.
+device. Assembly and adaptive refinement remain on the CPU. The default ``backend="auto"`` selects GPU when available and SciPy CPU otherwise.
+Explicit ``backend="gpu"`` requests raise errors if unavailable.

@@ -1,6 +1,6 @@
 # Build FEM from source
 
-FEM source builds compile the native applications and the Cython eigensolver.
+FEM source builds compile the native applications. Solver-only builds need no compiler.
 The [root README](../README.md) describes installation and example usage.
 
 ## Windows: MSVC and vcpkg
@@ -20,9 +20,26 @@ individual native build, use:
 
 ```powershell
 . ./scripts/setup_msvc_windows.ps1
-cmake -S . -B build/native -G Ninja -DCMAKE_BUILD_TYPE=Release -DFEM_BUILD_PYTHON=OFF
+cmake -S . -B build/native -G Ninja -DCMAKE_BUILD_TYPE=Release
 cmake --build build/native --parallel
 ```
+
+Enable tests and the VTK viewport explicitly for release qualification:
+
+```powershell
+. ./scripts/setup_msvc_windows.ps1
+cmake -S . -B build/native-2.0 -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DFEM_PERIODIC_MODE_VIEWER_WITH_VTK=ON
+cmake --build build/native-2.0 --parallel 4
+ctest --test-dir build/native-2.0 --output-on-failure
+.venv/Scripts/python.exe scripts/qualify_native.py --build build/native-2.0 --output build/qualification-2.0/archives
+```
+
+CTest covers calculator calculations, archive-reader validation, and automated
+Qt/VTK viewer smoke tests. The Python qualification command writes fresh solver
+results and sweeps, then opens them with the native readers and viewers. These
+are automated offscreen checks; inspect the interactive UI separately when
+changing visual layout. Root and standalone application builds read their
+version from `pyproject.toml` through `cmake/ProjectVersion.cmake`.
 
 ## macOS and Linux
 

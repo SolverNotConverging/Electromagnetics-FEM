@@ -25,7 +25,7 @@ def main():
 
     # Potentials are in volts; max_element_size is in metres.
     solver.mesh(max_element_size=0.0004)
-    result = solver.solve(backend="cpu", max_refinements=0)
+    result = solver.solve(backend="auto", max_refinements=0)
     print(f"nodes={len(result.mesh_data.coordinates)}, energy={result.energy:.6e} J/m2")
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     solver.result.save(OUTPUT_DIR / "results.h5")

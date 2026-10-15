@@ -28,9 +28,9 @@ def solve_example():
     solver.set_nf2ff_contour(x_range=(-.012, .012), z_range=(-.015, .015))
     solver.mesh(max_element_size=.001, element_order=2, wavelength_elements=10)
     # Resolve the thin substrate in the separate one-dimensional lead mesh.
-    solver.solve_modes(backend="cpu", num_modes=1, neff_guess=1.8, num_elements=384, max_refinements=0)
+    solver.solve_modes(backend="auto", num_modes=1, neff_guess=1.8, num_elements=384, max_refinements=0)
     solver.set_incident_mode(0)
-    return solver.solve(backend="cpu", max_refinements=0)
+    return solver.solve(backend="auto", max_refinements=0)
 
 
 def save_pattern(result, directory):

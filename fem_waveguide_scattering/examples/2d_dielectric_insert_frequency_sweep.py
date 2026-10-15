@@ -36,9 +36,9 @@ def main() -> None:
 
     sweep = simulation.sweep(
         frequencies_hz,
-        backend="cpu",
+        backend="auto",
         mesh_options={'wavelength_elements': 8},
-        mode_options={'backend': 'cpu', 'max_refinements': 0, 'num_modes': 1, 'neff_guess': 1.0},
+        mode_options={'backend': 'auto', 'max_refinements': 0, 'num_modes': 1, 'neff_guess': 1.0},
         max_refinements=0,
     )
     output_path = sweep.save(OUTPUT_DIR / 'results.h5')

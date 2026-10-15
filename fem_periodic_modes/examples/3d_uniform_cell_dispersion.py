@@ -20,7 +20,7 @@ for case, frequency in enumerate(tqdm(frequencies, desc="Frequency sweep", unit=
         z_range=5e-3, background_material=dielectric)
     solver.mesh(max_element_size=6e-3, wavelength_elements=8)
     # A 1e-8 tolerance resolves this fixed-mesh sweep without chasing roundoff.
-    modes = solver.solve(backend="cpu", num_modes=1, max_refinements=0, neff_guess=1.3,
+    modes = solver.solve(backend="auto", num_modes=1, max_refinements=0, neff_guess=1.3,
         eigensolver_tolerance=1e-8)
     modes.save(OUTPUT / f"case_{case:03d}.h5")
     neff_sweep.append(modes.neff)

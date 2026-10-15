@@ -1,7 +1,7 @@
 fem_waveguide_scattering user API
 =================================
 
-Version 1.1.0. This reference covers the deliberately supported user API.
+Version 2.0.0. This reference covers the deliberately supported user API.
 Implementation helpers are documented in their source modules.
 
 Workflow and units
@@ -41,66 +41,7 @@ PML supports x, z, or all; it applies at both ends of the selected axis.
 Supported exports
 -----------------
 
-``WaveguideScatteringSolver2D``, ``ScatteringResult``, ``FrequencySweepResult``, ``IncidentMode``, ``Mode``, ``ModeSet``, ``Diagnostic``, ``DiagnosticReport``, ``BackendCapabilityError``, ``ConfigurationError``, ``GeometryError``, ``MaterialError``, ``MeshError``, ``ModeProjectionError``, ``ModeSolverError``, ``SolverError``, ``ViewerError``, ``NoResultError``, ``PersistenceError``, ``load_result``.
-
-Radiation exports: ``ClosedContourFields``, ``LayeredExterior``, ``FarFieldResult``.
-
-Radiation and matched-port operations
------------------------------------------
-
-``WaveguideScatteringSolver2D.set_matched_ports`` with ``enabled=True`` selects matched
-modal maps on both z ends. ``enabled`` is a boolean; z PML and matched ports are
-mutually exclusive. Retained modes are matched; the remaining electric trace
-uses a local impedance approximation. The analytic incident mode excites the
-existing scattered-field source, with no duplicated port launch term.
-
-``WaveguideScatteringSolver2D.set_nf2ff_contour`` has keyword arguments
-``x_range=None``, ``z_range=None``, and ``exterior=None``. Bounds are increasing
-pairs of SI metres. Defaults are x/PML interfaces and modal monitor z planes.
-Call before meshing. All four sides must be complete and enclose perturbations.
-``exterior`` is a ``LayeredExterior`` or is inferred from the background geometry.
-An x side cannot coincide with a material interface or PEC sheet.
-
-``ScatteringResult.far_field(theta)`` returns a ``FarFieldResult`` from the saved
-``nf2ff`` contour. ``theta`` is a nonempty one-dimensional array of radians,
-measured from +x toward +z. Exact grazing angles raise ``ConfigurationError``.
-Exact internal layer critical angles are also rejected; offset those angles.
-An observation half-space with ``abs(ky) >= k`` has no propagating cylindrical
-far field and is rejected. Missing contour data raises ``ValueError``.
-
-``FarFieldResult`` contains ``theta``, complex Cartesian ``amplitude`` of shape
-``(3, N)``, complex ``s_amplitude`` and ``p_amplitude``, real ``power_density``
-(W/m/radian), and ``transverse_wavenumber`` (rad/m). The amplitude multiplies
-``exp(-i*q*rho-i*ky*y)/sqrt(rho)`` with SI ``rho``. Polarization s is perpendicular
-to the x-normal incidence plane; p is ``k_hat cross s``. At normal incidence,
-s is +y. ``integrated_power()`` uses periodic trapezoidal quadrature on an
-increasing, approximately uniform full-circle grid without a repeated endpoint.
-The high-level result also supplies ``directivity``, ``gain``, and
-``realized_gain`` arrays in linear 2D isotropic units, with
-``radiated_power``, ``accepted_power``, and ``incident_power`` denominators.
-For radiation intensity ``U=power_density`` in W/m/radian, these are
-``2*pi*U/P_radiated``, ``2*pi*U/(P_incident-P_reflected)``, and
-``2*pi*U/P_incident``. Partial-angle requests use a separate 720-angle
-full-circle transform to normalize directivity. The low-level contour result
-provides ``with_feed_powers(...)`` when feed powers are known. Zero radiation
-leaves directivity undefined (NaN); nonpositive accepted power leaves gain
-undefined (NaN). For dB use ``10*log10`` of positive ratios, with a 2D
-isotropic reference rather than a 3D spherical isotropic radiator.
-
-``LayeredExterior(interfaces, epsilon, mu, pec)`` stores N ordered x interfaces,
-N+1 isotropic relative material values, and N boolean PEC-sheet flags.
-The outer half-spaces are lossless positive-index materials; finite layers
-may be passive and lossy. ``ClosedContourFields`` stores the rectangular
-``x_range``, ``z_range``, ``coordinates`` and outward ``normals`` (2 by N),
-positive physical line ``weights`` (N), complex scattered ``E`` and ``H``
-(3 by N), ``frequency_hz``, ``ky``, and ``exterior``. It validates all four
-sides and provides ``far_field(theta)`` and scattered ``outward_power``.
-Its arrays and the exterior arrays are copied and read-only.
-
-The contour and kernel persist in the HDF5 result and in frequency-sweep cases.
-Saves with a contour also carry a 720-angle ``radiation_pattern`` group for
-the native viewer, including power density and all three ratios.
-Older archives without a contour remain loadable but cannot calculate a pattern.
+``WaveguideScatteringSolver2D``, ``ScatteringResult``, ``FrequencySweepResult``, ``IncidentMode``, ``Mode``, ``ModeSet``, ``Diagnostic``, ``DiagnosticReport``, ``BackendCapabilityError``, ``ConfigurationError``, ``GeometryError``, ``MaterialError``, ``MeshError``, ``ModeProjectionError``, ``ModeSolverError``, ``SolverError``, ``ViewerError``, ``NoResultError``, ``PersistenceError``, ``load_result``, ``ClosedContourFields``, ``LayeredExterior``, ``FarFieldResult``, ``Material``, ``GoodConductor``, ``SurfaceImpedance``, ``materials``, ``shapes``, ``EPSILON_0``, ``MU_0``, ``C_0``.
 
 Solver construction and operations
 ----------------------------------
@@ -562,6 +503,68 @@ Returns: the configured geometry/excitation handle, or None for in-place configu
 
 Returns: the configured geometry/excitation handle, or None for in-place configuration.
 
+``WaveguideScatteringSolver2D.set_matched_ports``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    WaveguideScatteringSolver2D.set_matched_ports(enabled: 'bool' = True) -> 'None'
+
+Use outgoing modal maps at both z ends instead of longitudinal PML.
+
+.. list-table:: Arguments
+   :header-rows: 1
+   :widths: 16 20 12 16 36
+
+   * - Argument
+     - Type / units
+     - Required / optional
+     - Default
+     - Meaning
+   * - ``enabled``
+     - ``bool``
+     - Optional
+     - ``True``
+     - Enable or disable near-to-far-field recording.
+
+Returns: the configured geometry/excitation handle, or None for in-place configuration.
+
+``WaveguideScatteringSolver2D.set_nf2ff_contour``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    WaveguideScatteringSolver2D.set_nf2ff_contour(*, x_range=None, z_range=None, exterior=None) -> 'None'
+
+Capture a closed rectangular scattered-field Huygens contour.
+
+.. list-table:: Arguments
+   :header-rows: 1
+   :widths: 16 20 12 16 36
+
+   * - Argument
+     - Type / units
+     - Required / optional
+     - Default
+     - Meaning
+   * - ``x_range``
+     - ``float | tuple[float, float] / m``
+     - Optional
+     - ``None``
+     - Physical x extent or increasing bounds, in metres.
+   * - ``z_range``
+     - ``array-like or scalar``
+     - Optional
+     - ``None``
+     - Physical z extent or increasing bounds, in metres.
+   * - ``exterior``
+     - ``array-like or scalar``
+     - Optional
+     - ``None``
+     - LayeredExterior description of the medium outside the near-to-far-field contour.
+
+Returns: the configured geometry/excitation handle, or None for in-place configuration.
+
 ``WaveguideScatteringSolver2D.remove``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -630,22 +633,22 @@ Generate the Gmsh mesh and reveal the selected maximum edge size.
      - ``bool``
      - Optional
      - ``True``
-     - Refine interfaces control for this operation.
+     - Enable local refinement at dielectric interfaces.
    * - ``dielectric_refinement_factor``
      - ``float``
      - Optional
      - ``0.5``
-     - Dielectric refinement factor control for this operation.
+     - Mesh-size multiplier near dielectric interfaces.
    * - ``pec_refinement_factor``
      - ``float``
      - Optional
      - ``0.5``
-     - Pec refinement factor control for this operation.
+     - Mesh-size multiplier near PEC boundaries.
    * - ``pec_refinement_distance``
      - ``float | None``
      - Optional
      - ``None``
-     - Pec refinement distance control for this operation.
+     - Distance in metres over which PEC mesh refinement applies.
 
 Returns: the initial mesh stored in ``mesh_data``.
 
@@ -654,7 +657,7 @@ Returns: the initial mesh stored in ``mesh_data``.
 
 .. code-block:: python
 
-    WaveguideScatteringSolver2D.solve_modes(*, backend: 'str' = 'cpu', side: "Literal['left', 'right']" = 'left', num_modes: 'int' = 4, neff_guess: 'complex | None' = None, num_elements: 'int | None' = None, max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05)
+    WaveguideScatteringSolver2D.solve_modes(*, backend: 'str' = 'auto', side: "Literal['left', 'right']" = 'left', num_modes: 'int' = 4, neff_guess: 'complex | None' = None, num_elements: 'int | None' = None, max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05) -> 'ModeSet'
 
 .. list-table:: Arguments
    :header-rows: 1
@@ -665,6 +668,11 @@ Returns: the initial mesh stored in ``mesh_data``.
      - Required / optional
      - Default
      - Meaning
+   * - ``backend``
+     - ``str``
+     - Optional
+     - ``'auto'``
+     - Execution backend: auto (default) selects GPU when available, otherwise SciPy CPU; cpu and gpu force the selected backend.
    * - ``side``
      - ``Literal['left', 'right']``
      - Optional
@@ -684,7 +692,7 @@ Returns: the initial mesh stored in ``mesh_data``.
      - ``int | None``
      - Optional
      - ``None``
-     - Num elements control for this operation.
+     - Number of elements in the lead-mode cross-section discretization.
    * - ``max_refinements``
      - ``int``
      - Optional
@@ -742,7 +750,7 @@ Returns: the configured geometry/excitation handle, or None for in-place configu
 
 .. code-block:: python
 
-    WaveguideScatteringSolver2D.solve(*, linear_solver: "Literal['direct']" = 'direct', linear_solver_tolerance: 'float' = 1e-10, projection_condition_limit: 'float' = 1000000000000.0, max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05, backend: 'str' = 'cpu')
+    WaveguideScatteringSolver2D.solve(*, linear_solver: "Literal['direct']" = 'direct', linear_solver_tolerance: 'float' = 1e-10, projection_condition_limit: 'float' = 1000000000000.0, max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05, backend: 'str' = 'auto') -> 'ScatteringResult'
 
 Solve without saving or opening a viewer.
 
@@ -759,7 +767,7 @@ Solve without saving or opening a viewer.
      - ``Literal['direct']``
      - Optional
      - ``'direct'``
-     - Linear solver control for this operation.
+     - Sparse linear-system algorithm; currently direct.
    * - ``linear_solver_tolerance``
      - ``float``
      - Optional
@@ -769,7 +777,7 @@ Solve without saving or opening a viewer.
      - ``float``
      - Optional
      - ``1000000000000.0``
-     - Projection condition limit control for this operation.
+     - Maximum permitted condition number for port-mode projection.
    * - ``max_refinements``
      - ``int``
      - Optional
@@ -780,6 +788,11 @@ Solve without saving or opening a viewer.
      - Optional
      - ``0.05``
      - Relative discretization-residual stopping threshold.
+   * - ``backend``
+     - ``str``
+     - Optional
+     - ``'auto'``
+     - Execution backend: auto (default) selects GPU when available, otherwise SciPy CPU; cpu and gpu force the selected backend.
 
 Returns: the physics-specific result stored in ``result``.
 
@@ -788,7 +801,7 @@ Returns: the physics-specific result stored in ``result``.
 
 .. code-block:: python
 
-    WaveguideScatteringSolver2D.sweep(frequencies: 'Sequence[float]', *, backend: 'str' = 'cpu', linear_solver: "Literal['direct']" = 'direct', linear_solver_tolerance: 'float' = 1e-10, projection_condition_limit: 'float' = 1000000000000.0, max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05, mesh_options: 'Mapping[str, object] | None' = None, mode_options: 'Mapping[str, object] | None' = None, incident_mode: 'int' = 0, amplitude: 'complex' = 1.0, reference_plane: 'float | None' = None, mode_factory: 'Callable[[float], ModeSet] | None' = None)
+    WaveguideScatteringSolver2D.sweep(frequencies: 'Sequence[float]', *, backend: 'str' = 'auto', linear_solver: "Literal['direct']" = 'direct', linear_solver_tolerance: 'float' = 1e-10, projection_condition_limit: 'float' = 1000000000000.0, max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05, mesh_options: 'Mapping[str, object] | None' = None, mode_options: 'Mapping[str, object] | None' = None, incident_mode: 'int' = 0, amplitude: 'complex' = 1.0, reference_plane: 'float | None' = None, mode_factory: 'Callable[[float], ModeSet] | None' = None) -> 'FrequencySweepResult'
 
 Solve independent points on an increasing ordinary-frequency grid.
 
@@ -806,11 +819,16 @@ Solve independent points on an increasing ordinary-frequency grid.
      - Required
      - ``—``
      - Strictly increasing positive frequencies in hertz.
+   * - ``backend``
+     - ``str``
+     - Optional
+     - ``'auto'``
+     - Execution backend: auto (default) selects GPU when available, otherwise SciPy CPU; cpu and gpu force the selected backend.
    * - ``linear_solver``
      - ``Literal['direct']``
      - Optional
      - ``'direct'``
-     - Linear solver control for this operation.
+     - Sparse linear-system algorithm; currently direct.
    * - ``linear_solver_tolerance``
      - ``float``
      - Optional
@@ -820,7 +838,7 @@ Solve independent points on an increasing ordinary-frequency grid.
      - ``float``
      - Optional
      - ``1000000000000.0``
-     - Projection condition limit control for this operation.
+     - Maximum permitted condition number for port-mode projection.
    * - ``max_refinements``
      - ``int``
      - Optional
@@ -835,17 +853,17 @@ Solve independent points on an increasing ordinary-frequency grid.
      - ``Mapping[str, object] | None``
      - Optional
      - ``None``
-     - Mesh options control for this operation.
+     - Keyword arguments forwarded to mesh() for each frequency case.
    * - ``mode_options``
      - ``Mapping[str, object] | None``
      - Optional
      - ``None``
-     - Mode options control for this operation.
+     - Keyword arguments forwarded to solve_modes() for each frequency case.
    * - ``incident_mode``
      - ``int``
      - Optional
      - ``0``
-     - Incident mode control for this operation.
+     - Zero-based incident lead-mode index.
    * - ``amplitude``
      - ``complex``
      - Optional
@@ -860,7 +878,7 @@ Solve independent points on an increasing ordinary-frequency grid.
      - ``Callable[[float], ModeSet] | None``
      - Optional
      - ``None``
-     - Mode factory control for this operation.
+     - Callback constructing incident-mode data at each frequency; see the sweep guide.
 
 Returns: a frequency sweep result.
 
@@ -1002,12 +1020,12 @@ Return an indexed outgoing modal amplitude.
      - ``int``
      - Optional
      - ``0``
-     - Out mode control for this operation.
+     - Zero-based outgoing mode index.
    * - ``in_mode``
      - ``int``
      - Optional
      - ``0``
-     - In mode control for this operation.
+     - Zero-based incident mode index.
 
 Returns: the selected data or diagnostic report.
 
@@ -1033,32 +1051,32 @@ Return structured solver-quality diagnostics without printing.
      - ``float``
      - Optional
      - ``0.001``
-     - Power balance tolerance control for this operation.
+     - Maximum acceptable absolute power-balance error in diagnostics.
    * - ``projection_condition_warning``
      - ``float``
      - Optional
      - ``10000000000.0``
-     - Projection condition warning control for this operation.
+     - Projection condition-number threshold for a diagnostic warning.
    * - ``projection_residual_warning``
      - ``float``
      - Optional
      - ``0.001``
-     - Projection residual warning control for this operation.
+     - Projection relative-residual threshold for a diagnostic warning.
    * - ``incoming_projection_warning``
      - ``float``
      - Optional
      - ``0.001``
-     - Incoming projection warning control for this operation.
+     - Incoming-wave projection relative-error threshold for a diagnostic warning.
    * - ``port_gram_diagonal_warning``
      - ``float``
      - Optional
      - ``0.01``
-     - Port gram diagonal warning control for this operation.
+     - Port Gram-matrix diagonal-error threshold for a diagnostic warning.
    * - ``s_parameter_power_tolerance``
      - ``float``
      - Optional
      - ``1e-06``
-     - S parameter power tolerance control for this operation.
+     - Tolerance for disagreement between S-parameter and integrated power ratios.
 
 Returns: the selected data or diagnostic report.
 
@@ -1092,6 +1110,32 @@ Move left/right reference planes for a left-incident result.
      - Right monitor/reference-plane position in metres.
 
 Returns: a result with updated reference planes.
+
+``ScatteringResult.far_field``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    ScatteringResult.far_field(theta: 'ArrayLike') -> 'FarFieldResult'
+
+Closed-contour radiation and 2D antenna patterns at angles in radians.
+
+.. list-table:: Arguments
+   :header-rows: 1
+   :widths: 16 20 12 16 36
+
+   * - Argument
+     - Type / units
+     - Required / optional
+     - Default
+     - Meaning
+   * - ``theta``
+     - ``ArrayLike``
+     - Required
+     - ``—``
+     - Observation angles in radians for far-field evaluation.
+
+Returns: the selected data or diagnostic report.
 
 ``FrequencySweepResult.plot``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1199,12 +1243,12 @@ Return one indexed modal amplitude across the sweep.
      - ``int``
      - Optional
      - ``0``
-     - Out mode control for this operation.
+     - Zero-based outgoing mode index.
    * - ``in_mode``
      - ``int``
      - Optional
      - ``0``
-     - In mode control for this operation.
+     - Zero-based incident mode index.
 
 Returns: the selected data or diagnostic report.
 
@@ -1235,7 +1279,7 @@ Use ``Material(name=..., epsilon=..., mu=...)`` for bulk media,
 ``materials.PEC`` or ``materials.PMC`` for ideal boundaries, and the
 documented ``materials.copper``-style presets where SIBC is supported.
 Continuous primitives and Boolean/transformed shapes live in
-``fem_common.shapes``. Solver packages do not re-export these shared values.
+``fem_common.shapes``. Solver packages also re-export Material, materials, and shapes.
 
 ``load_result``
 ~~~~~~~~~~~~~~~
@@ -1271,18 +1315,11 @@ Mesh and numerical failures raise the corresponding ``MeshError`` or
 Viewer errors include the executable path or installation setting needed to
 correct a launch failure. Saving and loading do not require an active GUI.
 
-Shared construction tools
--------------------------
-
-Import ``Material``, ``GoodConductor``, ``SurfaceImpedance``, ``materials``,
-``shapes``, ``EPSILON_0``, ``MU_0``, and ``C_0`` directly from this solver family.
-They are the shared FEM definitions; examples do not need a separate common import.
-
 Backend selection
 -----------------
 
-The ``backend`` keyword selects execution explicitly. ``"cpu"`` preserves
-the default CPU method; ``"auto"`` also retains CPU selection. Use ``"cuda"`` for cuDSS scattering solves and cuDSS shift-invert lead modes.
-``sweep(backend="cuda")`` selects both; an explicit ``mode_options["backend"]``
-can override the lead-mode selection. Automatic lead-mode generation and
-oblique-incidence resolution retain the selected backend.
+``backend="auto"`` selects GPU when available, otherwise SciPy CPU. ``backend="gpu"`` requests
+CuPy/cuDSS explicitly. See the solver guide for supported algorithms.
+
+``sweep(backend="gpu")`` selects both device and lead-mode solves;
+``mode_options["backend"]`` overrides the lead-mode backend.

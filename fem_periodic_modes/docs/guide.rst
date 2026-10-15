@@ -44,7 +44,6 @@ complex effective index, passive attenuation, and output tables and plots.
 4. Call ``solve(...)`` to obtain a typed result; ``max_refinements=0`` uses one fixed mesh.
 5. Inspect diagnostics, then call ``show()``, ``plot()``, or ``save(path)`` explicitly.
 
-Version 1.1.0.
 
 Workflow
 --------
