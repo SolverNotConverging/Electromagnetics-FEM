@@ -13,8 +13,8 @@ from scipy.sparse import diags, eye
 from scipy.sparse.linalg import spsolve
 
 from fem import __version__
-from fem_common.gpu import solve_sparse
-from fem_common.linalg import generalized_eigenpairs, quadratic_eigenpairs, resolve_backend
+from fem.common.gpu import solve_sparse
+from fem.common.linalg import generalized_eigenpairs, quadratic_eigenpairs, resolve_backend
 
 
 def qualify():

@@ -13,21 +13,15 @@ def main():
     errors = []
     files = []
     for directory in (
-        "fem_common",
-        "fem_adaptivity",
-        "fem_electrostatics",
-        "fem_periodic_modes",
-        "fem_waveguide_modes",
-        "fem_waveguide_scattering",
-        "apps",
         "docs",
+        "examples",
         "tests",
         "benchmarks",
     ):
         files.extend((ROOT / directory).rglob("*.rst"))
     for path in files:
-        if any(part in ("build", "dist") or part.endswith(".egg-info") for part in path.parts):
-            continue
+        if any(part in ("build", "dist", "_build") for part in path.parts) or path.name == "index.rst":
+            continue  # index.rst uses Sphinx-only directives; sphinx-build checks it
         source = path.read_text(encoding="utf-8")
         warnings = io.StringIO()
         document = publish_doctree(
@@ -53,7 +47,6 @@ def main():
         *ROOT.glob("*.md"),
         *(ROOT / "docs").rglob("*.md"),
         *(ROOT / "benchmarks").rglob("*.md"),
-        *(ROOT / "apps").rglob("*.md"),
     ]
     for path in markdown:
         for link in re.findall(r"\[[^\]\n]+\]\(([^)\n]+)\)", path.read_text(encoding="utf-8")):

@@ -3,19 +3,19 @@
 The fixture was captured before the sign migration. Inputs represent the same
 real-time device and excitation, with conjugated loss and source amplitude.
 """
-from fem_common import Material, SurfaceImpedance, materials, shapes
+from fem.common import Material, SurfaceImpedance, materials, shapes
 from pathlib import Path
 
 import numpy as np
 import pytest
 
-from fem_waveguide_scattering.scattering import WaveguideScatteringSolver2D
+from fem.scattering.scattering import ScatteringSolver2D
 
 
 @pytest.mark.gmsh
 @pytest.mark.parametrize("name,angle", [("lossy", 0.0), ("oblique", 17.0)])
 def test_positive_time_fields_and_s_parameters_match_physical_baseline(name, angle, tmp_path):
-    simulation = WaveguideScatteringSolver2D(frequency=193414489000000.0, angle=angle, x_range=(0.0, 1e-06), z_range=(-3e-06, 3e-06), background_material=materials.Material(epsilon=1.0, mu=1.0), boundary=materials.PEC)
+    simulation = ScatteringSolver2D(frequency=193414489000000.0, angle=angle, x_range=(0.0, 1e-06), z_range=(-3e-06, 3e-06), background_material=materials.Material(epsilon=1.0, mu=1.0), boundary=materials.PEC)
     simulation.add_rectangle(x_range=(0.0, 1e-06), z_range=(-3.5e-07, 3.5e-07), material=materials.Material(epsilon=1.02 - 0.01j, mu=1.0))
     simulation.add_pml(thickness=0.9e-6, direction="z")
     simulation.mesh(max_element_size=0.2e-6)
@@ -36,9 +36,9 @@ def test_positive_time_fields_and_s_parameters_match_physical_baseline(name, ang
         assert simulation.ky == pytest.approx(float(baseline[name+"_ky"]))
     assert result.solve_info["raw_absorbed_power"] > 0
     assert result.power_balance_error < 1e-3
-    from fem_waveguide_scattering import load_result
+    from fem import load
     result.save(tmp_path / 'scattering.h5')
-    loaded = load_result(tmp_path / 'scattering.h5')
+    loaded = load(tmp_path / 'scattering.h5')
     np.testing.assert_array_equal(loaded.E_total, result.E_total)
     np.testing.assert_array_equal(loaded.mesh_data.elements, result.mesh_data.elements)
     assert loaded.S21 == result.S21

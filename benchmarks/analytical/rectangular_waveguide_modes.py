@@ -4,15 +4,7 @@ The exact vacuum solution is beta = sqrt(k0**2 - (pi / width)**2).
 Refine spatial resolution while keeping frequency, dimensions, and the mode fixed.
 """
 
-# Run directly from the checkout without installing solver packages.
-import sys as _sys
-from pathlib import Path as _Path
-_ROOT = next(parent for parent in _Path(__file__).resolve().parents
-             if (parent / "fem_common" / "__init__.py").is_file())
-if str(_ROOT) not in _sys.path:
-    _sys.path.insert(0, str(_ROOT))
-
-from fem_common import materials, shapes
+from fem.common import materials, shapes
 import argparse
 import csv
 from pathlib import Path
@@ -22,7 +14,7 @@ import numpy as np
 from matplotlib.figure import Figure
 from matplotlib.ticker import FormatStrFormatter
 from scipy.constants import c
-from fem_waveguide_modes import ModeSolver2D as FEMModeSolver2D
+from fem.waveguide import ModeSolver2D as FEMModeSolver2D
 
 DEFAULT_OUTPUT = Path(__file__).resolve().parents[2] / 'outputs/benchmarks/analytical/rectangular_waveguide_modes'
 

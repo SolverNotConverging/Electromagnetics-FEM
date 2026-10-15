@@ -1,11 +1,11 @@
 [build-system]
-requires = ["scikit-build-core>=1.0,<2"]
-build-backend = "scikit_build_core.build"
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
 
 [project]
 name = "electromagnetics-fem"
-version = "2.0.0"
-description = "FEM electromagnetic solvers and interactive native applications"
+dynamic = ["version"]
+description = "FEM electromagnetic solvers with interactive PyVista/Qt viewers"
 readme = "README.md"
 requires-python = ">=3.11,<3.14"
 license = "MIT"
@@ -13,62 +13,41 @@ license-files = ["LICENSE"]
 dependencies = [
   "numpy>=1.26,<3", "scipy>=1.12,<2", "matplotlib>=3.8,<4",
   "h5py>=3.15,<4", "scikit-fem>=12,<13", "gmsh>=4.13,<5", "meshio>=5.3,<6",
-  "tqdm>=4.66,<5",
+  "tqdm>=4.66,<5", "pyvista>=0.44", "pyvistaqt>=0.11", "PySide6>=6.6,<7",
 ]
 
 [project.urls]
 Repository = "https://github.com/SolverNotConverging/Electromagnetics-FEM"
-Releases = "https://github.com/SolverNotConverging/Electromagnetics-FEM/releases"
 
 [project.optional-dependencies]
-test = ["pytest>=8,<10", "docutils"]
-cuda12 = ["cupy-cuda12x>=13.6,<15"]
-cuda13 = ["cupy-cuda13x>=14,<15"]
-
-[dependency-groups]
-dev = [
-  "pytest>=8,<10",
-  "docutils",
-  "delocate>=0.13,<1; sys_platform == 'darwin'",
-  "pandas",
-  "ruff>=0.14,<1",
-]
+# GPU factorization with NVIDIA cuDSS (pick the extra matching your CUDA runtime).
+cuda12 = ["cupy-cuda12x>=13.6,<15", "nvidia-cudss-cu12"]
+cuda13 = ["cupy-cuda13x>=14,<15", "nvidia-cudss-cu13"]
 
 [project.scripts]
 fem = "fem.__main__:main"
-transmission-line-calculator = "fem._apps:calculator"
-transmission-line-calculator-cli = "fem._apps:calculator_cli"
-fem-periodic-mode-viewer = "fem._apps:periodic_viewer"
-fem-periodic-mode-inspect = "fem._apps:periodic_inspector"
-fem-waveguide-scattering-viewer = "fem._apps:scattering_viewer"
-fem-waveguide-scattering-viewer-inspect = "fem._apps:scattering_inspector"
 
-[tool.uv]
-package = false
-default-groups = ["dev"]
-cache-keys = [
-  { file = "pyproject.toml" },
-  { file = "**/*.py" },
-]
+[dependency-groups]
+test = ["pytest>=8,<10", "docutils"]
+lint = ["ruff>=0.14,<1"]
+docs = ["sphinx>=8", "myst-parser>=4"]
+dev = [{ include-group = "test" }, { include-group = "lint" }, "pandas"]
 
-[tool.scikit-build]
-minimum-version = "build-system.requires"
-build-dir = "build/{wheel_tag}"
-cmake.build-type = "Release"
-wheel.packages = ["fem", "fem_common", "fem_adaptivity", "fem_electrostatics", "fem_periodic_modes", "fem_waveguide_modes", "fem_waveguide_scattering"]
-wheel.py-api = "py3"
-wheel.exclude = [ "**/__pycache__/**", "**/docs/**", "**/examples/**", "**/scripts/**", "**/outputs/**"]
-sdist.exclude = [".idea", "outputs", "examples", "**/__pycache__", "**/build", "**/outputs"]
+[tool.hatch.version]
+path = "src/fem/_version.py"
 
-[[tool.scikit-build.overrides]]
-if.platform-system = "^win32$"
-build-dir = "build/msvc/{wheel_tag}"
-cmake.args = ["-DCMAKE_C_COMPILER=cl", "-DCMAKE_CXX_COMPILER=cl"]
+[tool.hatch.build.targets.wheel]
+packages = ["src/fem"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["--import-mode=importlib", "-ra"]
+markers = ["gmsh: test requiring Gmsh", "slow: numerical convergence or performance test"]
 
 [tool.ruff]
 target-version = "py311"
 line-length = 100
-extend-exclude = ["build", "build*", "dist", "vcpkg-ports"]
+extend-exclude = ["build", "dist"]
 
 [tool.ruff.lint]
 select = ["E9", "F63", "F7", "F82"]

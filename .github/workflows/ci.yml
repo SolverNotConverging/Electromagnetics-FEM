@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uvx ruff check .
+
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ['3.11', '3.13']
+    env:
+      MPLBACKEND: Agg
+      QT_QPA_PLATFORM: offscreen
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libglu1-mesa libegl1 libgl1 libxkbcommon0 libdbus-1-3
+      - run: uv sync --group test
+      - run: uv run python scripts/generate_api_reference.py --check
+      - run: uv run python scripts/check_documentation.py
+      - run: uv run pytest
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: sudo apt-get update && sudo apt-get install -y libglu1-mesa
+      - run: uv sync --group docs
+      - run: uv run sphinx-build -W --keep-going docs docs/_build/html
+
+  wheel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: sudo apt-get update && sudo apt-get install -y libglu1-mesa libegl1 libgl1
+      - run: uv build --wheel
+      - name: Wheel is pure Python
+        run: ls dist/*-py3-none-any.whl
+      - run: uv venv /tmp/venv && uv pip install --python /tmp/venv dist/*.whl
+      - name: Verify installed package outside checkout
+        working-directory: /tmp
+        run: /tmp/venv/bin/python "$GITHUB_WORKSPACE/scripts/verify_install.py"

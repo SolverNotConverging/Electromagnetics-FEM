@@ -4,15 +4,7 @@ No fringing is present: the 2D capacitor's top/bottom boundaries are insulating.
 The charged problem compares the interpolated P1 field, not only nodal values.
 """
 
-# Run directly from the checkout without installing solver packages.
-import sys as _sys
-from pathlib import Path as _Path
-_ROOT = next(parent for parent in _Path(__file__).resolve().parents
-             if (parent / "fem_common" / "__init__.py").is_file())
-if str(_ROOT) not in _sys.path:
-    _sys.path.insert(0, str(_ROOT))
-
-from fem_common import Material, shapes
+from fem.common import Material, shapes
 import argparse
 import csv
 from pathlib import Path
@@ -21,7 +13,7 @@ import numpy as np
 from matplotlib.figure import Figure
 from scipy.constants import epsilon_0
 from scipy.integrate import trapezoid
-from fem_electrostatics import ElectrostaticSolver
+from fem.electrostatics import ElectrostaticSolver
 
 DEFAULT_OUTPUT = Path(__file__).resolve().parents[2] / 'outputs/benchmarks/analytical/parallel_plate_electrostatics'
 

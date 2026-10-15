@@ -1,0 +1,65 @@
+"""Curated API and user documentation release checks."""
+import importlib
+import inspect
+import io
+import json
+from pathlib import Path
+import pytest
+
+ROOT = Path(__file__).resolve().parents[1]
+INVENTORY = json.loads((ROOT / 'tests/public_api.json').read_text())
+
+
+@pytest.mark.parametrize('package', INVENTORY)
+def test_curated_public_api_and_signatures(package):
+    spec = INVENTORY[package]
+    module = importlib.import_module(package)
+    assert set(module.__all__) == set(spec['exports'])
+    reference = (ROOT / spec['documentation'] / (package.split('.')[1] + '.rst')).read_text(encoding='utf-8')
+    for name in spec['exports']:
+        assert hasattr(module, name)
+        assert f'``{name}``' in reference
+    for name, methods in spec['solvers'].items():
+        cls = getattr(module, name)
+        assert all(p.kind == p.KEYWORD_ONLY for p in inspect.signature(cls).parameters.values())
+        for method in methods:
+            target = cls if method == '__init__' else getattr(cls, method)
+            label = name if method == '__init__' else f'{name}.{method}'
+            assert f'``{label}``' in reference
+            for parameter in inspect.signature(target).parameters.values():
+                if parameter.name not in ('self', 'cls'):
+                    assert f'``{parameter.name}``' in reference
+    assert not {'assemble_periodic_system_2d', 'linearized_pencil', 'build_node_prolongation',
+                'H5ResultData', 'solve_qep_candidates', 'resolve_frequency'} & set(module.__all__)
+
+
+@pytest.mark.parametrize('package', INVENTORY)
+def test_rst_is_valid(package):
+    from docutils.core import publish_doctree
+    family = package.split('.')[1]
+    for path in (ROOT / 'docs/solvers' / f'{family}.rst', ROOT / 'docs/api' / f'{family}.rst'):
+        messages = io.StringIO()
+        publish_doctree(path.read_text(encoding='utf-8'), source_path=str(path),
+                        settings_overrides={'warning_stream': messages, 'halt_level': 6,
+                                            'report_level': 2, 'syntax_highlight': 'none'})
+        assert not messages.getvalue(), messages.getvalue()
+
+
+def test_release_environment_is_uv_managed():
+    assert (ROOT / '.python-version').read_text().strip() == '3.12'
+    pyproject = (ROOT / 'pyproject.toml').read_text()
+    assert 'build-backend = "hatchling.build"' in pyproject
+    assert (ROOT / 'uv.lock').is_file()
+
+
+def test_generated_reference_matches_current_signatures_and_descriptions():
+    from scripts.generate_api_reference import render_references
+    for path, expected in render_references():
+        assert path.read_text(encoding="utf-8") == expected, f"Regenerate {path}"
+
+
+def test_version_is_single_sourced():
+    from fem._version import __version__
+    import tomllib
+    project = tomllib.loads((ROOT / 'pyproject.toml').read_text())['project']
+    assert 'version' in project['dynamic'] and __version__ == '2.0.0'

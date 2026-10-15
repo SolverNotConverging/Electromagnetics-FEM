@@ -5,15 +5,7 @@ at h/1.5. This measures that actual adaptive solve workflow, including its budge
 and stopping diagnostics; it does not claim local element marking.
 """
 
-# Run directly from the checkout without installing solver packages.
-import sys as _sys
-from pathlib import Path as _Path
-_ROOT = next(parent for parent in _Path(__file__).resolve().parents
-             if (parent / "fem_common" / "__init__.py").is_file())
-if str(_ROOT) not in _sys.path:
-    _sys.path.insert(0, str(_ROOT))
-
-from fem_common import materials, shapes
+from fem.common import materials, shapes
 import argparse
 import csv
 from pathlib import Path
@@ -24,7 +16,7 @@ from matplotlib.figure import Figure
 from scipy.constants import epsilon_0, mu_0
 from skfem.quadrature import get_quadrature_tri
 
-from fem_waveguide_modes import ModeSolver2D
+from fem.waveguide import ModeSolver2D
 
 DEFAULT_OUTPUT = Path(__file__).resolve().parents[2] / 'outputs/benchmarks/analytical/coaxial_waveguide_adaptivity'
 INNER_RADIUS = 1e-3

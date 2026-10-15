@@ -4,14 +4,6 @@ Ordinary benchmark runs write to ignored outputs/. Run this script explicitly
 when updating the reviewed reference PNG/CSV files under benchmarks/.
 """
 
-# Run directly from the checkout without installing solver packages.
-import sys as _sys
-from pathlib import Path as _Path
-_ROOT = next(parent for parent in _Path(__file__).resolve().parents
-             if (parent / "fem_common" / "__init__.py").is_file())
-if str(_ROOT) not in _sys.path:
-    _sys.path.insert(0, str(_ROOT))
-
 from datetime import datetime, timezone
 import hashlib
 from importlib.metadata import version
@@ -51,7 +43,7 @@ def main():
             artifacts[f'{case}/{filename}'] = hashlib.sha256(source.read_bytes()).hexdigest()
     source_hash = hashlib.sha256()
     sources = list((ROOT / 'benchmarks/analytical').glob('*.py'))
-    for parent in ('fem_common', 'fem_adaptivity', 'fem_electrostatics', 'fem_periodic_modes', 'fem_waveguide_modes', 'fem_waveguide_scattering'):
+    for parent in ('fem.common', 'fem.adaptivity', 'fem.electrostatics', 'fem.periodic', 'fem.waveguide', 'fem.scattering'):
         sources.extend((ROOT / parent).glob('*.py'))
     for source in sorted(sources):
         source_hash.update(source.relative_to(ROOT).as_posix().encode() + b'\0' + source.read_bytes() + b'\0')

@@ -33,12 +33,9 @@ htmlcov/
 .hypothesis/
 docs/_build/
 cupy-cache/
-.viewer_install_test/
-.native_wheel_test/
 
 # Simulation output and personal experiments
 /outputs/
-/fem_*/outputs/*
-!/fem_*/outputs/.gitkeep
+examples/**/outputs/
 mode_data.*
 personal_use/

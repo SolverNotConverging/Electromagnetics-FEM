@@ -5,16 +5,15 @@ from matplotlib import pyplot as plt
 import numpy as np
 import pytest
 
-from fem_common.errors import ConfigurationError
-from fem_periodic_modes import plot_dispersion as periodic_plot
-from fem_waveguide_modes import plot_dispersion as waveguide_plot
+from fem.common.errors import ConfigurationError
+from fem import plot_dispersion
 
 
-@pytest.mark.parametrize(('plot_dispersion', 'scatter'), [(periodic_plot, True), (waveguide_plot, False)])
-def test_dispersion_has_real_and_signed_imaginary_values_per_mode(plot_dispersion, scatter):
+@pytest.mark.parametrize('scatter', [True, False])
+def test_dispersion_has_real_and_signed_imaginary_values_per_mode(scatter):
     frequencies = np.array([30e9, 10e9, 20e9])
     neff = np.array([[2.5+.06j, 1.5-.03j], [1.1-.01j, 2.1+.02j], [1.3-.02j, 2.3+.04j]])
-    figure = plot_dispersion(frequencies, neff, show=False)
+    figure = plot_dispersion(frequencies, neff, show=False, connect=not scatter)
     try:
         real_axis, imag_axis = figure.axes
         assert real_axis.get_ylabel() == 'Re(neff)'
@@ -25,18 +24,18 @@ def test_dispersion_has_real_and_signed_imaginary_values_per_mode(plot_dispersio
         assert len(real_artists) == len(imag_artists) == 2
         if scatter:
             assert not real_axis.lines and not imag_axis.lines
-        for mode, (real, imag) in enumerate(zip(real_artists, imag_artists), start=1):
+        for mode, (real, imag) in enumerate(zip(real_artists, imag_artists)):
             assert real.get_label() == imag.get_label() == f'Mode {mode}'
             if scatter:
                 np.testing.assert_array_equal(real.get_facecolors(), imag.get_facecolors())
                 np.testing.assert_array_equal(real.get_offsets()[:, 0], [10., 20., 30.])
-                np.testing.assert_array_equal(real.get_offsets()[:, 1], neff[[1, 2, 0], mode-1].real)
-                np.testing.assert_array_equal(imag.get_offsets()[:, 1], neff[[1, 2, 0], mode-1].imag)
+                np.testing.assert_array_equal(real.get_offsets()[:, 1], neff[[1, 2, 0], mode].real)
+                np.testing.assert_array_equal(imag.get_offsets()[:, 1], neff[[1, 2, 0], mode].imag)
             else:
                 assert real.get_color() == imag.get_color()
                 np.testing.assert_array_equal(real.get_xdata(), [10., 20., 30.])
-                np.testing.assert_array_equal(real.get_ydata(), neff[[1, 2, 0], mode-1].real)
-                np.testing.assert_array_equal(imag.get_ydata(), neff[[1, 2, 0], mode-1].imag)
+                np.testing.assert_array_equal(real.get_ydata(), neff[[1, 2, 0], mode].real)
+                np.testing.assert_array_equal(imag.get_ydata(), neff[[1, 2, 0], mode].imag)
     finally:
         plt.close(figure)
 
@@ -44,7 +43,7 @@ def test_dispersion_has_real_and_signed_imaginary_values_per_mode(plot_dispersio
 def test_single_mode_dispersion_opens_figure(monkeypatch):
     called = []
     monkeypatch.setattr(plt, 'show', lambda: called.append(True))
-    figure = periodic_plot([10e9, 20e9], [1.2-.01j, 1.3-.02j])
+    figure = plot_dispersion([10e9, 20e9], [1.2-.01j, 1.3-.02j], connect=False)
     try:
         assert called == [True]
         assert all(len(axis.collections) == 1 and not axis.lines for axis in figure.axes)
@@ -58,4 +57,4 @@ def test_single_mode_dispersion_opens_figure(monkeypatch):
 ])
 def test_dispersion_rejects_incompatible_sweep_data(frequencies, neff):
     with pytest.raises(ConfigurationError):
-        periodic_plot(frequencies, neff, show=False)
+        plot_dispersion(frequencies, neff, show=False)

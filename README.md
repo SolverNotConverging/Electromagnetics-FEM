@@ -1,65 +1,70 @@
 # FEM
 
-Advanced finite-element solvers for electrostatics, guided waves, periodic structures,
-and waveguide scattering. FEM uses conforming meshes and supports material interfaces,
-full-vector fields, and adaptive refinement. Each solver folder contains its own
-Python modules, `docs/`, `examples/`, and `outputs/`.
+Finite-element electromagnetic solvers for electrostatics, guided waves, periodic
+structures and waveguide scattering. FEM uses conforming meshes and supports
+material interfaces, full-vector fields and adaptive refinement. It is a
+pure-Python package with shared CPU/GPU sparse solvers and an interactive
+PySide6/PyVista result viewer.
 
-FEM includes native C++ applications and shared CPU/GPU sparse solvers. Windows and Apple silicon macOS
-users can install release binaries. This 2.0.0 checkout is a breaking source update; see the migration guide.
+```python
+import fem
 
-## Choose a solver
+fr4 = fem.Material(name="FR-4", epsilon=4.4 * (1 - 0.02j))  # lossy dielectric, tan(delta) = 0.02
+copper = fem.materials.copper                                # surface-impedance conductor
 
-| Solver | Problems it solves | Import | Documentation | Examples |
-|---|---|---|---|---|
-| electrostatics | Potentials, electric fields, and capacitor energies with dielectric interfaces and charge densities | `fem_electrostatics` | [Guide](fem_electrostatics/docs/guide.rst) | [Examples](fem_electrostatics/examples/README.rst) |
-| periodic modes | Bloch modes and complex effective indices in 2D and 3D periodic cells, including leaky structures | `fem_periodic_modes` | [Guide](fem_periodic_modes/docs/guide.rst) | [Examples](fem_periodic_modes/examples/README.rst) |
-| waveguide modes | Propagation modes and complex effective indices of 1D and 2D waveguide cross-sections | `fem_waveguide_modes` | [Guide](fem_waveguide_modes/docs/guide.rst) | [Examples](fem_waveguide_modes/examples/README.rst) |
-| waveguide scattering | Reflection, transmission, fields, and radiation from 2D waveguide discontinuities | `fem_waveguide_scattering` | [Guide](fem_waveguide_scattering/docs/guide.rst) | [Examples](fem_waveguide_scattering/examples/README.rst) |
+solver = fem.ModeSolver2D(frequency=10e9, x_range=(-6e-3, 6e-3), y_range=(-35e-6, 6e-3),
+                          boundary=fem.materials.PEC)
+solver.add_rectangle(x_range=(-6e-3, 6e-3), y_range=(0, 1.6e-3), name="substrate", material=fr4)
+solver.add_rectangle(x_range=(-6e-3, 6e-3), y_range=(-35e-6, 0), name="ground", material=copper)
+solver.add_rectangle(x_range=(-1.5e-3, 1.5e-3), y_range=(1.6e-3, 1.635e-3), name="strip", material=copper)
+solver.mesh(max_element_size=0.5e-3)
+modes = solver.solve(num_modes=1)
 
-## Native applications
-
-The Windows and macOS wheels install these applications and their runtime libraries:
-
-| Application | What it does | Launch |
-|---|---|---|
-| Transmission-line calculator | Cross-section E/H fields, impedance, effective index, and RLGC parameters | `python -m fem calculator` |
-| Transmission-line calculator CLI/TUI | Terminal interface to the same calculations | `python -m fem calculator-cli` |
-| Periodic mode viewer | Interactive 2D/3D fields, modes, meshes, and sweeps | `python -m fem periodic-viewer` |
-| Periodic mode inspector | Print HDF5 archive metadata and mode data | `fem-periodic-mode-inspect result.h5` |
-| Waveguide scattering viewer | Fields, lead modes, S-parameters, and radiation | `python -m fem scattering-viewer` |
-| Waveguide scattering inspector | Print scattering archive and frequency-case data | `fem-waveguide-scattering-viewer-inspect result.h5` |
-
-See the [calculator](apps/transmission_line_calculator/README.rst),
-[periodic viewer](apps/fem_periodic_mode_viewer/README.rst), and
-[scattering viewer](apps/fem_waveguide_scattering_viewer/README.rst) guides.
-Electrostatics and waveguide-mode viewers use Matplotlib.
-
-## Get started
-
-Read the [installation guide](docs/installation.md), then run a small example:
-
-```sh
-python fem_waveguide_modes/examples/1d_parallel_plate_waveguide.py
+print(f"neff = {modes[0].neff:.4f}, loss = {modes[0].alpha * 8.686:.1f} dB/m")
+modes.save("microstrip.h5")
+modes.show()  # fields, mesh and material regions
 ```
 
-Build a solver, assign materials and geometry, mesh, then solve. Results expose
-`plot()`, `show()`, and `save(path)`; saving and opening viewers are explicit.
-Lengths are in metres and frequencies in hertz. Every solver defaults to
-`backend="auto"`: use GPU when CuPy, the CUDA device and cuDSS are available,
-otherwise SciPy CPU. Set `backend="cpu"` or `backend="gpu"` to force execution.
+This quasi-TEM microstrip mode has `neff ≈ 1.887 - 0.020j` and about 36 dB/m of
+dielectric plus copper loss.
 
-- [Documentation and solver capabilities](docs/README.md)
-- [Breaking changes in 2.0](docs/migration-2.0.md)
-- [Contributing and adding a solver](CONTRIBUTING.md)
-- [Test commands](tests/README.rst)
-- [Analytical benchmarks](benchmarks/README.md)
-- [Native application builds](apps/native_build.md)
+## Solvers
+
+| Class | Problem | Guide | Examples |
+|---|---|---|---|
+| `fem.ElectrostaticSolver` | Potentials, fields, charges and energies with dielectric interfaces and charge densities | [Guide](docs/solvers/electrostatics.rst) | [Examples](examples/electrostatics/README.rst) |
+| `fem.ModeSolver1D`, `fem.ModeSolver2D` | Guided modes and complex effective indices of slabs and cross-sections | [Guide](docs/solvers/waveguide.rst) | [Examples](examples/waveguide/README.rst) |
+| `fem.PeriodicModeSolver2D`, `fem.PeriodicModeSolver3D` | Bloch modes of 2D/3D periodic cells, including leaky structures | [Guide](docs/solvers/periodic.rst) | [Examples](examples/periodic/README.rst) |
+| `fem.ScatteringSolver2D` | Reflection, transmission, fields and radiation of 2D waveguide discontinuities | [Guide](docs/solvers/scattering.rst) | [Examples](examples/scattering/README.rst) |
+
+## Install
+
+```sh
+python -m pip install -e .            # Python 3.11-3.13, Windows/Linux/macOS
+python -m pip install -e ".[cuda12]"  # optional: GPU factorization with NVIDIA cuDSS (or cuda13)
+```
+
+Then run an example: `python examples/waveguide/1d_parallel_plate_waveguide.py`.
+
+## Viewing results
+
+`result.show()` opens one window for every solver: case, mode, component and
+quantity selectors with **Mesh** and **Material** toggles. E and H components are
+shown for every electromagnetic solver (potential, E and D for electrostatics);
+3D periodic cells draw E and H as arrows with PyVista. Sweeps add S-parameter
+spectra and scattering with an NF2FF contour adds far-field patterns. From a
+terminal: `fem view result.h5`, `fem inspect result.h5`, `fem info`.
+
+## Documentation
+
+- [Getting started](docs/getting_started.md) and [conventions](docs/conventions.md)
+- [Materials and shapes](docs/materials_and_shapes.rst), [adaptivity](docs/adaptivity.rst), [CPU/GPU acceleration](docs/acceleration.md)
+- API reference in [docs/api](docs/api/), [changelog](CHANGELOG.md)
+- [Contributing](CONTRIBUTING.md), [tests](tests/README.rst), [analytical benchmarks](benchmarks/README.md)
+
+Build the HTML docs with `uv run --group docs sphinx-build -W docs docs/_build/html`.
 
 ## License
 
-FEM source is [MIT licensed](LICENSE). Bundled dependencies retain their licenses.
-The Gmsh-linked calculator is distributed under GPL-3.0-or-later; Qt is
-dynamically linked under LGPL-3.0. Release assets include native dependency
-sources and build recipes, and wheels include dependency licenses.
-See the [native build guide](apps/native_build.md) for dependency sources and packaging.
+FEM is [MIT licensed](LICENSE). Dependencies retain their own licenses; Gmsh is
+GPL-2.0-or-later and PySide6 is LGPL-3.0.

@@ -1,53 +1,39 @@
 FEM tests
 =========
 
-Run ``python -m pytest`` from the repository root. Solver tests live under
-``tests/fem/`` and shared library tests under ``tests/libraries/``.
-
-Use the project virtual environment (``.venv/Scripts/python.exe`` on Windows).
-Install dependencies with ``uv sync --locked``. Gmsh needs its platform runtime
-libraries; Linux typically needs libGLU. Plotting tests use the Agg backend.
+Run ``python -m pytest`` from the repository root after ``uv sync --locked`` (or
+``pip install -e .``). The layout mirrors the package: ``tests/common/``,
+``tests/electrostatics/``, ``tests/waveguide/``, ``tests/periodic/`` and
+``tests/scattering/``; cross-family checks live directly in ``tests/``.
+``tests/conftest.py`` selects the Agg and offscreen Qt backends, so no display is
+needed. Gmsh needs its platform runtime libraries; Linux typically needs libGLU.
 
 Fast cross-family checks::
 
-    python -m pytest tests/test_fem_documentation.py tests/test_material_first_public_api.py tests/libraries/fem_common
+    python -m pytest tests/test_documentation.py tests/test_public_api.py tests/test_examples.py tests/common
 
 Lifecycle and archive checks::
 
-    python -m pytest tests/test_fem_lifecycle.py tests/test_fem_archive_contract.py
+    python -m pytest tests/test_lifecycle.py tests/test_archive_contract.py
 
-Full regression suite::
+Run every example (opens no windows; outputs go to each example's ``outputs/``)::
 
-    python -m pytest
+    FEM_RUN_EXAMPLES=1 python -m pytest tests/test_examples.py
 
 Ordinary regression tests simulate unavailable GPU support so defaults exercise
-SciPy CPU consistently, including on GPU hosts. Set ``FEM_TEST_CUDA=1`` for
-the separate real-device suite, including automatic GPU selection.
+SciPy CPU consistently, including on GPU hosts. Set ``FEM_TEST_CUDA=1`` for the
+separate real-device suite, including automatic GPU selection::
 
-CUDA tests skip when their hardware/runtime prerequisites are absent. Native
-C++ tests run through CTest in a configured native build; see the
-`native build guide <../apps/native_build.md>`_. Analytical checks live in
-`benchmarks <../benchmarks/README.md>`_. Run those when changing numerical methods.
+    FEM_TEST_CUDA=1 python -m pytest tests/test_cuda_solvers.py tests/common/test_gpu.py -v
 
-Real-device CUDA qualification on Windows (CuPy and cuDSS must be installed)::
+This runs CPU/CUDA agreement checks for every solver family and the shared GPU
+eigensolver; verify that the tests pass rather than skip. A fresh
+``CUPY_CACHE_DIR`` also exercises kernel compilation.
 
-    $env:FEM_TEST_CUDA = '1'
-    $env:CUDSS_LIBRARY = & .venv/Scripts/python.exe -c "from fem_common._cudss import find_cudss_library; print(find_cudss_library())"
-    .venv/Scripts/python.exe -m pytest tests/fem/test_cuda_solvers.py tests/libraries/fem_common/test_gpu.py -v
+Generated documentation::
 
-This runs CPU/CUDA agreement checks for electrostatics, waveguide modes,
-2D/3D periodic modes, scattering, and the shared GPU eigensolver. Verify that the
-tests pass rather than skip. A fresh ``CUPY_CACHE_DIR`` also exercises kernel
-compilation instead of reusing cached CUDA kernels.
-
-Generated documentation and metadata::
-
-    python scripts/sync_metadata.py --check
     python scripts/generate_api_reference.py --check
     python scripts/check_documentation.py
 
-For a restricted Windows environment, set TEMP and TMP to a writable local
-directory and pass a fresh ``--basetemp=build/pytest-run`` directory. Pytest
-clears the selected base directory, so use a directory dedicated to that run.
-
-See the `installation guide <../docs/installation.md>`_ for setup.
+Analytical checks live in `benchmarks <../benchmarks/README.md>`_; run them when
+changing numerical methods.

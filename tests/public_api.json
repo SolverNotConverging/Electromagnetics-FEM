@@ -1,30 +1,15 @@
 {
-  "fem_waveguide_modes": {
-    "path": "fem_waveguide_modes",
+  "fem.waveguide": {
+    "path": "fem.waveguide",
     "exports": [
-      "ModeSolver1D",
-      "ModeSolver2D",
       "Mode",
       "ModeSet",
+      "ModeSolver1D",
+      "ModeSolver2D",
+      "NotDiscretizedError",
       "SampledFields",
-      "BackendCapabilityError",
-      "ConfigurationError",
-      "FEMModeSolverError",
-      "GeometryError",
-      "MeshError",
-      "SolverError",
-      "NoResultError",
-      "PersistenceError",
-      "load_result",
-      "Material",
-      "GoodConductor",
-      "SurfaceImpedance",
-      "materials",
-      "shapes",
-      "EPSILON_0",
-      "MU_0",
-      "C_0",
-      "plot_dispersion"
+      "StaleDiscretizationError",
+      "WaveguideModesError"
     ],
     "solvers": {
       "ModeSolver1D": [
@@ -68,35 +53,20 @@
         "by_polarization"
       ]
     },
-    "documentation": "fem_waveguide_modes/docs"
+    "documentation": "docs/api"
   },
-  "fem_periodic_modes": {
-    "path": "fem_periodic_modes",
+  "fem.periodic": {
+    "path": "fem.periodic",
     "exports": [
-      "PeriodicModeSolver2D",
-      "PeriodicModeSolver3D",
+      "NotDiscretizedError",
       "PeriodicMode",
       "PeriodicModeSet",
+      "PeriodicModeSolver2D",
+      "PeriodicModeSolver3D",
+      "PeriodicModesError",
       "PeriodicSampledFields",
       "PeriodicSweepResult",
-      "BackendCapabilityError",
-      "ConfigurationError",
-      "FEMPeriodicSolverError",
-      "GeometryError",
-      "MeshError",
-      "PersistenceError",
-      "SolverError",
-      "NoResultError",
-      "load_result",
-      "Material",
-      "GoodConductor",
-      "SurfaceImpedance",
-      "materials",
-      "shapes",
-      "EPSILON_0",
-      "MU_0",
-      "C_0",
-      "plot_dispersion"
+      "StaleDiscretizationError"
     ],
     "solvers": {
       "PeriodicModeSolver2D": [
@@ -149,45 +119,29 @@
         "save"
       ]
     },
-    "documentation": "fem_periodic_modes/docs"
+    "documentation": "docs/api"
   },
-  "fem_waveguide_scattering": {
-    "path": "fem_waveguide_scattering",
+  "fem.scattering": {
+    "path": "fem.scattering",
     "exports": [
-      "WaveguideScatteringSolver2D",
-      "ScatteringResult",
-      "FrequencySweepResult",
-      "IncidentMode",
-      "Mode",
-      "ModeSet",
+      "ClosedContourFields",
       "Diagnostic",
       "DiagnosticReport",
-      "BackendCapabilityError",
-      "ConfigurationError",
-      "GeometryError",
+      "FarFieldResult",
+      "IncidentMode",
+      "LayeredExterior",
       "MaterialError",
-      "MeshError",
       "ModeProjectionError",
       "ModeSolverError",
-      "SolverError",
-      "ViewerError",
-      "NoResultError",
-      "PersistenceError",
-      "load_result",
-      "ClosedContourFields",
-      "LayeredExterior",
-      "FarFieldResult",
-      "Material",
-      "GoodConductor",
-      "SurfaceImpedance",
-      "materials",
-      "shapes",
-      "EPSILON_0",
-      "MU_0",
-      "C_0"
+      "PortMode",
+      "PortModeSet",
+      "ScatteringResult",
+      "ScatteringSolver2D",
+      "ScatteringSweepResult",
+      "WaveguideScatteringError"
     ],
     "solvers": {
-      "WaveguideScatteringSolver2D": [
+      "ScatteringSolver2D": [
         "__init__",
         "add_geometry",
         "add_rectangle",
@@ -221,35 +175,22 @@
         "deembed",
         "far_field"
       ],
-      "FrequencySweepResult": [
+      "ScatteringSweepResult": [
         "plot",
         "show",
         "save",
         "S"
       ]
     },
-    "documentation": "fem_waveguide_scattering/docs"
+    "documentation": "docs/api"
   },
-  "fem_electrostatics": {
-    "path": "fem_electrostatics",
+  "fem.electrostatics": {
+    "path": "fem.electrostatics",
     "exports": [
-      "ElectrostaticSolver",
       "ElectrostaticResult",
-      "ElectrostaticSolverError",
-      "GeometryError",
-      "MeshError",
-      "SolverError",
-      "NoResultError",
-      "PersistenceError",
-      "load_result",
-      "Material",
-      "GoodConductor",
-      "SurfaceImpedance",
-      "materials",
-      "shapes",
-      "EPSILON_0",
-      "MU_0",
-      "C_0"
+      "ElectrostaticSolver",
+      "ElectrostaticsError",
+      "NotDiscretizedError"
     ],
     "solvers": {
       "ElectrostaticSolver": [
@@ -277,6 +218,6 @@
         "conductor_charge"
       ]
     },
-    "documentation": "fem_electrostatics/docs"
+    "documentation": "docs/api"
   }
 }
