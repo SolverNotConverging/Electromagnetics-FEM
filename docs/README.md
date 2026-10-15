@@ -45,3 +45,5 @@ as local element marking. Scattering has its own port-mode implementation.
 - [Analytical benchmarks](../benchmarks/README.md)
 - [Contributing](../CONTRIBUTING.md)
 - [Tests](../tests/README.rst)
+
+- [CUDA architecture compatibility and device qualification](cuda-compatibility.md)

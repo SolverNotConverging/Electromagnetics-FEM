@@ -84,3 +84,25 @@ Use the recorded versions and recipes when rebuilding dependencies.
 FEM application sources and packaging scripts are in this repository. Release
 notes identify the corresponding source commit. Original FEM source is MIT
 licensed; dependency license terms accompany the wheel and source assets.
+
+## Build and qualify the Windows release wheel
+
+After the build and archive checks above, stage the runtime and preserve its
+matching dependency source archives (keep the vcpkg download cache available):
+
+```powershell
+.venv/Scripts/python.exe scripts/package_native_windows.py --phase stage --build build/native-2.0 --samples build/qualification-2.0/archives --recipe-root build/native-recipes
+.venv/Scripts/python.exe scripts/package_native_windows.py --phase finish
+.venv/Scripts/python.exe scripts/build_wheels.py --output build/release-2.0/dist
+.venv/Scripts/python.exe scripts/qualify_wheels.py --dist build/release-2.0/dist --fresh --cuda-extra cuda13
+```
+
+The last command installs the wheel and dependencies in a fresh environment
+outside the checkout, tests CPU solvers and bundled applications, and checks GPU
+operators and all solver families when `--cuda-extra` is supplied. Use `cuda12`
+for Pascal/Volta or a CUDA 12 installation. Set `CUDSS_LIBRARY` to the matching
+library before GPU qualification. Reports identify only the hardware actually
+tested; see [architecture compatibility](../docs/cuda-compatibility.md).
+
+Distribute the complete wheel, source distribution and archived native dependency
+sources together, with checksums and release notes identifying the source commit.

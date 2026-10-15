@@ -14,6 +14,7 @@ import json
 import os
 import platform
 import subprocess
+import shutil
 import sys
 import tomllib
 import tempfile
@@ -51,7 +52,7 @@ from fem_waveguide_modes import ModeSolver1D, ModeSolver2D, load_result
 for solver in (ModeSolver1D(frequency=10e9, x_range=.02),
                ModeSolver2D(frequency=10e9, x_range=.02, y_range=.01)):
     solver.mesh(max_element_size=.004)
-    result = solver.solve(num_modes=1, neff_guess=.66, max_refinements=0)
+    result = solver.solve(num_modes=1, neff_guess=.66, max_refinements=0, backend='cpu')
     result.save('modes.h5')
     loaded = load_result('modes.h5')
     np.testing.assert_allclose(loaded.neff, result.neff)
@@ -62,7 +63,7 @@ for dimension in (1, 2):
     solver = ElectrostaticSolver(dim=dimension, x_range=1., outer_potential=None)
     solver.set_potential(geometry='left', potential=0.)
     solver.set_potential(geometry='right', potential=1.)
-    result = solver.solve(max_refinements=0)
+    result = solver.solve(max_refinements=0, backend='cpu')
     np.testing.assert_allclose(result.potential, result.coordinates[:, 0], atol=1e-12)
     result.save('static.h5')
     load_result('static.h5').plot().savefig('static.png')
@@ -77,7 +78,7 @@ periodic_cases = (
 )
 for solver, mesh_settings, neff_guess in periodic_cases:
     solver.mesh(**mesh_settings)
-    result = solver.solve(num_modes=1, neff_guess=neff_guess, max_refinements=0, eigensolver='dense')
+    result = solver.solve(num_modes=1, neff_guess=neff_guess, max_refinements=0, eigensolver='dense', backend='cpu')
     result.save('periodic.h5')
     np.testing.assert_array_equal(load_result('periodic.h5').neff, result.neff)
 
@@ -85,9 +86,9 @@ from fem_waveguide_scattering import WaveguideScatteringSolver2D, load_result
 solver = WaveguideScatteringSolver2D(frequency=299792458., x_range=.5, z_range=(-2., 2.), boundary=materials.PEC)
 solver.add_pml(thickness=.5, direction='z')
 solver.mesh(max_element_size=.1)
-solver.solve_modes(num_modes=1, neff_guess=1., max_refinements=0)
+solver.solve_modes(num_modes=1, neff_guess=1., max_refinements=0, backend='cpu')
 solver.set_incident_mode(0)
-result = solver.solve(max_refinements=0)
+result = solver.solve(max_refinements=0, backend='cpu')
 assert abs(result.S21-1) < 1e-8 and abs(result.S11) < 1e-8
 result.save('scattering.h5')
 np.testing.assert_array_equal(load_result('scattering.h5').E_total, result.E_total)
@@ -111,6 +112,7 @@ assert _viewer_candidates(viewer_name)[0].resolve() == bundled_executable('fem-p
 NATIVE_SMOKE = r'''
 import os
 import subprocess
+import shutil
 from pathlib import Path
 import sys
 from fem_common._native import bundled_executable, bundled_environment
@@ -148,6 +150,7 @@ print('Bundled native applications and installed command entry points: PASS')
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--dist', type=Path, default=ROOT/'build/dist')
+    parser.add_argument('--cuda-extra', choices=('cuda12', 'cuda13'), help='Also verify the installed GPU backend and all solver families.')
     parser.add_argument('--fresh', action='store_true', help='Download dependencies into a clean environment.')
     args = parser.parse_args()
     wheels = sorted(args.dist.resolve().glob('*.whl'))
@@ -166,10 +169,21 @@ def main():
         python = work/'env'/('Scripts/python.exe' if os.name=='nt' else 'bin/python')
         for wheel in wheels:
             subprocess.run([str(python), '-I', '-m', 'pip', 'install',
-                            *([] if args.fresh else ['--no-index', '--no-deps']), str(wheel)], cwd=work, check=True)
+                            *([] if args.fresh else ['--no-index', '--no-deps']), str(wheel) + (f'[test,{args.cuda_extra}]' if args.cuda_extra else '')], cwd=work, check=True)
         subprocess.run([str(python), '-I', '-m', 'pip', 'check'], cwd=work, check=True)
         subprocess.run([str(python), '-I', '-c', SMOKE], cwd=work, check=True)
         subprocess.run([str(python), '-I', '-c', NATIVE_SMOKE], cwd=work, check=True)
+        if args.cuda_extra:
+            subprocess.run([str(python), '-I', str(ROOT/'scripts/qualify_cuda.py'),
+                '--output', str(args.dist.resolve()/'cuda-qualification.json')], cwd=work, check=True)
+            test_dir = work/'gpu-tests'
+            test_dir.mkdir()
+            for test in (ROOT/'tests/fem/test_cuda_solvers.py', ROOT/'tests/libraries/fem_common/test_gpu.py'):
+                shutil.copy2(test, test_dir/test.name)
+            subprocess.run([str(python), '-I', '-m', 'pytest', str(test_dir), '-q',
+                '--junitxml', str(args.dist.resolve()/'gpu-tests.xml')], cwd=work,
+                env={**os.environ, 'FEM_TEST_CUDA': '1'}, check=True)
+
         source_smoke = (
             f"import sys; sys.path.insert(0, {str(ROOT)!r}); "
             "from fem_common._native import bundled_executable; "

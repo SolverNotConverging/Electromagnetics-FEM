@@ -219,6 +219,9 @@ Shared source files are `fem_common/linalg.py` (eigenvalue iteration),
 `fem_common/gpu.py` (GPU operators) and `fem_common/_cudss.py` (cuDSS bindings).
 The custom refined Arnoldi and its Cython/CUDA kernels have been removed.
 
+See [CUDA architecture compatibility](cuda-compatibility.md) for device/toolkit
+selection and verification on each GPU.
+
 ### CUDA acceleration (Windows and Linux)
 
 CUDA is optional and requires an NVIDIA GPU, a compatible NVIDIA driver,

@@ -5,12 +5,26 @@ from contextlib import contextmanager
 from scipy.sparse.linalg import LinearOperator
 
 
+def _check_architecture(compute_capability, runtime_version):
+    """Reject known unsupported device/toolkit combinations before allocating."""
+    sm = int(compute_capability)
+    if sm < 60:
+        raise RuntimeError("cuDSS requires Pascal (compute capability 6.0) or newer; use backend='cpu'.")
+    if runtime_version >= 13000 and sm < 75:
+        raise RuntimeError(
+            "CUDA 13 requires Turing (compute capability 7.5) or newer. "
+            "For Pascal/Volta install the cuda12 extra and matching CUDA 12/cuDSS runtime, "
+            "or use backend='cpu'."
+        )
+
+
 def _runtime():
     try:
         import cupy as cp
         from cupyx.scipy.sparse import csr_matrix
     except ImportError as exc:
         raise ImportError("The gpu backend requires CuPy; install the cuda12 or cuda13 extra.") from exc
+    _check_architecture(cp.cuda.Device().compute_capability, cp.cuda.runtime.runtimeGetVersion())
     from ._cudss import CudssFactor
     return cp, csr_matrix, CudssFactor
 
