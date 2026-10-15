@@ -42,6 +42,7 @@ packages = ["src/fem"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = ["--import-mode=importlib", "-ra"]
+pythonpath = ["."]  # tests import the generators in scripts/
 markers = ["gmsh: test requiring Gmsh", "slow: numerical convergence or performance test"]
 
 [tool.ruff]
