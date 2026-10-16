@@ -40,9 +40,25 @@ dielectric plus copper loss.
 ## Install
 
 ```sh
-python -m pip install -e .            # Python 3.11-3.13, Windows/Linux/macOS
-python -m pip install -e ".[cuda12]"  # optional: GPU factorization with NVIDIA cuDSS (or cuda13)
+python -m pip install electromagnetics-fem            # CPU installation
+python -m pip install "electromagnetics-fem[cuda12]"  # optional CUDA 12 support
+python -m pip install "electromagnetics-fem[cuda13]"  # optional CUDA 13 support
 ```
+
+Choose one CUDA extra matching your NVIDIA CUDA environment. Both extras install
+CuPy and NVIDIA cuDSS for custom GPU-resident eigenvalue solving and accelerated
+direct solves. The universal `py3-none-any` wheel includes the custom CUDA kernel
+source; CuPy compiles it on first GPU use. A CPU installation needs no CUDA
+dependencies or compiler. CUDA execution requires a compatible NVIDIA GPU and
+driver; see [CPU/GPU acceleration](docs/acceleration.md) for requirements.
+
+Select `backend="gpu"` to require GPU execution, or `backend="auto"` to use it
+when available. Automatic CPU fallback emits a warning; an unavailable explicit
+GPU request raises an error.
+
+For a source checkout, use `python -m pip install -e .` or
+`python -m pip install -e ".[cuda12]"` (alternatively `cuda13`). Supported Python
+versions are 3.11–3.13 on Windows, Linux and macOS; CUDA support is platform dependent.
 
 Then run an example: `python examples/waveguide/1d_parallel_plate_waveguide.py`.
 
