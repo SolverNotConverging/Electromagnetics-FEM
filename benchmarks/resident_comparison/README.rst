@@ -1,5 +1,5 @@
 Resident CUDA comparison on the original four 3D cells
-=====================================================
+==========================================================
 
 This compares main's CPU ARPACK, its retained hybrid GPU control, and its
 production resident GPU eigensolver on identical assembled quadratic pencils.

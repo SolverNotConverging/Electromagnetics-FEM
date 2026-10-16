@@ -1,5 +1,5 @@
 Resident GPU comparison — 2026-10-16
-===================================
+========================================
 
 Source main commit: 5bd9fd1ef46da5c025d820955474333978acf288. 19 configurations, 171 timed solves; all validated.
 Maximum QEP residual: 2.834e-13; maximum magnitude mismatch: 5.215e-14.
