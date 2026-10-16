@@ -1,7 +1,7 @@
 fem.periodic user API
 =====================
 
-Version 2.0.0. This reference covers the deliberately supported user API.
+Version 2.0.1. This reference covers the deliberately supported user API.
 Implementation helpers are documented in their source modules.
 
 Workflow and units
@@ -1193,7 +1193,7 @@ Solve and return modes with separate algebraic and adaptive controls.
      - ``int | None``
      - Optional
      - ``None``
-     - Maximum ARPACK iterations; None selects a problem-size-dependent limit.
+     - CPU: maximum ARPACK iterations. GPU: maximum Arnoldi operator applications; None allows thirteen subspace cycles.
    * - ``random_seed``
      - ``int``
      - Optional

@@ -1268,8 +1268,8 @@ class ModeSolver:
     def solve(self, *, max_refinements: int = 2,
               adaptive_tolerance: float = 0.05, backend: str = "auto", **options) -> PortModeSet:
         """Adapt the mixed line mesh using normal-D/tangential-H residuals."""
-        from fem.common.linalg import resolve_backend
-        backend = resolve_backend(backend)
+        from fem.common.linalg import resolve_eigen_backend
+        backend = resolve_eigen_backend(backend)
         from .adaptive import solve_modes
         return solve_modes(self, dict(options, backend=backend), max_refinements, adaptive_tolerance)
 

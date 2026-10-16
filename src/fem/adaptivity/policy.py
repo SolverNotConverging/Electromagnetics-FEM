@@ -54,6 +54,7 @@ def run_adaptive(owner, solve_once, estimate, refine, *, max_refinements,
                 owner.__dict__.clear()
                 owner.__dict__.update(saved)
                 raise
+            del saved
             continue
         indicators, residual = estimate(result)
         if not np.isfinite(residual):
@@ -80,6 +81,9 @@ def run_adaptive(owner, solve_once, estimate, refine, *, max_refinements,
             owner.__dict__.clear()
             owner.__dict__.update(saved)
             raise
+        # Release the rollback snapshot before assembling/solving the next
+        # mesh, including any large device buffers owned by the previous mesh.
+        del saved
 
 
 def bulk_mark(indicators, fraction=0.5):

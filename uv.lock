@@ -9,6 +9,10 @@ resolution-markers = [
     "python_full_version < '3.12' and sys_platform == 'emscripten'",
     "python_full_version < '3.12' and sys_platform != 'emscripten' and sys_platform != 'win32'",
 ]
+conflicts = [[
+    { package = "electromagnetics-fem", extra = "cuda12" },
+    { package = "electromagnetics-fem", extra = "cuda13" },
+]]
 
 [[package]]
 name = "alabaster"
@@ -143,7 +147,7 @@ resolution-markers = [
     "python_full_version < '3.12' and sys_platform != 'emscripten' and sys_platform != 'win32'",
 ]
 dependencies = [
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" } },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/58/01/1253e6698a07380cd31a736d248a3f2a50a7c88779a1813da27503cadc2a/contourpy-1.3.3.tar.gz", hash = "sha256:083e12155b210502d0bca491432bb04d56dc3432f95a979b429f2848c3dbe880", size = 13466174, upload-time = "2025-07-26T12:03:12.549Z" }
 wheels = [
@@ -208,7 +212,7 @@ resolution-markers = [
     "python_full_version >= '3.12' and sys_platform != 'emscripten' and sys_platform != 'win32'",
 ]
 dependencies = [
-    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" } },
+    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/83/5a/a55177dd22553a277388e8a1b3220e92de91bacb28356cdc73caa240121d/contourpy-1.4.0.tar.gz", hash = "sha256:20156f5a1ac4f8ce02656e39a61e82164a3d359796dc8026f75b062783d500e1", size = 13323726, upload-time = "2026-09-11T19:05:05.808Z" }
 wheels = [
@@ -249,6 +253,14 @@ wheels = [
 name = "cuda-toolkit"
 version = "12.9.2.0"
 source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.12' and sys_platform == 'win32'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten'",
+    "python_full_version >= '3.12' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version < '3.12' and sys_platform == 'win32'",
+    "python_full_version < '3.12' and sys_platform == 'emscripten'",
+    "python_full_version < '3.12' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/51/7e/f61db087382a2114a93abc0b38f7872f86f2c7c36839da7f9403c9044b47/cuda_toolkit-12.9.2.0-py2.py3-none-any.whl", hash = "sha256:b54b8f2fd4200090b44843d48fc5411198e8b3e47a3db56e2518ab588c0ef1e0", size = 2431, upload-time = "2026-04-14T00:40:05.972Z" },
 ]
@@ -259,13 +271,35 @@ cublas = [
 ]
 
 [[package]]
+name = "cuda-toolkit"
+version = "13.4.3"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.12' and sys_platform == 'win32'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten'",
+    "python_full_version >= '3.12' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version < '3.12' and sys_platform == 'win32'",
+    "python_full_version < '3.12' and sys_platform == 'emscripten'",
+    "python_full_version < '3.12' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/2f/5f/016d1ea09ce3a627e8b607068ba8c92696af5298fc34586069bf60067985/cuda_toolkit-13.4.3-py2.py3-none-any.whl", hash = "sha256:c56be2a9f538653ef5b1aa27787ed046ea08afa10bd55e95335a35fd196ac14e", size = 2690, upload-time = "2026-10-14T19:45:07.466Z" },
+]
+
+[package.optional-dependencies]
+cublas = [
+    { name = "nvidia-cublas", marker = "(platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine == 'AMD64' and sys_platform == 'win32') or (platform_machine == 'ARM64' and sys_platform == 'win32')" },
+    { name = "nvidia-cuda-nvrtc", marker = "(platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine == 'AMD64' and sys_platform == 'win32') or (platform_machine == 'ARM64' and sys_platform == 'win32')" },
+]
+
+[[package]]
 name = "cupy-cuda12x"
 version = "14.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cuda-pathfinder" },
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.12' and extra == 'extra-20-electromagnetics-fem-cuda12') or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and extra == 'extra-20-electromagnetics-fem-cuda12') or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/00/98/ac56fb7a285e264a0f29ea71d64b5c2eacd23c1f4ed9b4a8f99b16db3881/cupy_cuda12x-14.2.0-cp311-cp311-manylinux2014_aarch64.whl", hash = "sha256:1c775069f0af34662a8d4ae90848e29afcaf4ba63762d556ff22b6011683e571", size = 148189237, upload-time = "2026-08-20T02:39:47.011Z" },
@@ -285,8 +319,8 @@ version = "14.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cuda-pathfinder" },
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.12' and extra == 'extra-20-electromagnetics-fem-cuda13') or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and extra == 'extra-20-electromagnetics-fem-cuda13') or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/8d/3c/4716e285f8459a5707ef39d84e9a7547bf16f87c583ac4789c0763d6d986/cupy_cuda13x-14.2.0-cp311-cp311-manylinux2014_aarch64.whl", hash = "sha256:a22e2f17c97940cd566f351f186d8fe04285280d052ca1512ff223febbe9979c", size = 74074375, upload-time = "2026-08-20T02:41:04.327Z" },
@@ -353,14 +387,14 @@ dependencies = [
     { name = "h5py" },
     { name = "matplotlib" },
     { name = "meshio" },
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
     { name = "pyside6" },
     { name = "pyvista" },
     { name = "pyvistaqt" },
     { name = "scikit-fem" },
-    { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "scipy", version = "1.18.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "scipy", version = "1.18.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
     { name = "tqdm" },
 ]
 
@@ -383,8 +417,8 @@ dev = [
 ]
 docs = [
     { name = "myst-parser" },
-    { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
 ]
 lint = [
     { name = "ruff" },
@@ -403,8 +437,8 @@ requires-dist = [
     { name = "matplotlib", specifier = ">=3.8,<4" },
     { name = "meshio", specifier = ">=5.3,<6" },
     { name = "numpy", specifier = ">=1.26,<3" },
-    { name = "nvidia-cudss-cu12", marker = "extra == 'cuda12'" },
-    { name = "nvidia-cudss-cu13", marker = "extra == 'cuda13'" },
+    { name = "nvidia-cudss-cu12", marker = "extra == 'cuda12'", specifier = ">=0.8,<0.9" },
+    { name = "nvidia-cudss-cu13", marker = "extra == 'cuda13'", specifier = ">=0.8,<0.9" },
     { name = "pyside6", specifier = ">=6.6,<7" },
     { name = "pyvista", specifier = ">=0.44" },
     { name = "pyvistaqt", specifier = ">=0.11" },
@@ -480,8 +514,8 @@ name = "h5py"
 version = "3.16.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/db/33/acd0ce6863b6c0d7735007df01815403f5589a21ff8c2e1ee2587a38f548/h5py-3.16.0.tar.gz", hash = "sha256:a0dbaad796840ccaa67a4c144a0d0c8080073c34c76d5a6941d6818678ef2738", size = 446526, upload-time = "2026-03-06T13:49:08.07Z" }
 wheels = [
@@ -689,13 +723,13 @@ name = "matplotlib"
 version = "3.11.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "contourpy", version = "1.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "contourpy", version = "1.4.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "contourpy", version = "1.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "contourpy", version = "1.4.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
     { name = "cycler" },
     { name = "fonttools" },
     { name = "kiwisolver" },
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
     { name = "packaging" },
     { name = "pillow" },
     { name = "pyparsing" },
@@ -755,8 +789,8 @@ name = "meshio"
 version = "5.3.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
     { name = "rich" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/20/1e/caa4f15c020de3e3486b4133ca689236bd3863a3d6dd0f58e97ce86a296a/meshio-5.3.5.tar.gz", hash = "sha256:f21f01abd9f29ba06ea119304b3d39e610421cfe93b9dd23362834919f87586d", size = 490922, upload-time = "2024-01-31T15:09:41.731Z" }
@@ -774,8 +808,8 @@ dependencies = [
     { name = "markdown-it-py" },
     { name = "mdit-py-plugins" },
     { name = "pyyaml" },
-    { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/21/dc/603751677fff302f34396e206b610f556a59d7fe58b9a2145f54e96b48e8/myst_parser-5.1.0.tar.gz", hash = "sha256:ab69322dc6719dcc7f296479dbb70181b66df6ed315064f92dbc85c0e1bf2f02", size = 101182, upload-time = "2026-05-13T09:38:19.361Z" }
 wheels = [
@@ -881,11 +915,25 @@ wheels = [
 ]
 
 [[package]]
+name = "nvidia-cublas"
+version = "13.8.0.4"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "nvidia-cuda-nvrtc", marker = "sys_platform != 'emscripten'" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c9/9e/0c73b14c14cd32e8b3a028133371f4bf1d9d14b811c515c5fd1201a3c38d/nvidia_cublas-13.8.0.4-py3-none-manylinux_2_27_aarch64.whl", hash = "sha256:e22b25be18f8b7d267dbbe2a8ec78e2c69c05762536d299dd0afa2c847115740", size = 552729449, upload-time = "2026-09-16T20:40:37.357Z" },
+    { url = "https://files.pythonhosted.org/packages/7a/38/bdd540bf511d2c9b6f9efc71a81c60cb88e295be0b9312b61d19bbed2212/nvidia_cublas-13.8.0.4-py3-none-manylinux_2_27_x86_64.whl", hash = "sha256:9f17797dfcc048694461f4e47de17d2e3c25adf172ef723d2db0a07cd8744b89", size = 439317144, upload-time = "2026-09-16T20:41:11.569Z" },
+    { url = "https://files.pythonhosted.org/packages/a3/df/f1246959833e2c437db8be3e5b477f66b87f8817821ed40de6c7561c9a36/nvidia_cublas-13.8.0.4-py3-none-win_amd64.whl", hash = "sha256:8c5494423bb8a46822cb6b0cb95d7fa4be2d7b96a31155dff083839ec8297910", size = 423266897, upload-time = "2026-09-16T20:48:16.789Z" },
+    { url = "https://files.pythonhosted.org/packages/96/38/723c97681824250b261c91761de3f1a1899111a9b1dda65eec5b2daa1d58/nvidia_cublas-13.8.0.4-py3-none-win_arm64.whl", hash = "sha256:a2ffda7a27d8315e6b75c1ced526d5a68c7a2a50adfe866235401c9592d3c9e4", size = 153856980, upload-time = "2026-09-16T20:54:58.249Z" },
+]
+
+[[package]]
 name = "nvidia-cublas-cu12"
 version = "12.9.2.10"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "nvidia-cuda-nvrtc-cu12" },
+    { name = "nvidia-cuda-nvrtc-cu12", marker = "sys_platform != 'emscripten'" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f7/a2/c96163a0fff1839c0c9548bbdeae7b853b867009e33b9b9264adc238b1cf/nvidia_cublas_cu12-12.9.2.10-py3-none-manylinux_2_27_aarch64.whl", hash = "sha256:5572131a59c3eebeeb1c4c8144f772d49372c20124916e072a0e3fc30df421d5", size = 575012079, upload-time = "2026-04-08T18:51:47.303Z" },
@@ -894,10 +942,15 @@ wheels = [
 ]
 
 [[package]]
-name = "nvidia-cublas-cu13"
-version = "0.0.1"
+name = "nvidia-cuda-nvrtc"
+version = "13.4.92"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/57/5c/4ceff3e57d5983ae04a5373e6420af5d851c7a0345d4b5e5423e23d540e5/nvidia_cublas_cu13-0.0.1.tar.gz", hash = "sha256:e764674f139a681595b708fc67c4ae370d610214bddf3916145b7d05a354a94f", size = 1371, upload-time = "2025-10-31T20:27:56.474Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/56/9c/1342ebb460ce2afd014ec5a002adc99108e3c53a6b70f399cf64dd1f267d/nvidia_cuda_nvrtc-13.4.92-py3-none-manylinux2010_x86_64.manylinux_2_12_x86_64.whl", hash = "sha256:5ce8c97b00b232c4f50c8c4b5a3b68cafee08bdb82ea86f2052ff01d03194f4a", size = 53301733, upload-time = "2026-09-16T20:39:06.686Z" },
+    { url = "https://files.pythonhosted.org/packages/4f/73/cf76dc0083d68bd1e29309bc51fc95ada28d4b64d341e945eb3f8ec8edec/nvidia_cuda_nvrtc-13.4.92-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:24b9f5eccc6a5a19779038cf468aecb7cecfa8716269beaef5640bd989d21c28", size = 50927348, upload-time = "2026-09-16T20:38:55.548Z" },
+    { url = "https://files.pythonhosted.org/packages/64/5b/aa91896f64444eff1dd7f189f4db05046c7f0ba08c0f531283c1c1aac581/nvidia_cuda_nvrtc-13.4.92-py3-none-win_amd64.whl", hash = "sha256:6af7ac5372920f6a7a560d0699348560fe44cb52c1d722d6afd3119f8af948c4", size = 46972283, upload-time = "2026-09-16T20:47:13.295Z" },
+    { url = "https://files.pythonhosted.org/packages/25/22/af15f5ef51ba0f90d5439487b8efe482d7b2cdafa8ff6a01e13791622b98/nvidia_cuda_nvrtc-13.4.92-py3-none-win_arm64.whl", hash = "sha256:1620066e967e93119d67338628935cbb1196b53a1474b07f14b7b77aba477284", size = 42709926, upload-time = "2026-09-16T20:54:16.396Z" },
+]
 
 [[package]]
 name = "nvidia-cuda-nvrtc-cu12"
@@ -914,7 +967,7 @@ name = "nvidia-cudss-cu12"
 version = "0.8.0.10"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "cuda-toolkit", extra = ["cublas"] },
+    { name = "cuda-toolkit", version = "12.9.2.0", source = { registry = "https://pypi.org/simple" }, extra = ["cublas"], marker = "extra == 'extra-20-electromagnetics-fem-cuda12'" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a3/d6/5797df31603d2f9142aeb263b7a72353a234c838ba0bf216cb34fb17d4d9/nvidia_cudss_cu12-0.8.0.10-py3-none-manylinux_2_17_aarch64.whl", hash = "sha256:a806e6e7dbeba6fce64018e76e6deee19471b44ce4daec018c18d42bb08493a5", size = 108978938, upload-time = "2026-06-02T00:01:02.854Z" },
@@ -924,15 +977,15 @@ wheels = [
 
 [[package]]
 name = "nvidia-cudss-cu13"
-version = "0.7.1.4"
+version = "0.8.0.10"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "nvidia-cublas-cu13" },
+    { name = "cuda-toolkit", version = "13.4.3", source = { registry = "https://pypi.org/simple" }, extra = ["cublas"], marker = "extra == 'extra-20-electromagnetics-fem-cuda13'" },
 ]
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/60/4e/9f05f10b02de145ac24f75f2ac2ee8de079b108b97c65aa22908fe6dd720/nvidia_cudss_cu13-0.7.1.4-py3-none-manylinux_2_17_aarch64.whl", hash = "sha256:80551e2eef87376d35666044b060f63c93ab2512ce34d9c56f1d791aaaaa9054", size = 64869951, upload-time = "2025-10-20T17:43:39.69Z" },
-    { url = "https://files.pythonhosted.org/packages/67/d6/11a08b3eb97aa2750f4472ba4b8585916b554f4c6d0bc1a949cfd4341778/nvidia_cudss_cu13-0.7.1.4-py3-none-manylinux_2_17_x86_64.whl", hash = "sha256:c1fb08d5f78bcce7f77176aa8945a3719f762fa77f4845afecf11ff2f2e055da", size = 64990997, upload-time = "2025-10-20T17:44:44.136Z" },
-    { url = "https://files.pythonhosted.org/packages/83/7a/6900f6a1939d9ede0f1bf1f9faabc9b5e40efbcb84aed4ecc929e67d3b52/nvidia_cudss_cu13-0.7.1.4-py3-none-win_amd64.whl", hash = "sha256:0af5717ff19057dbe5fa3dce91f15d481a47249ccda79a1d0a4ef55f2cd7e69a", size = 71882435, upload-time = "2025-10-20T17:35:51.299Z" },
+    { url = "https://files.pythonhosted.org/packages/2b/dc/9a9236a60f833e0c56b61b20419f812f25441ee128570aa26366f5bb421c/nvidia_cudss_cu13-0.8.0.10-py3-none-manylinux_2_17_aarch64.whl", hash = "sha256:a1718da03f06b89dda93a35d989a52449249af0aad2d7a517d4120519b97eed1", size = 80481232, upload-time = "2026-06-02T00:02:02.817Z" },
+    { url = "https://files.pythonhosted.org/packages/dd/f8/c9a60c9440dc78c7092f1a0bef3e477039c51a71ac9e219e68c7bda022fa/nvidia_cudss_cu13-0.8.0.10-py3-none-manylinux_2_17_x86_64.whl", hash = "sha256:c203d28a015f3184dbcd13581cad03c06a7ce4501692794f2a8b70fc56a376c9", size = 80682451, upload-time = "2026-06-02T00:04:07.868Z" },
+    { url = "https://files.pythonhosted.org/packages/04/83/42ca016cd77181354147edb9c03587fc6d517a706d042256ad290feb7923/nvidia_cudss_cu13-0.8.0.10-py3-none-win_amd64.whl", hash = "sha256:c084261bdc9cf3468d0fda5a20c56aa29b54b888d143bbdd39205c19fe3639a3", size = 79129196, upload-time = "2026-06-02T00:15:22.167Z" },
 ]
 
 [[package]]
@@ -949,10 +1002,10 @@ name = "pandas"
 version = "3.0.6"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
     { name = "python-dateutil" },
-    { name = "tzdata", marker = "sys_platform == 'emscripten' or sys_platform == 'win32'" },
+    { name = "tzdata", marker = "sys_platform == 'emscripten' or sys_platform == 'win32' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/e2/17/d7b106e05bfa642e8694451e7d3d759c6a241c5386a5d962e4f66c047e06/pandas-3.0.6.tar.gz", hash = "sha256:66b07ef7315a31bfe1089cd3d71a7de781c9dca986762d0b4fe7c0ef17465d10", size = 4667686, upload-time = "2026-09-17T23:23:18.345Z" }
 wheels = [
@@ -1186,7 +1239,7 @@ name = "pytest"
 version = "9.1.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
     { name = "iniconfig" },
     { name = "packaging" },
     { name = "pluggy" },
@@ -1216,11 +1269,11 @@ source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cyclopts" },
     { name = "matplotlib" },
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
     { name = "pillow" },
     { name = "pooch" },
-    { name = "pyobjc-framework-cocoa", marker = "sys_platform == 'darwin'" },
+    { name = "pyobjc-framework-cocoa", marker = "sys_platform == 'darwin' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
     { name = "pyvista-validation" },
     { name = "scooby" },
     { name = "typing-extensions" },
@@ -1236,9 +1289,9 @@ name = "pyvista-validation"
 version = "0.2.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
-    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "typing-extensions", marker = "python_full_version < '3.13' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/b5/c5/d800d91bae144a71fbae31fcb6b3279c55179acf93639e3443ae87373782/pyvista_validation-0.2.2.tar.gz", hash = "sha256:af234130a3b34b3e1af49584d75b41fafc694752b2958b36e9dbfd9f188e6a0c", size = 554920, upload-time = "2026-09-06T08:42:14.076Z" }
 wheels = [
@@ -1394,10 +1447,10 @@ name = "scikit-fem"
 version = "12.0.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
-    { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "scipy", version = "1.18.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "scipy", version = "1.18.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/a7/5f/77643ece20e33a770fdfb6cafb9b2a5a1dd51b8a1ee1d3dc5bac8c72bdfa/scikit_fem-12.0.2.tar.gz", hash = "sha256:0a38764cdb93411c5a994451c22c1da07808ebabf920f462c6253f78f5703f8a", size = 130353, upload-time = "2026-06-05T20:45:50.903Z" }
 wheels = [
@@ -1414,7 +1467,7 @@ resolution-markers = [
     "python_full_version < '3.12' and sys_platform != 'emscripten' and sys_platform != 'win32'",
 ]
 dependencies = [
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" } },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/7a/97/5a3609c4f8d58b039179648e62dd220f89864f56f7357f5d4f45c29eb2cc/scipy-1.17.1.tar.gz", hash = "sha256:95d8e012d8cb8816c226aef832200b1d45109ed4464303e997c5b13122b297c0", size = 30573822, upload-time = "2026-02-23T00:26:24.851Z" }
 wheels = [
@@ -1470,7 +1523,7 @@ resolution-markers = [
     "python_full_version >= '3.12' and sys_platform != 'emscripten' and sys_platform != 'win32'",
 ]
 dependencies = [
-    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" } },
+    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/7e/74/66de6258867beb2ef08f35f9f2ac017a52cacd5081714d239ff1a442d458/scipy-1.18.1.tar.gz", hash = "sha256:52c4b7422442aba924d03ad4019852b08a92e64ea187b933135687bfe2747307", size = 30781235, upload-time = "2026-08-21T23:28:50.599Z" }
 wheels = [
@@ -1545,23 +1598,23 @@ resolution-markers = [
     "python_full_version < '3.12' and sys_platform != 'emscripten' and sys_platform != 'win32'",
 ]
 dependencies = [
-    { name = "alabaster" },
-    { name = "babel" },
-    { name = "colorama", marker = "sys_platform == 'win32'" },
-    { name = "docutils" },
-    { name = "imagesize" },
-    { name = "jinja2" },
-    { name = "packaging" },
-    { name = "pygments" },
-    { name = "requests" },
-    { name = "roman-numerals" },
-    { name = "snowballstemmer" },
-    { name = "sphinxcontrib-applehelp" },
-    { name = "sphinxcontrib-devhelp" },
-    { name = "sphinxcontrib-htmlhelp" },
-    { name = "sphinxcontrib-jsmath" },
-    { name = "sphinxcontrib-qthelp" },
-    { name = "sphinxcontrib-serializinghtml" },
+    { name = "alabaster", marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "babel", marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "colorama", marker = "(python_full_version < '3.12' and sys_platform == 'win32') or (python_full_version >= '3.12' and extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13') or (sys_platform != 'win32' and extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "docutils", marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "imagesize", marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "jinja2", marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "packaging", marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "pygments", marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "requests", marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "roman-numerals", marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "snowballstemmer", marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "sphinxcontrib-applehelp", marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "sphinxcontrib-devhelp", marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "sphinxcontrib-htmlhelp", marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "sphinxcontrib-jsmath", marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "sphinxcontrib-qthelp", marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "sphinxcontrib-serializinghtml", marker = "python_full_version < '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/42/50/a8c6ccc36d5eacdfd7913ddccd15a9cee03ecafc5ee2bc40e1f168d85022/sphinx-9.0.4.tar.gz", hash = "sha256:594ef59d042972abbc581d8baa577404abe4e6c3b04ef61bd7fc2acbd51f3fa3", size = 8710502, upload-time = "2025-12-04T07:45:27.343Z" }
 wheels = [
@@ -1578,23 +1631,23 @@ resolution-markers = [
     "python_full_version >= '3.12' and sys_platform != 'emscripten' and sys_platform != 'win32'",
 ]
 dependencies = [
-    { name = "alabaster" },
-    { name = "babel" },
-    { name = "colorama", marker = "sys_platform == 'win32'" },
-    { name = "docutils" },
-    { name = "imagesize" },
-    { name = "jinja2" },
-    { name = "packaging" },
-    { name = "pygments" },
-    { name = "requests" },
-    { name = "roman-numerals" },
-    { name = "snowballstemmer" },
-    { name = "sphinxcontrib-applehelp" },
-    { name = "sphinxcontrib-devhelp" },
-    { name = "sphinxcontrib-htmlhelp" },
-    { name = "sphinxcontrib-jsmath" },
-    { name = "sphinxcontrib-qthelp" },
-    { name = "sphinxcontrib-serializinghtml" },
+    { name = "alabaster", marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "babel", marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "colorama", marker = "(python_full_version >= '3.12' and sys_platform == 'win32') or (python_full_version < '3.12' and extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13') or (sys_platform != 'win32' and extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "docutils", marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "imagesize", marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "jinja2", marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "packaging", marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "pygments", marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "requests", marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "roman-numerals", marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "snowballstemmer", marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "sphinxcontrib-applehelp", marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "sphinxcontrib-devhelp", marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "sphinxcontrib-htmlhelp", marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "sphinxcontrib-jsmath", marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "sphinxcontrib-qthelp", marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
+    { name = "sphinxcontrib-serializinghtml", marker = "python_full_version >= '3.12' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/cd/bd/f08eb0f4eed5c83f1ba2a3bd18f7745a2b1525fad70660a1c00224ec468a/sphinx-9.1.0.tar.gz", hash = "sha256:7741722357dd75f8190766926071fed3bdc211c74dd2d7d4df5404da95930ddb", size = 8718324, upload-time = "2025-12-31T15:09:27.646Z" }
 wheels = [
@@ -1660,7 +1713,7 @@ name = "tqdm"
 version = "4.70.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'extra-20-electromagnetics-fem-cuda12' and extra == 'extra-20-electromagnetics-fem-cuda13')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/0d/ea/b2a5bd54b28a324dae8211928b2d730b6547500342c7e6c6dea08bd0a485/tqdm-4.70.1.tar.gz", hash = "sha256:cefd0eca11b2a37a3aee776544d4f4ae913f02688135b5556b8788dfa474afc4", size = 171846, upload-time = "2026-09-11T07:25:16.601Z" }
 wheels = [

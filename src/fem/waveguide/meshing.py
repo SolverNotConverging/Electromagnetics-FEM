@@ -296,6 +296,16 @@ def _facet_matches_shape(
 
     if bool(shape.contains(midpoint[0], midpoint[1])):  # type: ignore[union-attr]
         return True
+    # A Boolean difference excludes the closed boundary of its tool. Probe
+    # either side of a straight facet to classify the solid's exposed wall,
+    # without treating points in the interior of the hole as conductor.
+    tangent = endpoints[1] - endpoints[0]
+    length = float(np.linalg.norm(tangent))
+    if length > 0:
+        normal = np.asarray((-tangent[1], tangent[0])) / length
+        probes = midpoint[None, :] + np.asarray((-1., 1.))[:, None] * tolerance * normal
+        if np.any(shape.contains(probes[:, 0], probes[:, 1])):  # type: ignore[union-attr]
+            return True
     if isinstance(shape, Rectangle):
         return bool(
             shape.x[0] - tolerance <= midpoint[0] <= shape.x[1] + tolerance

@@ -93,7 +93,7 @@ DESCRIPTIONS.update(
         "propagation_ratio_tolerance": "Minimum real-power fraction used to classify a mode as propagating.",
         "max_pml_fraction": "Maximum permitted modal PML fraction; None disables PML-mode filtering.",
         "ncv": "Arnoldi subspace dimension; None lets the eigensolver choose.",
-        "max_iterations": "Maximum ARPACK iterations; None selects a problem-size-dependent limit.",
+        "max_iterations": "CPU: maximum ARPACK iterations. GPU: maximum Arnoldi operator applications; None allows thirteen subspace cycles.",
         "random_seed": "Seed for reproducible eigensolver starting vectors.",
         "refine_interfaces": "Enable local refinement at dielectric interfaces.",
         "dielectric_refinement_factor": "Mesh-size multiplier near dielectric interfaces.",

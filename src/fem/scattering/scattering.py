@@ -1093,8 +1093,8 @@ class ScatteringSolver2D(ScatteringSceneMixin, ElectromagneticSolverMixin):
         max_refinements: int = 2,
         adaptive_tolerance: float = 0.05,
     ) -> PortModeSet:
-        from fem.common.linalg import resolve_backend
-        backend = resolve_backend(backend)
+        from fem.common.linalg import resolve_eigen_backend
+        backend = resolve_eigen_backend(backend)
         if side not in ("left", "right"):
             raise ConfigurationError("side must be 'left' or 'right'.")
         if num_elements is None:
@@ -1218,11 +1218,9 @@ class ScatteringSolver2D(ScatteringSceneMixin, ElectromagneticSolverMixin):
         Callback-defined devices must provide ``mode_factory(frequency)``
         because their lead cross-section cannot be inferred automatically.
         """
-        from fem.common.linalg import resolve_backend
-        backend = resolve_backend(backend)
+        from fem.common.linalg import resolve_backend, resolve_eigen_backend
+        backend = (resolve_eigen_backend(backend) if mode_factory is None else resolve_backend(backend))
 
-        from fem.common.linalg import resolve_backend
-        backend = resolve_backend(backend)
         raw_frequencies = np.asarray(frequencies)
         if (
             raw_frequencies.ndim != 1
@@ -1333,8 +1331,8 @@ class ScatteringSolver2D(ScatteringSceneMixin, ElectromagneticSolverMixin):
               max_refinements: int = 2, adaptive_tolerance: float = 0.05,
               backend: str = "auto") -> ScatteringResult:
         """Solve without saving or opening a viewer."""
-        from fem.common.linalg import resolve_backend
-        backend = resolve_backend(backend)
+        from fem.common.linalg import resolve_backend, resolve_eigen_backend
+        backend = (resolve_eigen_backend(backend) if self.modes is None else resolve_backend(backend))
         from .adaptive import solve_scattering
         self._solver_options = replace(self._solver_options, linear_solver=linear_solver, backend=backend,
             tolerance=linear_solver_tolerance, projection_condition_limit=projection_condition_limit,

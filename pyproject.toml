@@ -21,8 +21,8 @@ Repository = "https://github.com/SolverNotConverging/Electromagnetics-FEM"
 
 [project.optional-dependencies]
 # GPU factorization with NVIDIA cuDSS (pick the extra matching your CUDA runtime).
-cuda12 = ["cupy-cuda12x>=13.6,<15", "nvidia-cudss-cu12"]
-cuda13 = ["cupy-cuda13x>=14,<15", "nvidia-cudss-cu13"]
+cuda12 = ["cupy-cuda12x>=13.6,<15", "nvidia-cudss-cu12>=0.8,<0.9"]
+cuda13 = ["cupy-cuda13x>=14,<15", "nvidia-cudss-cu13>=0.8,<0.9"]
 
 [project.scripts]
 fem = "fem.__main__:main"
@@ -52,3 +52,6 @@ extend-exclude = ["build", "dist"]
 
 [tool.ruff.lint]
 select = ["E9", "F63", "F7", "F82"]
+
+[tool.uv]
+conflicts = [[{ extra = "cuda12" }, { extra = "cuda13" }]]

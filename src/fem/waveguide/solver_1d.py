@@ -756,8 +756,8 @@ class ModeSolver1D(WaveguideScene1D, ElectromagneticSolverMixin):
 
     def solve(self, *, neff_guess: complex | None=None, num_modes: int=4, eigensolver_tolerance: float=1e-10, residual_tolerance: float=1e-07, dense_limit: int=450, backend: str="auto", max_refinements: int=2, adaptive_tolerance: float=0.05):
         """Solve and return modes with separate algebraic and adaptive controls."""
-        from fem.common.linalg import resolve_backend
-        backend = resolve_backend(backend)
+        from fem.common.linalg import resolve_eigen_backend
+        backend = resolve_eigen_backend(backend)
         from .adaptive import solve_1d
         options = {'neff_guess': neff_guess, 'num_modes': num_modes, 'tol': eigensolver_tolerance, 'residual_tolerance': residual_tolerance, 'dense_limit': dense_limit, 'backend': backend}
         return self._finish_result(solve_1d(self, (), options, max_refinements, adaptive_tolerance))
@@ -779,8 +779,8 @@ class ModeSolver1D(WaveguideScene1D, ElectromagneticSolverMixin):
         tolerance = _finite_positive(tol, "tol")
         residual_limit = _finite_positive(residual_tolerance, "residual_tolerance")
         dense_threshold = _positive_integer(dense_limit, "dense_limit", minimum=2)
-        from fem.common.linalg import resolve_backend
-        backend = resolve_backend(backend)
+        from fem.common.linalg import resolve_eigen_backend
+        backend = resolve_eigen_backend(backend)
         te_system, tm_system = self._assemble_systems()
 
         supplied_guess = None if neff_guess is None else finite_complex(neff_guess, "neff_guess")

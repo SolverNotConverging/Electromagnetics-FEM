@@ -12,6 +12,9 @@ def solve_periodic(solver, dimension, args, options, max_refinements, adaptive_t
         solver.mesh(**getattr(solver, "_mesh_settings", {"wavelength_elements": 4}))
 
     def estimate(result):
+        resident = getattr(solver, '_gpu_resident_estimate', None)
+        if resident is not None and resident[0] is result:
+            return resident[1], resident[2]
         combined = np.zeros(solver.mesh_data.info.elements)
         maximum = 0.0
         for mode in result:

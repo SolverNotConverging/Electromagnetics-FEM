@@ -62,4 +62,7 @@ def test_version_is_single_sourced():
     from fem._version import __version__
     import tomllib
     project = tomllib.loads((ROOT / 'pyproject.toml').read_text())['project']
-    assert 'version' in project['dynamic'] and __version__ == '2.0.0'
+    assert 'version' in project['dynamic']
+    config = tomllib.loads((ROOT / 'pyproject.toml').read_text())
+    assert config['tool']['hatch']['version']['path'] == 'src/fem/_version.py'
+    assert isinstance(__version__, str) and __version__

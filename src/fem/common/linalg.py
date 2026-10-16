@@ -1,11 +1,12 @@
-"""Standard ARPACK shift-invert iteration with CPU or GPU sparse solves."""
+"""CPU ARPACK or device-resident GPU refined shift-invert Arnoldi."""
 from contextlib import contextmanager
+import warnings
 
 import numpy as np
 from scipy.sparse import csc_matrix
 from scipy.sparse.linalg import ArpackNoConvergence, LinearOperator, eigs, splu
 
-from .errors import ConfigurationError, SolverError
+from .errors import BackendCapabilityError, ConfigurationError, SolverError
 from .validation import finite_complex, positive_integer, positive_real
 
 
@@ -16,17 +17,47 @@ def validate_backend(backend):
     return backend
 
 
-def resolve_backend(backend="auto"):
-    """Select GPU when its runtime loads successfully, otherwise SciPy CPU.
+def _cpu_fallback(reason):
+    warnings.warn(
+        f"backend='auto' is falling back to CPU: {reason}. "
+        "Select backend='cpu' to request CPU execution explicitly.",
+        RuntimeWarning, stacklevel=3)
+    return "cpu"
 
-    Only automatic selection falls back. Numerical failures after selection
-    propagate to the caller instead of silently changing execution backends.
-    """
+
+def resolve_backend(backend="auto"):
+    """Select a working CUDA/cuDSS runtime; warn on automatic CPU fallback."""
     validate_backend(backend)
+    if backend == "cpu":
+        return "cpu"
+    from .gpu import is_available, require_available
     if backend == "auto":
-        from .gpu import is_available
-        return "gpu" if is_available() else "cpu"
-    return backend
+        return "gpu" if is_available() else _cpu_fallback("the CUDA/cuDSS runtime is unavailable")
+    try:
+        require_available()
+    except Exception as exc:
+        raise BackendCapabilityError(f"backend='gpu' requested but CUDA/cuDSS is unavailable: {exc}") from exc
+    return "gpu"
+
+
+def resolve_eigen_backend(backend="auto"):
+    """Require resident CUDA Arnoldi/Ritz support for every GPU eigenproblem.
+
+    Availability failures may select CPU only for auto. Numerical calls after
+    selection propagate their errors and never retry with CPU or hybrid Ritz.
+    """
+    selected = resolve_backend(backend)
+    if selected == "cpu":
+        return selected
+    from ._gpu_resident_arnoldi import probe_resident_available
+    try:
+        probe_resident_available()
+    except Exception as exc:
+        reason = f"the resident CUDA eigensolver is unavailable: {exc}"
+        if backend == "auto":
+            return _cpu_fallback(reason)
+        raise BackendCapabilityError(f"backend='gpu' requested but {reason}") from exc
+    return "gpu"
 
 
 @contextmanager
@@ -58,7 +89,13 @@ def _quadratic_operator(a0, a1, a2, shift, backend):
         yield LinearOperator((2 * n, 2 * n), matvec=apply, dtype=complex)
 
 
-def _iterate(operator, target, shift, count, tolerance, ncv, max_iterations, random_seed):
+def _iterate(operator, target, shift, count, tolerance, ncv, max_iterations, random_seed,
+             vector_rows=None):
+    from .gpu import _DeviceOperator
+    if isinstance(operator, _DeviceOperator):
+        from ._gpu_arnoldi import iterate
+        return iterate(operator, target, shift, count, tolerance, ncv, max_iterations, random_seed,
+                       vector_rows=vector_rows)
     size = operator.shape[0]
     if size < 3:
         raise ConfigurationError("Sparse eigensolving requires at least three unknowns.")
@@ -92,7 +129,7 @@ def _iterate(operator, target, shift, count, tolerance, ncv, max_iterations, ran
 def generalized_eigenpairs(a, b, *, target, count, tolerance=1e-10, backend="auto",
                           ncv=None, max_iterations=None, random_seed=0):
     """Solve A x = lambda B x near target, including singular B."""
-    backend = resolve_backend(backend)
+    backend = resolve_eigen_backend(backend)
     target = finite_complex(target, "target")
     a, b = csc_matrix(a, dtype=complex), csc_matrix(b, dtype=complex)
     if a.shape != b.shape or a.shape[0] != a.shape[1]:
@@ -111,7 +148,7 @@ def quadratic_eigenpairs(a0, a1, a2, *, target, count, tolerance=1e-10, backend=
     Only the n-by-n polynomial is factorized, even when A2 is singular.
     Returned vectors are the physical first block of the companion vector.
     """
-    backend = resolve_backend(backend)
+    backend = resolve_eigen_backend(backend)
     target = finite_complex(target, "target")
     a0, a1, a2 = (csc_matrix(a, dtype=complex) for a in (a0, a1, a2))
     if a0.shape != a1.shape or a0.shape != a2.shape or a0.shape[0] != a0.shape[1]:
@@ -119,5 +156,5 @@ def quadratic_eigenpairs(a0, a1, a2, *, target, count, tolerance=1e-10, backend=
     shift = target + 1e-6j * max(1.0, abs(target))
     with _quadratic_operator(a0, a1, a2, shift, backend) as operator:
         values, vectors = _iterate(operator, target, shift, count, tolerance,
-                                   ncv, max_iterations, random_seed)
+                                   ncv, max_iterations, random_seed, vector_rows=a0.shape[0])
     return values, vectors[:a0.shape[0]], "cudss-shift-invert" if backend == "gpu" else "sparse-shift-invert"

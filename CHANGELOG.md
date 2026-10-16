@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.0.1 — 2026-10-16
+
+Restore custom CUDA Arnoldi and full GPU-resident eigenvalue iteration, including Ritz eigenvalue/SVD extraction, sparse solves, residuals, and supported periodic adaptive calculations. All eigenvalue families use the resident path when the GPU backend is selected.
+
+Automatic CPU fallback emits a warning; an unavailable explicit GPU request raises an error. Scattering direct solves use cuDSS when selected. Optional CUDA dependencies require the supported cuDSS ABI; the default wheel remains py3-none-any.
+
+Fix Boolean-difference conductor-frame boundary classification and retain numerical cleanup regressions and joint FEM/FDFD analytical validation tools. Correct the documented normalized waveguide attenuation migration.
+
+Validation: joint analytical checks pass on CPU/GPU, including modal phase/attenuation, slab fields, scattering, electrostatics, and copper wall loss. Full release qualification and package checks are recorded with the release artifacts.
+
+
 ## 2.0.0
 
 A breaking release that turns six loosely coupled packages into one pure-Python
@@ -43,7 +54,9 @@ unchanged; the regression tests reproduce the 1.x results.
 | scattering `Mode`, `ModeSet` | `fem.scattering.PortMode`, `fem.scattering.PortModeSet` |
 | `frequency_hz`, `frequencies_hz` | `frequency`, `frequencies` |
 | `CEMError` | `fem.FEMError` |
-| `mode.propagation_constant`, `mode.attenuation_constant` | `mode.neff.real`, `mode.alpha` |
+| `mode.propagation_constant` | `mode.neff.real` |
+| waveguide `mode.attenuation_constant` | `-mode.neff.imag` (normalized); `mode.alpha` is dimensional and equals `-mode.neff.imag * k0` |
+| periodic `mode.attenuation_constant` | `mode.alpha` (inverse metres, unchanged units) |
 | periodic `plot_dispersion(f, neff)` | `fem.plot_dispersion(f, neff, connect=False)` |
 | `visualize(..., mesh_overlay=..., ex=True)` | `visualize(..., mesh=..., component="Ex")` |
 | `backend="python"` / `"cython"` / `"cuda"` | `backend="cpu"` / `"cpu"` / `"gpu"` |

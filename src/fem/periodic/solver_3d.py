@@ -136,6 +136,8 @@ class PeriodicModeSolver3D(PeriodicScene3D, ElectromagneticSolverMixin):
         self.gamma = None
 
     def _geometry_changed(self) -> None:
+        self._gpu_resident_session = None
+        self._gpu_resident_estimate = None
         self.mesh_data = None
         self.native_mesh = None
         self.system = None
@@ -213,6 +215,8 @@ class PeriodicModeSolver3D(PeriodicScene3D, ElectromagneticSolverMixin):
         self.mesh_data = mesh_data
         self.native_mesh = mesh_data.mesh
         self.system = system
+        self._gpu_resident_session = None
+        self._gpu_resident_estimate = None
         self._invalidate_solution()
         self._discretized_revision = self.geometry.revision
         self._discretize_options = options
@@ -419,8 +423,8 @@ class PeriodicModeSolver3D(PeriodicScene3D, ElectromagneticSolverMixin):
 
     def solve(self, *, neff_guess: complex | None=None, num_modes: int=4, direction: Direction='forward', eigensolver: str="auto", backend: str="auto", eigensolver_tolerance: float=1e-10, residual_tolerance: float=1e-08, divergence_tolerance: float=1e-06, propagation_ratio_tolerance: float=0.001, max_pml_fraction: float | None=0.5, dense_linearization_limit: int=700, ncv: int | None=None, max_iterations: int | None=None, random_seed: int=0, max_refinements: int=2, adaptive_tolerance: float=0.05):
         """Solve and return modes with separate algebraic and adaptive controls."""
-        from fem.common.linalg import resolve_backend
-        backend = resolve_backend(backend)
+        from fem.common.linalg import resolve_eigen_backend
+        backend = resolve_eigen_backend(backend)
         from .adaptive import solve_periodic
         options = {'neff_guess': neff_guess, 'num_modes': num_modes, 'direction': direction, 'eigensolver': eigensolver, 'backend': backend, 'eigensolver_tolerance': eigensolver_tolerance, 'residual_tolerance': residual_tolerance, 'divergence_tolerance': divergence_tolerance, 'propagation_ratio_tolerance': propagation_ratio_tolerance, 'max_pml_fraction': max_pml_fraction, 'dense_linearization_limit': dense_linearization_limit, 'ncv': ncv, 'max_iterations': max_iterations, 'random_seed': random_seed}
         return self._finish_result(solve_periodic(self, 3, (), options, max_refinements, adaptive_tolerance))
@@ -460,8 +464,8 @@ class PeriodicModeSolver3D(PeriodicScene3D, ElectromagneticSolverMixin):
         if method not in ("auto", "dense", "sparse"):
             raise ConfigurationError("eigensolver must be 'auto', 'dense', or 'sparse'.")
         backend = str(backend).strip().lower()
-        from fem.common.linalg import resolve_backend
-        backend = resolve_backend(backend)
+        from fem.common.linalg import resolve_eigen_backend
+        backend = resolve_eigen_backend(backend)
         for value, name in (
             (eigensolver_tolerance, "eigensolver_tolerance"),
             (residual_tolerance, "residual_tolerance"),
@@ -496,6 +500,14 @@ class PeriodicModeSolver3D(PeriodicScene3D, ElectromagneticSolverMixin):
             resolved_method = "dense" if backend != "gpu" and 2 * system.ndofs <= int(dense_linearization_limit) else "sparse"
         if resolved_method == "dense" and backend == "gpu":
             raise ConfigurationError("The gpu backend supports sparse eigensolving; choose eigensolver='sparse' or 'auto'.")
+        from fem.common._gpu_resident_arnoldi import is_available as resident_available
+        if backend == 'gpu' and resident_available():
+            from ._gpu_resident import solve_resident
+            return solve_resident(self, system, target=target, requested=requested, direction=direction,
+                eigensolver_tolerance=eigensolver_tolerance, residual_tolerance=residual_tolerance,
+                divergence_tolerance=divergence_tolerance,
+                propagation_ratio_tolerance=propagation_ratio_tolerance, pml_limit=pml_limit,
+                ncv=ncv, max_iterations=max_iterations, random_seed=random_seed)
         if resolved_method == "dense":
             values, vectors, _, method_name = _dense_candidates(system, target, candidate_count)
         else:

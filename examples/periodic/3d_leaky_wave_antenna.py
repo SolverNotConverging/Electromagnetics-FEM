@@ -29,7 +29,7 @@ modes = solver.solve(
     num_modes=2,
     neff_guess=0.5 - 0.02j,  # a fast-wave branch inside the air light cone
     eigensolver_tolerance=1e-8,
-    ncv=80,  # enough radiation candidates for the ARPACK shift-invert solve
+    ncv=80,  # enough radiation candidates for sparse shift-invert
     max_refinements=0,
 )
 print("neff:", modes.neff)

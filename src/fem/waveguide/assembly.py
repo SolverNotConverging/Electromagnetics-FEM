@@ -535,8 +535,8 @@ def solve_qep_candidates(
 ) -> tuple[ComplexArray, ComplexArray, str]:
     """Return finite candidate roots/vectors nearest ``target``."""
 
-    from fem.common.linalg import resolve_backend
-    backend = resolve_backend(backend)
+    from fem.common.linalg import resolve_eigen_backend
+    backend = resolve_eigen_backend(backend)
     if candidate_count < 1:
         raise ValueError("candidate_count must be positive.")
     n = system.ndofs

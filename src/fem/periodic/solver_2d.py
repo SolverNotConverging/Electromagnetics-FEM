@@ -523,8 +523,8 @@ class PeriodicModeSolver2D(PeriodicScene2D, ElectromagneticSolverMixin):
 
     def solve(self, *, neff_guess: complex | None=None, num_modes: int=4, direction: Direction='forward', eigensolver: str="auto", backend: str="auto", eigensolver_tolerance: float=1e-10, residual_tolerance: float=1e-08, propagation_ratio_tolerance: float=0.001, max_pml_fraction: float | None=0.5, dense_linearization_limit: int=700, max_refinements: int=2, adaptive_tolerance: float=0.05):
         """Solve and return modes with separate algebraic and adaptive controls."""
-        from fem.common.linalg import resolve_backend
-        backend = resolve_backend(backend)
+        from fem.common.linalg import resolve_eigen_backend
+        backend = resolve_eigen_backend(backend)
         from .adaptive import solve_periodic
         options = {'neff_guess': neff_guess, 'num_modes': num_modes, 'direction': direction, 'eigensolver': eigensolver, 'backend': backend, 'eigensolver_tolerance': eigensolver_tolerance, 'residual_tolerance': residual_tolerance, 'propagation_ratio_tolerance': propagation_ratio_tolerance, 'max_pml_fraction': max_pml_fraction, 'dense_linearization_limit': dense_linearization_limit}
         return self._finish_result(solve_periodic(self, 2, (), options, max_refinements, adaptive_tolerance))

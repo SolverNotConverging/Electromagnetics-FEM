@@ -279,8 +279,8 @@ def solve_qep_candidates(
     if method not in ("auto", "dense", "sparse"):
         raise ConfigurationError("eigensolver must be 'auto', 'dense', or 'sparse'.")
     backend = str(backend).strip().lower()
-    from fem.common.linalg import resolve_backend
-    backend = resolve_backend(backend)
+    from fem.common.linalg import resolve_eigen_backend
+    backend = resolve_eigen_backend(backend)
     size = 2 * system.ndofs
     if method == "auto":
         method = "dense" if backend != "gpu" and size <= int(dense_linearization_limit) else "sparse"
