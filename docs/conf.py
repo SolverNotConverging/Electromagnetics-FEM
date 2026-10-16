@@ -13,6 +13,7 @@ exclude_patterns = ["_build"]
 myst_heading_anchors = 3
 
 html_theme = "alabaster"
+html_static_path = ["_static"]
 html_theme_options = {
     "description": "Finite-element electromagnetics",
     "fixed_sidebar": True,

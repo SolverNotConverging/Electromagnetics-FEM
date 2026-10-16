@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "project": "FEM",
+  "configurations": 20,
+  "warm_samples": 120,
+  "first_samples": 40,
+  "maximum_relative_neff_difference": 1.18246089508861e-12,
+  "maximum_residual": 1.9107342314917097e-11,
+  "all_threadpools_single_thread": true
+}

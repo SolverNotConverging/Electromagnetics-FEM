@@ -1,0 +1,3185 @@
+{
+  "results": [
+    {
+      "package": "FEM",
+      "family": "waveguide_2d",
+      "case": "pec",
+      "size": 48,
+      "id": "FEM_waveguide_2d_pec_48",
+      "dofs": 6447,
+      "eigen_dimension": 12894,
+      "assembly_seconds": 0.13681460000043444,
+      "cpu_seconds": 0.42419289999998,
+      "gpu_seconds": 1.3913603000000876,
+      "cpu_eigen_seconds": 0.33310660000097414,
+      "gpu_eigen_seconds": 1.2797238000002835,
+      "speedup": 0.30487638608055245,
+      "eigen_speedup": 0.2602956981818267,
+      "total_speedup": 0.3264860219903249,
+      "first_solve_speedup": 0.26420722780161465,
+      "max_relative_neff_difference": 6.6662629765350206e-15,
+      "max_residual": 4.421120374966793e-13,
+      "first": [
+        {
+          "backend": "cpu",
+          "public_seconds": 0.3909161000010499,
+          "eigen_seconds": 0.29785570000058215,
+          "dofs": 6447,
+          "eigen_dimension": 12894,
+          "nnz": 96237,
+          "residual": 1.2715265718438094e-13,
+          "neff": [
+            [
+              0.8660264274903945,
+              1.0681085464876727e-18
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "backend": "gpu",
+          "public_seconds": 1.479581400000825,
+          "eigen_seconds": 1.3790102000002662,
+          "dofs": 6447,
+          "eigen_dimension": 12894,
+          "nnz": 96237,
+          "residual": 4.421120374966793e-13,
+          "neff": [
+            [
+              0.8660264274903887,
+              -3.824353756853166e-19
+            ]
+          ],
+          "method": ""
+        }
+      ],
+      "samples": [
+        {
+          "repeat": 0,
+          "backend": "cpu",
+          "public_seconds": 0.3426599999984319,
+          "eigen_seconds": 0.2692939999997179,
+          "dofs": 6447,
+          "eigen_dimension": 12894,
+          "nnz": 96237,
+          "residual": 1.2715265718438094e-13,
+          "neff": [
+            [
+              0.8660264274903945,
+              1.0681085464876727e-18
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 0,
+          "backend": "gpu",
+          "public_seconds": 1.3768964999999298,
+          "eigen_seconds": 1.2797238000002835,
+          "dofs": 6447,
+          "eigen_dimension": 12894,
+          "nnz": 96237,
+          "residual": 2.714796252026914e-13,
+          "neff": [
+            [
+              0.8660264274903887,
+              1.0609087664360112e-18
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 1,
+          "backend": "gpu",
+          "public_seconds": 1.3913603000000876,
+          "eigen_seconds": 1.2782457999983308,
+          "dofs": 6447,
+          "eigen_dimension": 12894,
+          "nnz": 96237,
+          "residual": 1.9478090946959028e-13,
+          "neff": [
+            [
+              0.8660264274903889,
+              -2.9519098211812367e-19
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 1,
+          "backend": "cpu",
+          "public_seconds": 0.42419289999998,
+          "eigen_seconds": 0.33310660000097414,
+          "dofs": 6447,
+          "eigen_dimension": 12894,
+          "nnz": 96237,
+          "residual": 1.2715265718438094e-13,
+          "neff": [
+            [
+              0.8660264274903945,
+              1.0681085464876727e-18
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 2,
+          "backend": "cpu",
+          "public_seconds": 0.5748373999995238,
+          "eigen_seconds": 0.45272769999974116,
+          "dofs": 6447,
+          "eigen_dimension": 12894,
+          "nnz": 96237,
+          "residual": 1.2715265718438094e-13,
+          "neff": [
+            [
+              0.8660264274903945,
+              1.0681085464876727e-18
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 2,
+          "backend": "gpu",
+          "public_seconds": 1.4137409000013577,
+          "eigen_seconds": 1.316555999999764,
+          "dofs": 6447,
+          "eigen_dimension": 12894,
+          "nnz": 96237,
+          "residual": 1.9905796515278993e-13,
+          "neff": [
+            [
+              0.8660264274903889,
+              7.519534989250051e-19
+            ]
+          ],
+          "method": ""
+        }
+      ],
+      "mesh_plus_warm_solve_speedup": 0.3671094846540293
+    },
+    {
+      "package": "FEM",
+      "family": "waveguide_2d",
+      "case": "pec",
+      "size": 96,
+      "id": "FEM_waveguide_2d_pec_96",
+      "dofs": 25099,
+      "eigen_dimension": 50198,
+      "assembly_seconds": 1.136689099999785,
+      "cpu_seconds": 1.9662041999999929,
+      "gpu_seconds": 1.921904099999665,
+      "cpu_eigen_seconds": 1.5743314999999711,
+      "gpu_eigen_seconds": 1.5099814000004699,
+      "speedup": 1.0230501095243698,
+      "eigen_speedup": 1.0426164852093418,
+      "total_speedup": 0.9692838884510748,
+      "first_solve_speedup": 0.9525962303651223,
+      "max_relative_neff_difference": 1.4870920810424774e-14,
+      "max_residual": 1.5756543399202038e-12,
+      "first": [
+        {
+          "backend": "cpu",
+          "public_seconds": 1.9930647000001045,
+          "eigen_seconds": 1.6007121999991796,
+          "dofs": 25099,
+          "eigen_dimension": 50198,
+          "nnz": 378610,
+          "residual": 4.632963288706301e-13,
+          "neff": [
+            [
+              0.8660255374427529,
+              1.6293737531620535e-17
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "backend": "gpu",
+          "public_seconds": 2.0922449999998207,
+          "eigen_seconds": 1.6767657000000327,
+          "dofs": 25099,
+          "eigen_dimension": 50198,
+          "nnz": 378610,
+          "residual": 9.790395218758715e-13,
+          "neff": [
+            [
+              0.8660255374427402,
+              -8.787966827763366e-20
+            ]
+          ],
+          "method": ""
+        }
+      ],
+      "samples": [
+        {
+          "repeat": 0,
+          "backend": "cpu",
+          "public_seconds": 1.9515014000007795,
+          "eigen_seconds": 1.550367499999993,
+          "dofs": 25099,
+          "eigen_dimension": 50198,
+          "nnz": 378610,
+          "residual": 4.632963288706301e-13,
+          "neff": [
+            [
+              0.8660255374427529,
+              1.6293737531620535e-17
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 0,
+          "backend": "gpu",
+          "public_seconds": 1.921904099999665,
+          "eigen_seconds": 1.5099814000004699,
+          "dofs": 25099,
+          "eigen_dimension": 50198,
+          "nnz": 378610,
+          "residual": 1.5756543399202038e-12,
+          "neff": [
+            [
+              0.86602553744274,
+              1.6347735882007997e-19
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 1,
+          "backend": "gpu",
+          "public_seconds": 1.8853811000008136,
+          "eigen_seconds": 1.480498400000215,
+          "dofs": 25099,
+          "eigen_dimension": 50198,
+          "nnz": 378610,
+          "residual": 1.1269070991170514e-12,
+          "neff": [
+            [
+              0.8660255374427406,
+              -1.0333801956502464e-18
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 1,
+          "backend": "cpu",
+          "public_seconds": 1.9662041999999929,
+          "eigen_seconds": 1.5743314999999711,
+          "dofs": 25099,
+          "eigen_dimension": 50198,
+          "nnz": 378610,
+          "residual": 4.632963288706301e-13,
+          "neff": [
+            [
+              0.8660255374427529,
+              1.6293737531620535e-17
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 2,
+          "backend": "cpu",
+          "public_seconds": 2.047548000000461,
+          "eigen_seconds": 1.6366682999996556,
+          "dofs": 25099,
+          "eigen_dimension": 50198,
+          "nnz": 378610,
+          "residual": 4.632963288706301e-13,
+          "neff": [
+            [
+              0.8660255374427529,
+              1.6293737531620535e-17
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 2,
+          "backend": "gpu",
+          "public_seconds": 2.281578800000716,
+          "eigen_seconds": 1.806379300000117,
+          "dofs": 25099,
+          "eigen_dimension": 50198,
+          "nnz": 378610,
+          "residual": 9.533192599545064e-13,
+          "neff": [
+            [
+              0.8660255374427404,
+              1.1530235994499163e-18
+            ]
+          ],
+          "method": ""
+        }
+      ],
+      "mesh_plus_warm_solve_speedup": 1.0144838156314269
+    },
+    {
+      "package": "FEM",
+      "family": "waveguide_2d",
+      "case": "pec",
+      "size": 160,
+      "id": "FEM_waveguide_2d_pec_160",
+      "dofs": 68827,
+      "eigen_dimension": 137654,
+      "assembly_seconds": 3.028880100000606,
+      "cpu_seconds": 6.719284999999218,
+      "gpu_seconds": 3.784896299999673,
+      "cpu_eigen_seconds": 5.468079899999793,
+      "gpu_eigen_seconds": 2.4060035000002244,
+      "speedup": 1.7752890614202028,
+      "eigen_speedup": 2.272681606655719,
+      "total_speedup": 1.4348751407951068,
+      "first_solve_speedup": 1.7876925297250421,
+      "max_relative_neff_difference": 8.593376485855486e-15,
+      "max_residual": 2.458589475633013e-12,
+      "first": [
+        {
+          "backend": "cpu",
+          "public_seconds": 6.674050800000259,
+          "eigen_seconds": 5.366675799999939,
+          "dofs": 68827,
+          "eigen_dimension": 137654,
+          "nnz": 1042798,
+          "residual": 1.2516283766944052e-12,
+          "neff": [
+            [
+              0.8660254665065131,
+              -2.3019412066880175e-16
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "backend": "gpu",
+          "public_seconds": 3.733332600000722,
+          "eigen_seconds": 2.41082760000063,
+          "dofs": 68827,
+          "eigen_dimension": 137654,
+          "nnz": 1042798,
+          "residual": 1.731646798963625e-12,
+          "neff": [
+            [
+              0.8660254665065057,
+              -2.7994438906754626e-19
+            ]
+          ],
+          "method": ""
+        }
+      ],
+      "samples": [
+        {
+          "repeat": 0,
+          "backend": "cpu",
+          "public_seconds": 6.47584359999928,
+          "eigen_seconds": 5.2391482000002725,
+          "dofs": 68827,
+          "eigen_dimension": 137654,
+          "nnz": 1042798,
+          "residual": 1.2516283766944052e-12,
+          "neff": [
+            [
+              0.8660254665065131,
+              -2.3019412066880175e-16
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 0,
+          "backend": "gpu",
+          "public_seconds": 3.784896299999673,
+          "eigen_seconds": 2.4621237000010296,
+          "dofs": 68827,
+          "eigen_dimension": 137654,
+          "nnz": 1042798,
+          "residual": 1.7666758334181403e-12,
+          "neff": [
+            [
+              0.8660254665065057,
+              8.917139352219647e-19
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 1,
+          "backend": "gpu",
+          "public_seconds": 3.4673531999997067,
+          "eigen_seconds": 2.2035316999990755,
+          "dofs": 68827,
+          "eigen_dimension": 137654,
+          "nnz": 1042798,
+          "residual": 1.7401927547894295e-12,
+          "neff": [
+            [
+              0.8660254665065065,
+              1.4571084275142102e-18
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 1,
+          "backend": "cpu",
+          "public_seconds": 6.719284999999218,
+          "eigen_seconds": 5.468079899999793,
+          "dofs": 68827,
+          "eigen_dimension": 137654,
+          "nnz": 1042798,
+          "residual": 1.2516283766944052e-12,
+          "neff": [
+            [
+              0.8660254665065131,
+              -2.3019412066880175e-16
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 2,
+          "backend": "cpu",
+          "public_seconds": 6.775799700000789,
+          "eigen_seconds": 5.515079499999047,
+          "dofs": 68827,
+          "eigen_dimension": 137654,
+          "nnz": 1042798,
+          "residual": 1.2516283766944052e-12,
+          "neff": [
+            [
+              0.8660254665065131,
+              -2.3019412066880175e-16
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 2,
+          "backend": "gpu",
+          "public_seconds": 4.120823199998995,
+          "eigen_seconds": 2.4060035000002244,
+          "dofs": 68827,
+          "eigen_dimension": 137654,
+          "nnz": 1042798,
+          "residual": 2.458589475633013e-12,
+          "neff": [
+            [
+              0.8660254665065058,
+              1.0200394267309912e-18
+            ]
+          ],
+          "method": ""
+        }
+      ],
+      "mesh_plus_warm_solve_speedup": 1.4306552677600963
+    },
+    {
+      "package": "FEM",
+      "family": "waveguide_2d",
+      "case": "pec",
+      "size": 256,
+      "id": "FEM_waveguide_2d_pec_256",
+      "dofs": 176051,
+      "eigen_dimension": 352102,
+      "assembly_seconds": 7.89228170000024,
+      "cpu_seconds": 19.985652699999264,
+      "gpu_seconds": 8.337847499999043,
+      "cpu_eigen_seconds": 16.735517000000982,
+      "gpu_eigen_seconds": 4.355177900000854,
+      "speedup": 2.3969798799991913,
+      "eigen_speedup": 3.8426712718205382,
+      "total_speedup": 1.665363793880792,
+      "first_solve_speedup": 2.2415990666178143,
+      "max_relative_neff_difference": 3.0262862790777e-14,
+      "max_residual": 5.098002524718416e-12,
+      "first": [
+        {
+          "backend": "cpu",
+          "public_seconds": 20.427717399999892,
+          "eigen_seconds": 17.160654199999044,
+          "dofs": 176051,
+          "eigen_dimension": 352102,
+          "nnz": 2673860,
+          "residual": 3.687329184624988e-12,
+          "neff": [
+            [
+              0.8660254243621852,
+              -6.121441464753416e-16
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "backend": "gpu",
+          "public_seconds": 9.113011200000983,
+          "eigen_seconds": 4.206360700000005,
+          "dofs": 176051,
+          "eigen_dimension": 352102,
+          "nnz": 2673860,
+          "residual": 4.371448148921706e-12,
+          "neff": [
+            [
+              0.866025424362211,
+              1.7406527066075872e-19
+            ]
+          ],
+          "method": ""
+        }
+      ],
+      "samples": [
+        {
+          "repeat": 0,
+          "backend": "cpu",
+          "public_seconds": 20.030158499999743,
+          "eigen_seconds": 16.766018399999666,
+          "dofs": 176051,
+          "eigen_dimension": 352102,
+          "nnz": 2673860,
+          "residual": 3.687329184624988e-12,
+          "neff": [
+            [
+              0.8660254243621852,
+              -6.121441464753416e-16
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 0,
+          "backend": "gpu",
+          "public_seconds": 8.618851300001552,
+          "eigen_seconds": 4.5178476000000956,
+          "dofs": 176051,
+          "eigen_dimension": 352102,
+          "nnz": 2673860,
+          "residual": 4.9746638527076e-12,
+          "neff": [
+            [
+              0.866025424362211,
+              -2.941321909340558e-19
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 1,
+          "backend": "gpu",
+          "public_seconds": 7.653317600001174,
+          "eigen_seconds": 4.355177900000854,
+          "dofs": 176051,
+          "eigen_dimension": 352102,
+          "nnz": 2673860,
+          "residual": 4.4312044766070585e-12,
+          "neff": [
+            [
+              0.8660254243622114,
+              -1.979939514206927e-19
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 1,
+          "backend": "cpu",
+          "public_seconds": 19.985652699999264,
+          "eigen_seconds": 16.735517000000982,
+          "dofs": 176051,
+          "eigen_dimension": 352102,
+          "nnz": 2673860,
+          "residual": 3.687329184624988e-12,
+          "neff": [
+            [
+              0.8660254243621852,
+              -6.121441464753416e-16
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 2,
+          "backend": "cpu",
+          "public_seconds": 19.85543499999949,
+          "eigen_seconds": 16.625853300000017,
+          "dofs": 176051,
+          "eigen_dimension": 352102,
+          "nnz": 2673860,
+          "residual": 3.687329184624988e-12,
+          "neff": [
+            [
+              0.8660254243621852,
+              -6.121441464753416e-16
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 2,
+          "backend": "gpu",
+          "public_seconds": 8.337847499999043,
+          "eigen_seconds": 4.2288523000006535,
+          "dofs": 176051,
+          "eigen_dimension": 352102,
+          "nnz": 2673860,
+          "residual": 5.098002524718416e-12,
+          "neff": [
+            [
+              0.8660254243622112,
+              -1.8846483076408183e-19
+            ]
+          ],
+          "method": ""
+        }
+      ],
+      "mesh_plus_warm_solve_speedup": 1.717665587036777
+    },
+    {
+      "package": "FEM",
+      "family": "waveguide_2d",
+      "case": "pec_lossy",
+      "size": 96,
+      "id": "FEM_waveguide_2d_pec_lossy_96",
+      "dofs": 25099,
+      "eigen_dimension": 50198,
+      "assembly_seconds": 1.1484467000009317,
+      "cpu_seconds": 2.4830925000005664,
+      "gpu_seconds": 2.091370199999801,
+      "cpu_eigen_seconds": 2.0775960000009945,
+      "gpu_eigen_seconds": 1.6204890000008163,
+      "speedup": 1.1873041415626953,
+      "eigen_speedup": 1.2820796685444629,
+      "total_speedup": 1.11552275977244,
+      "first_solve_speedup": 1.177881477306096,
+      "max_relative_neff_difference": 4.364026889549091e-15,
+      "max_residual": 2.254476020561668e-13,
+      "first": [
+        {
+          "backend": "cpu",
+          "public_seconds": 2.506010100001731,
+          "eigen_seconds": 2.0845661999992444,
+          "dofs": 25099,
+          "eigen_dimension": 50198,
+          "nnz": 378610,
+          "residual": 2.254476020561668e-13,
+          "neff": [
+            [
+              1.3228973401163124,
+              -0.007559165550307005
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "backend": "gpu",
+          "public_seconds": 2.1275571000005584,
+          "eigen_seconds": 1.653411799999958,
+          "dofs": 25099,
+          "eigen_dimension": 50198,
+          "nnz": 378610,
+          "residual": 2.141355599637669e-13,
+          "neff": [
+            [
+              1.322897340116307,
+              -0.007559165550307036
+            ]
+          ],
+          "method": ""
+        }
+      ],
+      "samples": [
+        {
+          "repeat": 0,
+          "backend": "cpu",
+          "public_seconds": 2.378991199999291,
+          "eigen_seconds": 1.9839418999999907,
+          "dofs": 25099,
+          "eigen_dimension": 50198,
+          "nnz": 378610,
+          "residual": 2.254476020561668e-13,
+          "neff": [
+            [
+              1.3228973401163124,
+              -0.007559165550307005
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 0,
+          "backend": "gpu",
+          "public_seconds": 2.2155380999993213,
+          "eigen_seconds": 1.772972500000833,
+          "dofs": 25099,
+          "eigen_dimension": 50198,
+          "nnz": 378610,
+          "residual": 2.070611985911235e-13,
+          "neff": [
+            [
+              1.3228973401163067,
+              -0.007559165550307038
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 1,
+          "backend": "gpu",
+          "public_seconds": 1.857670400000643,
+          "eigen_seconds": 1.44576909999887,
+          "dofs": 25099,
+          "eigen_dimension": 50198,
+          "nnz": 378610,
+          "residual": 1.850973405022753e-13,
+          "neff": [
+            [
+              1.3228973401163067,
+              -0.007559165550307037
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 1,
+          "backend": "cpu",
+          "public_seconds": 2.4830925000005664,
+          "eigen_seconds": 2.0775960000009945,
+          "dofs": 25099,
+          "eigen_dimension": 50198,
+          "nnz": 378610,
+          "residual": 2.254476020561668e-13,
+          "neff": [
+            [
+              1.3228973401163124,
+              -0.007559165550307005
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 2,
+          "backend": "cpu",
+          "public_seconds": 2.516591300000073,
+          "eigen_seconds": 2.110070499998983,
+          "dofs": 25099,
+          "eigen_dimension": 50198,
+          "nnz": 378610,
+          "residual": 2.254476020561668e-13,
+          "neff": [
+            [
+              1.3228973401163124,
+              -0.007559165550307005
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 2,
+          "backend": "gpu",
+          "public_seconds": 2.091370199999801,
+          "eigen_seconds": 1.6204890000008163,
+          "dofs": 25099,
+          "eigen_dimension": 50198,
+          "nnz": 378610,
+          "residual": 1.8568399343267653e-13,
+          "neff": [
+            [
+              1.3228973401163069,
+              -0.007559165550307037
+            ]
+          ],
+          "method": ""
+        }
+      ],
+      "mesh_plus_warm_solve_speedup": 1.1209087772832707
+    },
+    {
+      "package": "FEM",
+      "family": "waveguide_2d",
+      "case": "pec_lossy",
+      "size": 160,
+      "id": "FEM_waveguide_2d_pec_lossy_160",
+      "dofs": 68827,
+      "eigen_dimension": 137654,
+      "assembly_seconds": 3.0363768999995955,
+      "cpu_seconds": 8.028606399999262,
+      "gpu_seconds": 3.6650927000009688,
+      "cpu_eigen_seconds": 6.7809894000001805,
+      "gpu_eigen_seconds": 2.352592799999911,
+      "speedup": 2.190560255132739,
+      "eigen_speedup": 2.8823472553348104,
+      "total_speedup": 1.5310139770327764,
+      "first_solve_speedup": 1.9274298404079409,
+      "max_relative_neff_difference": 2.8534191450324185e-15,
+      "max_residual": 6.453132386871674e-13,
+      "first": [
+        {
+          "backend": "cpu",
+          "public_seconds": 7.839514799999961,
+          "eigen_seconds": 6.59875269999975,
+          "dofs": 68827,
+          "eigen_dimension": 137654,
+          "nnz": 1042798,
+          "residual": 6.453132386871674e-13,
+          "neff": [
+            [
+              1.322897293679908,
+              -0.007559165815649203
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "backend": "gpu",
+          "public_seconds": 4.067341199999646,
+          "eigen_seconds": 2.2513130999996065,
+          "dofs": 68827,
+          "eigen_dimension": 137654,
+          "nnz": 1042798,
+          "residual": 5.26712734483532e-13,
+          "neff": [
+            [
+              1.3228972936799115,
+              -0.007559165815649179
+            ]
+          ],
+          "method": ""
+        }
+      ],
+      "samples": [
+        {
+          "repeat": 0,
+          "backend": "cpu",
+          "public_seconds": 7.847963500000333,
+          "eigen_seconds": 6.617864100000588,
+          "dofs": 68827,
+          "eigen_dimension": 137654,
+          "nnz": 1042798,
+          "residual": 6.453132386871674e-13,
+          "neff": [
+            [
+              1.322897293679908,
+              -0.007559165815649203
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 0,
+          "backend": "gpu",
+          "public_seconds": 3.6650927000009688,
+          "eigen_seconds": 2.352592799999911,
+          "dofs": 68827,
+          "eigen_dimension": 137654,
+          "nnz": 1042798,
+          "residual": 5.705786985885168e-13,
+          "neff": [
+            [
+              1.3228972936799113,
+              -0.00755916581564918
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 1,
+          "backend": "gpu",
+          "public_seconds": 3.4346229000002495,
+          "eigen_seconds": 2.181158299999879,
+          "dofs": 68827,
+          "eigen_dimension": 137654,
+          "nnz": 1042798,
+          "residual": 5.534040275809765e-13,
+          "neff": [
+            [
+              1.3228972936799115,
+              -0.007559165815649178
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 1,
+          "backend": "cpu",
+          "public_seconds": 8.131032299999788,
+          "eigen_seconds": 6.883840999998938,
+          "dofs": 68827,
+          "eigen_dimension": 137654,
+          "nnz": 1042798,
+          "residual": 6.453132386871674e-13,
+          "neff": [
+            [
+              1.322897293679908,
+              -0.007559165815649203
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 2,
+          "backend": "cpu",
+          "public_seconds": 8.028606399999262,
+          "eigen_seconds": 6.7809894000001805,
+          "dofs": 68827,
+          "eigen_dimension": 137654,
+          "nnz": 1042798,
+          "residual": 6.453132386871674e-13,
+          "neff": [
+            [
+              1.322897293679908,
+              -0.007559165815649203
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 2,
+          "backend": "gpu",
+          "public_seconds": 4.47767500000009,
+          "eigen_seconds": 2.412384299999758,
+          "dofs": 68827,
+          "eigen_dimension": 137654,
+          "nnz": 1042798,
+          "residual": 5.289507010083462e-13,
+          "neff": [
+            [
+              1.3228972936799117,
+              -0.007559165815649178
+            ]
+          ],
+          "method": ""
+        }
+      ],
+      "mesh_plus_warm_solve_speedup": 1.6511278809647851
+    },
+    {
+      "package": "FEM",
+      "family": "waveguide_2d",
+      "case": "pec_sibc_lossy",
+      "size": 96,
+      "id": "FEM_waveguide_2d_pec_sibc_lossy_96",
+      "dofs": 24270,
+      "eigen_dimension": 48540,
+      "assembly_seconds": 1.0793459999986226,
+      "cpu_seconds": 1.9742400999984966,
+      "gpu_seconds": 2.078622200000609,
+      "cpu_eigen_seconds": 1.59515840000131,
+      "gpu_eigen_seconds": 1.6211475000000064,
+      "speedup": 0.9497830341646106,
+      "eigen_speedup": 0.9839687011831456,
+      "total_speedup": 0.9386882310033761,
+      "first_solve_speedup": 0.9076376399166443,
+      "max_relative_neff_difference": 5.272678465086046e-15,
+      "max_residual": 3.384296952919516e-13,
+      "first": [
+        {
+          "backend": "cpu",
+          "public_seconds": 1.9344039000006887,
+          "eigen_seconds": 1.5518302000000403,
+          "dofs": 24270,
+          "eigen_dimension": 48540,
+          "nnz": 365341,
+          "residual": 2.084700098482992e-13,
+          "neff": [
+            [
+              1.3527065864033954,
+              -0.026323666010498188
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "backend": "gpu",
+          "public_seconds": 2.1312512999993487,
+          "eigen_seconds": 1.658803899999839,
+          "dofs": 24270,
+          "eigen_dimension": 48540,
+          "nnz": 365341,
+          "residual": 2.8118392090159023e-13,
+          "neff": [
+            [
+              1.352706586403389,
+              -0.02632366601049763
+            ]
+          ],
+          "method": ""
+        }
+      ],
+      "samples": [
+        {
+          "repeat": 0,
+          "backend": "cpu",
+          "public_seconds": 1.9742400999984966,
+          "eigen_seconds": 1.59515840000131,
+          "dofs": 24270,
+          "eigen_dimension": 48540,
+          "nnz": 365341,
+          "residual": 2.084700098482992e-13,
+          "neff": [
+            [
+              1.3527065864033954,
+              -0.026323666010498188
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 0,
+          "backend": "gpu",
+          "public_seconds": 2.1319793999991816,
+          "eigen_seconds": 1.7147681000005832,
+          "dofs": 24270,
+          "eigen_dimension": 48540,
+          "nnz": 365341,
+          "residual": 2.5664216456435937e-13,
+          "neff": [
+            [
+              1.3527065864033887,
+              -0.026323666010497654
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 1,
+          "backend": "gpu",
+          "public_seconds": 1.8384454999995796,
+          "eigen_seconds": 1.4394381000001886,
+          "dofs": 24270,
+          "eigen_dimension": 48540,
+          "nnz": 365341,
+          "residual": 3.384296952919516e-13,
+          "neff": [
+            [
+              1.3527065864033887,
+              -0.026323666010497612
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 1,
+          "backend": "cpu",
+          "public_seconds": 1.9551365000006626,
+          "eigen_seconds": 1.5749513000009756,
+          "dofs": 24270,
+          "eigen_dimension": 48540,
+          "nnz": 365341,
+          "residual": 2.084700098482992e-13,
+          "neff": [
+            [
+              1.3527065864033954,
+              -0.026323666010498188
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 2,
+          "backend": "cpu",
+          "public_seconds": 2.037565300001006,
+          "eigen_seconds": 1.6425913000002765,
+          "dofs": 24270,
+          "eigen_dimension": 48540,
+          "nnz": 365341,
+          "residual": 2.084700098482992e-13,
+          "neff": [
+            [
+              1.3527065864033954,
+              -0.026323666010498188
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 2,
+          "backend": "gpu",
+          "public_seconds": 2.078622200000609,
+          "eigen_seconds": 1.6211475000000064,
+          "dofs": 24270,
+          "eigen_dimension": 48540,
+          "nnz": 365341,
+          "residual": 2.8971294220032965e-13,
+          "neff": [
+            [
+              1.3527065864033883,
+              -0.026323666010497553
+            ]
+          ],
+          "method": ""
+        }
+      ],
+      "mesh_plus_warm_solve_speedup": 0.966946437268704
+    },
+    {
+      "package": "FEM",
+      "family": "waveguide_2d",
+      "case": "pec_sibc_lossy",
+      "size": 160,
+      "id": "FEM_waveguide_2d_pec_sibc_lossy_160",
+      "dofs": 66766,
+      "eigen_dimension": 133532,
+      "assembly_seconds": 2.8959811000004265,
+      "cpu_seconds": 6.448444199999358,
+      "gpu_seconds": 3.599437200000466,
+      "cpu_eigen_seconds": 5.247369200000321,
+      "gpu_eigen_seconds": 2.3172919000007823,
+      "speedup": 1.7915145734445717,
+      "eigen_speedup": 2.2644403150067323,
+      "total_speedup": 1.4484928028222153,
+      "first_solve_speedup": 1.816486362120647,
+      "max_relative_neff_difference": 1.8936703690412364e-15,
+      "max_residual": 1.2356794696971306e-12,
+      "first": [
+        {
+          "backend": "cpu",
+          "public_seconds": 6.411256100000173,
+          "eigen_seconds": 5.21106250000048,
+          "dofs": 66766,
+          "eigen_dimension": 133532,
+          "nnz": 1010359,
+          "residual": 5.827346060269854e-13,
+          "neff": [
+            [
+              1.3521764390272504,
+              -0.026103032945362058
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "backend": "gpu",
+          "public_seconds": 3.5294821000006777,
+          "eigen_seconds": 2.2604317999994237,
+          "dofs": 66766,
+          "eigen_dimension": 133532,
+          "nnz": 1010359,
+          "residual": 1.0036839687233484e-12,
+          "neff": [
+            [
+              1.3521764390272528,
+              -0.026103032945362755
+            ]
+          ],
+          "method": ""
+        }
+      ],
+      "samples": [
+        {
+          "repeat": 0,
+          "backend": "cpu",
+          "public_seconds": 6.4253922999996576,
+          "eigen_seconds": 5.224999099998968,
+          "dofs": 66766,
+          "eigen_dimension": 133532,
+          "nnz": 1010359,
+          "residual": 5.827346060269854e-13,
+          "neff": [
+            [
+              1.3521764390272504,
+              -0.026103032945362058
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 0,
+          "backend": "gpu",
+          "public_seconds": 3.599437200000466,
+          "eigen_seconds": 2.3172919000007823,
+          "dofs": 66766,
+          "eigen_dimension": 133532,
+          "nnz": 1010359,
+          "residual": 1.1595549261662884e-12,
+          "neff": [
+            [
+              1.3521764390272528,
+              -0.026103032945362814
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 1,
+          "backend": "gpu",
+          "public_seconds": 3.3927958000003855,
+          "eigen_seconds": 2.1601136999997834,
+          "dofs": 66766,
+          "eigen_dimension": 133532,
+          "nnz": 1010359,
+          "residual": 1.2356794696971306e-12,
+          "neff": [
+            [
+              1.3521764390272528,
+              -0.02610303294536281
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 1,
+          "backend": "cpu",
+          "public_seconds": 6.448444199999358,
+          "eigen_seconds": 5.247369200000321,
+          "dofs": 66766,
+          "eigen_dimension": 133532,
+          "nnz": 1010359,
+          "residual": 5.827346060269854e-13,
+          "neff": [
+            [
+              1.3521764390272504,
+              -0.026103032945362058
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 2,
+          "backend": "cpu",
+          "public_seconds": 6.6550614000007045,
+          "eigen_seconds": 5.397964499999944,
+          "dofs": 66766,
+          "eigen_dimension": 133532,
+          "nnz": 1010359,
+          "residual": 5.827346060269854e-13,
+          "neff": [
+            [
+              1.3521764390272504,
+              -0.026103032945362058
+            ]
+          ],
+          "method": ""
+        },
+        {
+          "repeat": 2,
+          "backend": "gpu",
+          "public_seconds": 4.097466200000781,
+          "eigen_seconds": 2.405249299999923,
+          "dofs": 66766,
+          "eigen_dimension": 133532,
+          "nnz": 1010359,
+          "residual": 1.1481481658441105e-12,
+          "neff": [
+            [
+              1.3521764390272528,
+              -0.026103032945362828
+            ]
+          ],
+          "method": ""
+        }
+      ],
+      "mesh_plus_warm_solve_speedup": 1.438617940895123
+    },
+    {
+      "package": "FEM",
+      "family": "periodic_2d",
+      "case": "pec",
+      "size": 48,
+      "id": "FEM_periodic_2d_pec_48",
+      "dofs": 1428,
+      "eigen_dimension": 2856,
+      "assembly_seconds": 0.06352909999986878,
+      "cpu_seconds": 0.10894650000045658,
+      "gpu_seconds": 0.5187072000007902,
+      "cpu_eigen_seconds": 0.025121900000158348,
+      "gpu_eigen_seconds": 0.40156410000054166,
+      "speedup": 0.210034678524398,
+      "eigen_speedup": 0.06256012427436732,
+      "total_speedup": 0.29263370588997284,
+      "first_solve_speedup": 0.2075359543693907,
+      "max_relative_neff_difference": 1.3084107597859789e-14,
+      "max_residual": 1.736917267660142e-13,
+      "first": [
+        {
+          "backend": "cpu",
+          "public_seconds": 0.10959540000112611,
+          "eigen_seconds": 0.023121100000935257,
+          "dofs": 1428,
+          "eigen_dimension": 2856,
+          "nnz": 28068,
+          "residual": 1.3565764343607363e-13,
+          "neff": [
+            [
+              0.6619111939337905,
+              -2.0700807604537297e-16
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "backend": "gpu",
+          "public_seconds": 0.5280791000004683,
+          "eigen_seconds": 0.40912399999979243,
+          "dofs": 1428,
+          "eigen_dimension": 2856,
+          "nnz": 28068,
+          "residual": 1.736917267660142e-13,
+          "neff": [
+            [
+              0.6619111939337821,
+              -1.5774739269014144e-16
+            ]
+          ],
+          "method": "sparse"
+        }
+      ],
+      "samples": [
+        {
+          "repeat": 0,
+          "backend": "cpu",
+          "public_seconds": 0.10894650000045658,
+          "eigen_seconds": 0.025121900000158348,
+          "dofs": 1428,
+          "eigen_dimension": 2856,
+          "nnz": 28068,
+          "residual": 1.3565764343607363e-13,
+          "neff": [
+            [
+              0.6619111939337905,
+              -2.0700807604537297e-16
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 0,
+          "backend": "gpu",
+          "public_seconds": 0.5233545000010054,
+          "eigen_seconds": 0.4086463999992702,
+          "dofs": 1428,
+          "eigen_dimension": 2856,
+          "nnz": 28068,
+          "residual": 1.6949986530547133e-13,
+          "neff": [
+            [
+              0.6619111939337818,
+              -9.09486804037728e-17
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 1,
+          "backend": "gpu",
+          "public_seconds": 0.5187072000007902,
+          "eigen_seconds": 0.40156410000054166,
+          "dofs": 1428,
+          "eigen_dimension": 2856,
+          "nnz": 28068,
+          "residual": 1.709553654333238e-13,
+          "neff": [
+            [
+              0.6619111939337828,
+              -1.3514093036087142e-16
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 1,
+          "backend": "cpu",
+          "public_seconds": 0.10735469999963243,
+          "eigen_seconds": 0.02423869999984163,
+          "dofs": 1428,
+          "eigen_dimension": 2856,
+          "nnz": 28068,
+          "residual": 1.3565764343607363e-13,
+          "neff": [
+            [
+              0.6619111939337905,
+              -2.0700807604537297e-16
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 2,
+          "backend": "cpu",
+          "public_seconds": 0.11095009999917238,
+          "eigen_seconds": 0.02617849999842292,
+          "dofs": 1428,
+          "eigen_dimension": 2856,
+          "nnz": 28068,
+          "residual": 1.3565764343607363e-13,
+          "neff": [
+            [
+              0.6619111939337905,
+              -2.0700807604537297e-16
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 2,
+          "backend": "gpu",
+          "public_seconds": 0.504430400000274,
+          "eigen_seconds": 0.389898199999152,
+          "dofs": 1428,
+          "eigen_dimension": 2856,
+          "nnz": 28068,
+          "residual": 1.699880480219913e-13,
+          "neff": [
+            [
+              0.6619111939337818,
+              -1.5482004682443058e-16
+            ]
+          ],
+          "method": "sparse"
+        }
+      ],
+      "mesh_plus_warm_solve_speedup": 0.29622955490774133
+    },
+    {
+      "package": "FEM",
+      "family": "periodic_2d",
+      "case": "pec",
+      "size": 96,
+      "id": "FEM_periodic_2d_pec_96",
+      "dofs": 5506,
+      "eigen_dimension": 11012,
+      "assembly_seconds": 0.2653012000009767,
+      "cpu_seconds": 0.5220100999995338,
+      "gpu_seconds": 0.8198667000015121,
+      "cpu_eigen_seconds": 0.12181590000000142,
+      "gpu_eigen_seconds": 0.3939690999995946,
+      "speedup": 0.6367011856910045,
+      "eigen_speedup": 0.3092016607397046,
+      "total_speedup": 0.7061934250601857,
+      "first_solve_speedup": 0.6121439491803303,
+      "max_relative_neff_difference": 2.8007386908671335e-14,
+      "max_residual": 7.027708475317427e-13,
+      "first": [
+        {
+          "backend": "cpu",
+          "public_seconds": 0.5073385999985476,
+          "eigen_seconds": 0.11727259999861417,
+          "dofs": 5506,
+          "eigen_dimension": 11012,
+          "nnz": 109148,
+          "residual": 5.763552091900221e-13,
+          "neff": [
+            [
+              0.6619972275639524,
+              8.237096832934164e-16
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "backend": "gpu",
+          "public_seconds": 0.8287897000009252,
+          "eigen_seconds": 0.4046312999998918,
+          "dofs": 5506,
+          "eigen_dimension": 11012,
+          "nnz": 109148,
+          "residual": 6.971527955619796e-13,
+          "neff": [
+            [
+              0.6619972275639352,
+              8.413180159591756e-16
+            ]
+          ],
+          "method": "sparse"
+        }
+      ],
+      "samples": [
+        {
+          "repeat": 0,
+          "backend": "cpu",
+          "public_seconds": 0.5222611999997753,
+          "eigen_seconds": 0.12181590000000142,
+          "dofs": 5506,
+          "eigen_dimension": 11012,
+          "nnz": 109148,
+          "residual": 5.763552091900221e-13,
+          "neff": [
+            [
+              0.6619972275639524,
+              8.237096832934164e-16
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 0,
+          "backend": "gpu",
+          "public_seconds": 0.8285661000008986,
+          "eigen_seconds": 0.3939690999995946,
+          "dofs": 5506,
+          "eigen_dimension": 11012,
+          "nnz": 109148,
+          "residual": 6.924385562555543e-13,
+          "neff": [
+            [
+              0.6619972275639339,
+              8.808253266850107e-16
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 1,
+          "backend": "gpu",
+          "public_seconds": 0.8198667000015121,
+          "eigen_seconds": 0.3962221000001591,
+          "dofs": 5506,
+          "eigen_dimension": 11012,
+          "nnz": 109148,
+          "residual": 7.027708475317427e-13,
+          "neff": [
+            [
+              0.6619972275639345,
+              8.665807736110351e-16
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 1,
+          "backend": "cpu",
+          "public_seconds": 0.5220100999995338,
+          "eigen_seconds": 0.12518980000095326,
+          "dofs": 5506,
+          "eigen_dimension": 11012,
+          "nnz": 109148,
+          "residual": 5.763552091900221e-13,
+          "neff": [
+            [
+              0.6619972275639524,
+              8.237096832934164e-16
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 2,
+          "backend": "cpu",
+          "public_seconds": 0.5189639999989595,
+          "eigen_seconds": 0.11966489999940677,
+          "dofs": 5506,
+          "eigen_dimension": 11012,
+          "nnz": 109148,
+          "residual": 5.763552091900221e-13,
+          "neff": [
+            [
+              0.6619972275639524,
+              8.237096832934164e-16
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 2,
+          "backend": "gpu",
+          "public_seconds": 0.8087932000016735,
+          "eigen_seconds": 0.3873543999998219,
+          "dofs": 5506,
+          "eigen_dimension": 11012,
+          "nnz": 109148,
+          "residual": 6.980718276281002e-13,
+          "neff": [
+            [
+              0.6619972275639342,
+              8.261546438956659e-16
+            ]
+          ],
+          "method": "sparse"
+        }
+      ],
+      "mesh_plus_warm_solve_speedup": 0.7255202628079073
+    },
+    {
+      "package": "FEM",
+      "family": "periodic_2d",
+      "case": "pec",
+      "size": 160,
+      "id": "FEM_periodic_2d_pec_160",
+      "dofs": 15083,
+      "eigen_dimension": 30166,
+      "assembly_seconds": 0.7944330000009359,
+      "cpu_seconds": 2.0132589999993797,
+      "gpu_seconds": 2.3009079999992537,
+      "cpu_eigen_seconds": 0.46730229999957373,
+      "gpu_eigen_seconds": 0.6066760999983671,
+      "speedup": 0.8749845713083847,
+      "eigen_speedup": 0.7702665392634249,
+      "total_speedup": 0.8860029873606746,
+      "first_solve_speedup": 0.8477740012045135,
+      "max_relative_neff_difference": 4.89694227736066e-14,
+      "max_residual": 2.028743925339059e-12,
+      "first": [
+        {
+          "backend": "cpu",
+          "public_seconds": 2.008343800000148,
+          "eigen_seconds": 0.4466897999991488,
+          "dofs": 15083,
+          "eigen_dimension": 30166,
+          "nnz": 300088,
+          "residual": 1.7996201244378823e-12,
+          "neff": [
+            [
+              0.6620154376065218,
+              -1.744470707617336e-16
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "backend": "gpu",
+          "public_seconds": 2.368961300000592,
+          "eigen_seconds": 0.7355664999995497,
+          "dofs": 15083,
+          "eigen_dimension": 30166,
+          "nnz": 300088,
+          "residual": 2.0263644652594826e-12,
+          "neff": [
+            [
+              0.6620154376065542,
+              -1.6449443363149557e-16
+            ]
+          ],
+          "method": "sparse"
+        }
+      ],
+      "samples": [
+        {
+          "repeat": 0,
+          "backend": "cpu",
+          "public_seconds": 1.9608285000012984,
+          "eigen_seconds": 0.4436571999995067,
+          "dofs": 15083,
+          "eigen_dimension": 30166,
+          "nnz": 300088,
+          "residual": 1.7996201244378823e-12,
+          "neff": [
+            [
+              0.6620154376065218,
+              -1.744470707617336e-16
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 0,
+          "backend": "gpu",
+          "public_seconds": 2.4564730999991298,
+          "eigen_seconds": 0.7527236999994784,
+          "dofs": 15083,
+          "eigen_dimension": 30166,
+          "nnz": 300088,
+          "residual": 2.028743925339059e-12,
+          "neff": [
+            [
+              0.6620154376065533,
+              -1.624187793942489e-16
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 1,
+          "backend": "gpu",
+          "public_seconds": 2.076019500000257,
+          "eigen_seconds": 0.5185321999997541,
+          "dofs": 15083,
+          "eigen_dimension": 30166,
+          "nnz": 300088,
+          "residual": 2.0042254373107316e-12,
+          "neff": [
+            [
+              0.6620154376065522,
+              -1.7953985635710008e-16
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 1,
+          "backend": "cpu",
+          "public_seconds": 2.0132589999993797,
+          "eigen_seconds": 0.46730229999957373,
+          "dofs": 15083,
+          "eigen_dimension": 30166,
+          "nnz": 300088,
+          "residual": 1.7996201244378823e-12,
+          "neff": [
+            [
+              0.6620154376065218,
+              -1.744470707617336e-16
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 2,
+          "backend": "cpu",
+          "public_seconds": 2.093065500001103,
+          "eigen_seconds": 0.4706650999996782,
+          "dofs": 15083,
+          "eigen_dimension": 30166,
+          "nnz": 300088,
+          "residual": 1.7996201244378823e-12,
+          "neff": [
+            [
+              0.6620154376065218,
+              -1.744470707617336e-16
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 2,
+          "backend": "gpu",
+          "public_seconds": 2.3009079999992537,
+          "eigen_seconds": 0.6066760999983671,
+          "dofs": 15083,
+          "eigen_dimension": 30166,
+          "nnz": 300088,
+          "residual": 1.9995289872723317e-12,
+          "neff": [
+            [
+              0.6620154376065533,
+              -1.7509060404341005e-16
+            ]
+          ],
+          "method": "sparse"
+        }
+      ],
+      "mesh_plus_warm_solve_speedup": 0.9070703357078085
+    },
+    {
+      "package": "FEM",
+      "family": "periodic_2d",
+      "case": "pec",
+      "size": 320,
+      "id": "FEM_periodic_2d_pec_320",
+      "dofs": 59701,
+      "eigen_dimension": 119402,
+      "assembly_seconds": 3.3584682999990036,
+      "cpu_seconds": 12.357555100001264,
+      "gpu_seconds": 11.44719939999959,
+      "cpu_eigen_seconds": 2.5391373000002204,
+      "gpu_eigen_seconds": 1.0027620999990177,
+      "speedup": 1.0795264997307294,
+      "eigen_speedup": 2.532143267084693,
+      "total_speedup": 0.9922111862109385,
+      "first_solve_speedup": 0.9901061454288692,
+      "max_relative_neff_difference": 1.9486945244880817e-13,
+      "max_residual": 7.865214536294221e-12,
+      "first": [
+        {
+          "backend": "cpu",
+          "public_seconds": 12.303645699999834,
+          "eigen_seconds": 2.4732005999994726,
+          "dofs": 59701,
+          "eigen_dimension": 119402,
+          "nnz": 1191104,
+          "residual": 7.049380799753312e-12,
+          "neff": [
+            [
+              0.6620231330090182,
+              -8.039297699091339e-16
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "backend": "gpu",
+          "public_seconds": 12.426592599998912,
+          "eigen_seconds": 1.0146758999999292,
+          "dofs": 59701,
+          "eigen_dimension": 119402,
+          "nnz": 1191104,
+          "residual": 7.833380350799564e-12,
+          "neff": [
+            [
+              0.6620231330091452,
+              -1.0568275499379031e-15
+            ]
+          ],
+          "method": "sparse"
+        }
+      ],
+      "samples": [
+        {
+          "repeat": 0,
+          "backend": "cpu",
+          "public_seconds": 12.231613500000094,
+          "eigen_seconds": 2.522450200000094,
+          "dofs": 59701,
+          "eigen_dimension": 119402,
+          "nnz": 1191104,
+          "residual": 7.049380799753312e-12,
+          "neff": [
+            [
+              0.6620231330090182,
+              -8.039297699091339e-16
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 0,
+          "backend": "gpu",
+          "public_seconds": 11.44719939999959,
+          "eigen_seconds": 1.0116411999988486,
+          "dofs": 59701,
+          "eigen_dimension": 119402,
+          "nnz": 1191104,
+          "residual": 7.81395371681264e-12,
+          "neff": [
+            [
+              0.6620231330091472,
+              -1.0133495605135767e-15
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 1,
+          "backend": "gpu",
+          "public_seconds": 10.689349899999797,
+          "eigen_seconds": 0.9284633000006579,
+          "dofs": 59701,
+          "eigen_dimension": 119402,
+          "nnz": 1191104,
+          "residual": 7.865214536294221e-12,
+          "neff": [
+            [
+              0.662023133009146,
+              -1.0099747694934788e-15
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 1,
+          "backend": "cpu",
+          "public_seconds": 12.357555100001264,
+          "eigen_seconds": 2.5976221000000805,
+          "dofs": 59701,
+          "eigen_dimension": 119402,
+          "nnz": 1191104,
+          "residual": 7.049380799753312e-12,
+          "neff": [
+            [
+              0.6620231330090182,
+              -8.039297699091339e-16
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 2,
+          "backend": "cpu",
+          "public_seconds": 12.427004399998623,
+          "eigen_seconds": 2.5391373000002204,
+          "dofs": 59701,
+          "eigen_dimension": 119402,
+          "nnz": 1191104,
+          "residual": 7.049380799753312e-12,
+          "neff": [
+            [
+              0.6620231330090182,
+              -8.039297699091339e-16
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 2,
+          "backend": "gpu",
+          "public_seconds": 11.543511099998796,
+          "eigen_seconds": 1.0027620999990177,
+          "dofs": 59701,
+          "eigen_dimension": 119402,
+          "nnz": 1191104,
+          "residual": 7.86465390329458e-12,
+          "neff": [
+            [
+              0.6620231330091436,
+              -1.0016698232038872e-15
+            ]
+          ],
+          "method": "sparse"
+        }
+      ],
+      "mesh_plus_warm_solve_speedup": 1.0614869736676422
+    },
+    {
+      "package": "FEM",
+      "family": "periodic_2d",
+      "case": "pec",
+      "size": 512,
+      "id": "FEM_periodic_2d_pec_512",
+      "dofs": 152058,
+      "eigen_dimension": 304116,
+      "assembly_seconds": 9.67105730000003,
+      "cpu_seconds": 52.117309499999465,
+      "gpu_seconds": 46.475275099999635,
+      "cpu_eigen_seconds": 7.727184100000159,
+      "gpu_eigen_seconds": 2.099328300000707,
+      "speedup": 1.1213986229852326,
+      "eigen_speedup": 3.6807888027792304,
+      "total_speedup": 1.0719734937235121,
+      "first_solve_speedup": 1.0867230502684238,
+      "max_relative_neff_difference": 1.18246089508861e-12,
+      "max_residual": 1.9107342314917097e-11,
+      "first": [
+        {
+          "backend": "cpu",
+          "public_seconds": 51.284539100000984,
+          "eigen_seconds": 7.7199603999997635,
+          "dofs": 152058,
+          "eigen_dimension": 304116,
+          "nnz": 3036886,
+          "residual": 1.785864759994894e-11,
+          "neff": [
+            [
+              0.6620246907479033,
+              -6.0872452623651025e-15
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "backend": "gpu",
+          "public_seconds": 47.1919125000004,
+          "eigen_seconds": 1.8705030000000988,
+          "dofs": 152058,
+          "eigen_dimension": 304116,
+          "nnz": 3036886,
+          "residual": 1.9107342314917097e-11,
+          "neff": [
+            [
+              0.6620246907471233,
+              -5.7855607139150906e-15
+            ]
+          ],
+          "method": "sparse"
+        }
+      ],
+      "samples": [
+        {
+          "repeat": 0,
+          "backend": "cpu",
+          "public_seconds": 51.19201150000117,
+          "eigen_seconds": 7.643318499998713,
+          "dofs": 152058,
+          "eigen_dimension": 304116,
+          "nnz": 3036886,
+          "residual": 1.785864759994894e-11,
+          "neff": [
+            [
+              0.6620246907479033,
+              -6.0872452623651025e-15
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 0,
+          "backend": "gpu",
+          "public_seconds": 46.08949939999911,
+          "eigen_seconds": 2.099328300000707,
+          "dofs": 152058,
+          "eigen_dimension": 304116,
+          "nnz": 3036886,
+          "residual": 1.9075711808025778e-11,
+          "neff": [
+            [
+              0.662024690747124,
+              -5.780384283816183e-15
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 1,
+          "backend": "gpu",
+          "public_seconds": 46.475275099999635,
+          "eigen_seconds": 2.0967612999993435,
+          "dofs": 152058,
+          "eigen_dimension": 304116,
+          "nnz": 3036886,
+          "residual": 1.9038548112148054e-11,
+          "neff": [
+            [
+              0.6620246907471204,
+              -5.797209746280442e-15
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 1,
+          "backend": "cpu",
+          "public_seconds": 52.117309499999465,
+          "eigen_seconds": 7.727184100000159,
+          "dofs": 152058,
+          "eigen_dimension": 304116,
+          "nnz": 3036886,
+          "residual": 1.785864759994894e-11,
+          "neff": [
+            [
+              0.6620246907479033,
+              -6.0872452623651025e-15
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 2,
+          "backend": "cpu",
+          "public_seconds": 52.19069099999979,
+          "eigen_seconds": 7.8845701000009285,
+          "dofs": 152058,
+          "eigen_dimension": 304116,
+          "nnz": 3036886,
+          "residual": 1.785864759994894e-11,
+          "neff": [
+            [
+              0.6620246907479033,
+              -6.0872452623651025e-15
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 2,
+          "backend": "gpu",
+          "public_seconds": 46.56440250000014,
+          "eigen_seconds": 2.165995800000019,
+          "dofs": 152058,
+          "eigen_dimension": 304116,
+          "nnz": 3036886,
+          "residual": 1.9094496730602193e-11,
+          "neff": [
+            [
+              0.6620246907471209,
+              -5.772478290044748e-15
+            ]
+          ],
+          "method": "sparse"
+        }
+      ],
+      "mesh_plus_warm_solve_speedup": 1.10048803116479
+    },
+    {
+      "package": "FEM",
+      "family": "periodic_2d",
+      "case": "dielectric_insert",
+      "size": 320,
+      "id": "FEM_periodic_2d_dielectric_insert_320",
+      "dofs": 74585,
+      "eigen_dimension": 149170,
+      "assembly_seconds": 4.261569599999348,
+      "cpu_seconds": 16.47216980000121,
+      "gpu_seconds": 14.960718700000143,
+      "cpu_eigen_seconds": 3.1995328000011796,
+      "gpu_eigen_seconds": 1.142166300000099,
+      "speedup": 1.1010279740104367,
+      "eigen_speedup": 2.8012845414900633,
+      "total_speedup": 1.0256134870637759,
+      "first_solve_speedup": 1.0326006391759743,
+      "max_relative_neff_difference": 2.164750903009205e-13,
+      "max_residual": 3.5233512457665052e-12,
+      "first": [
+        {
+          "backend": "cpu",
+          "public_seconds": 16.131341500000417,
+          "eigen_seconds": 3.114665499999319,
+          "dofs": 74585,
+          "eigen_dimension": 149170,
+          "nnz": 1488732,
+          "residual": 3.1185480500170404e-12,
+          "neff": [
+            [
+              0.9831698889627666,
+              -0.004666967756997045
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "backend": "gpu",
+          "public_seconds": 15.622052599999734,
+          "eigen_seconds": 1.0420614000013302,
+          "dofs": 74585,
+          "eigen_dimension": 149170,
+          "nnz": 1488732,
+          "residual": 3.513384101824684e-12,
+          "neff": [
+            [
+              0.9831698889625539,
+              -0.0046669677569956755
+            ]
+          ],
+          "method": "sparse"
+        }
+      ],
+      "samples": [
+        {
+          "repeat": 0,
+          "backend": "cpu",
+          "public_seconds": 15.919255599999815,
+          "eigen_seconds": 3.055070099999284,
+          "dofs": 74585,
+          "eigen_dimension": 149170,
+          "nnz": 1488732,
+          "residual": 3.1185480500170404e-12,
+          "neff": [
+            [
+              0.9831698889627666,
+              -0.004666967756997045
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 0,
+          "backend": "gpu",
+          "public_seconds": 14.960718700000143,
+          "eigen_seconds": 1.1479253999987122,
+          "dofs": 74585,
+          "eigen_dimension": 149170,
+          "nnz": 1488732,
+          "residual": 3.5233512457665052e-12,
+          "neff": [
+            [
+              0.9831698889625542,
+              -0.004666967756995677
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 1,
+          "backend": "gpu",
+          "public_seconds": 14.733896899999309,
+          "eigen_seconds": 1.1222549000012805,
+          "dofs": 74585,
+          "eigen_dimension": 149170,
+          "nnz": 1488732,
+          "residual": 3.5050225543270624e-12,
+          "neff": [
+            [
+              0.9831698889625538,
+              -0.004666967756995671
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 1,
+          "backend": "cpu",
+          "public_seconds": 16.71121839999978,
+          "eigen_seconds": 3.256402299999536,
+          "dofs": 74585,
+          "eigen_dimension": 149170,
+          "nnz": 1488732,
+          "residual": 3.1185480500170404e-12,
+          "neff": [
+            [
+              0.9831698889627666,
+              -0.004666967756997045
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 2,
+          "backend": "cpu",
+          "public_seconds": 16.47216980000121,
+          "eigen_seconds": 3.1995328000011796,
+          "dofs": 74585,
+          "eigen_dimension": 149170,
+          "nnz": 1488732,
+          "residual": 3.1185480500170404e-12,
+          "neff": [
+            [
+              0.9831698889627666,
+              -0.004666967756997045
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 2,
+          "backend": "gpu",
+          "public_seconds": 15.119603300001472,
+          "eigen_seconds": 1.142166300000099,
+          "dofs": 74585,
+          "eigen_dimension": 149170,
+          "nnz": 1488732,
+          "residual": 3.499146624800272e-12,
+          "neff": [
+            [
+              0.9831698889625544,
+              -0.004666967756995642
+            ]
+          ],
+          "method": "sparse"
+        }
+      ],
+      "mesh_plus_warm_solve_speedup": 1.0786301337495343
+    },
+    {
+      "package": "FEM",
+      "family": "periodic_2d",
+      "case": "pec_lossy",
+      "size": 96,
+      "id": "FEM_periodic_2d_pec_lossy_96",
+      "dofs": 5506,
+      "eigen_dimension": 11012,
+      "assembly_seconds": 0.26463239999975485,
+      "cpu_seconds": 0.5111508000009053,
+      "gpu_seconds": 0.8249281000007613,
+      "cpu_eigen_seconds": 0.11692600000060338,
+      "gpu_eigen_seconds": 0.40118400000028487,
+      "speedup": 0.6196307290301222,
+      "eigen_speedup": 0.29145230118977916,
+      "total_speedup": 0.6090907449632094,
+      "first_solve_speedup": 0.5037057879545657,
+      "max_relative_neff_difference": 9.813496235826156e-15,
+      "max_residual": 2.196197759553137e-13,
+      "first": [
+        {
+          "backend": "cpu",
+          "public_seconds": 0.4944442000014533,
+          "eigen_seconds": 0.10773539999900095,
+          "dofs": 5506,
+          "eigen_dimension": 11012,
+          "nnz": 109148,
+          "residual": 1.85586303430155e-13,
+          "neff": [
+            [
+              1.1992955663036278,
+              -0.008338228107418778
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "backend": "gpu",
+          "public_seconds": 0.9816130999988673,
+          "eigen_seconds": 0.5073124999998981,
+          "dofs": 5506,
+          "eigen_dimension": 11012,
+          "nnz": 109148,
+          "residual": 2.1734946384599625e-13,
+          "neff": [
+            [
+              1.199295566303616,
+              -0.008338228107418947
+            ]
+          ],
+          "method": "sparse"
+        }
+      ],
+      "samples": [
+        {
+          "repeat": 0,
+          "backend": "cpu",
+          "public_seconds": 0.49725860000035027,
+          "eigen_seconds": 0.10881639999934123,
+          "dofs": 5506,
+          "eigen_dimension": 11012,
+          "nnz": 109148,
+          "residual": 1.85586303430155e-13,
+          "neff": [
+            [
+              1.1992955663036278,
+              -0.008338228107418778
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 0,
+          "backend": "gpu",
+          "public_seconds": 0.793302500000209,
+          "eigen_seconds": 0.3732061999999132,
+          "dofs": 5506,
+          "eigen_dimension": 11012,
+          "nnz": 109148,
+          "residual": 2.1648811581537778e-13,
+          "neff": [
+            [
+              1.1992955663036167,
+              -0.008338228107418959
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 1,
+          "backend": "gpu",
+          "public_seconds": 0.8249281000007613,
+          "eigen_seconds": 0.40118400000028487,
+          "dofs": 5506,
+          "eigen_dimension": 11012,
+          "nnz": 109148,
+          "residual": 2.196197759553137e-13,
+          "neff": [
+            [
+              1.1992955663036167,
+              -0.00833822810741893
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 1,
+          "backend": "cpu",
+          "public_seconds": 0.5111508000009053,
+          "eigen_seconds": 0.11692600000060338,
+          "dofs": 5506,
+          "eigen_dimension": 11012,
+          "nnz": 109148,
+          "residual": 1.85586303430155e-13,
+          "neff": [
+            [
+              1.1992955663036278,
+              -0.008338228107418778
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 2,
+          "backend": "cpu",
+          "public_seconds": 0.514466700000412,
+          "eigen_seconds": 0.11906960000123945,
+          "dofs": 5506,
+          "eigen_dimension": 11012,
+          "nnz": 109148,
+          "residual": 1.85586303430155e-13,
+          "neff": [
+            [
+              1.1992955663036278,
+              -0.008338228107418778
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 2,
+          "backend": "gpu",
+          "public_seconds": 0.8429225999989285,
+          "eigen_seconds": 0.4177897999998095,
+          "dofs": 5506,
+          "eigen_dimension": 11012,
+          "nnz": 109148,
+          "residual": 2.1005041243495226e-13,
+          "neff": [
+            [
+              1.1992955663036169,
+              -0.00833822810741895
+            ]
+          ],
+          "method": "sparse"
+        }
+      ],
+      "mesh_plus_warm_solve_speedup": 0.7120147986277886
+    },
+    {
+      "package": "FEM",
+      "family": "periodic_2d",
+      "case": "pec_lossy",
+      "size": 160,
+      "id": "FEM_periodic_2d_pec_lossy_160",
+      "dofs": 15083,
+      "eigen_dimension": 30166,
+      "assembly_seconds": 0.7761152000002767,
+      "cpu_seconds": 2.0095206999994843,
+      "gpu_seconds": 2.2264995999994426,
+      "cpu_eigen_seconds": 0.45352980000097887,
+      "gpu_eigen_seconds": 0.5677725000005012,
+      "speedup": 0.9025470743403625,
+      "eigen_speedup": 0.7987878948004324,
+      "total_speedup": 0.9249772362325863,
+      "first_solve_speedup": 0.8986852448096858,
+      "max_relative_neff_difference": 5.369602325680492e-15,
+      "max_residual": 5.679679384704565e-13,
+      "first": [
+        {
+          "backend": "cpu",
+          "public_seconds": 1.9902304999995977,
+          "eigen_seconds": 0.4464494999992894,
+          "dofs": 15083,
+          "eigen_dimension": 30166,
+          "nnz": 300088,
+          "residual": 5.464085616729573e-13,
+          "neff": [
+            [
+              1.1993056176438202,
+              -0.008338158224964472
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "backend": "gpu",
+          "public_seconds": 2.2146023999994213,
+          "eigen_seconds": 0.5555490999995527,
+          "dofs": 15083,
+          "eigen_dimension": 30166,
+          "nnz": 300088,
+          "residual": 5.662668290007423e-13,
+          "neff": [
+            [
+              1.199305617643825,
+              -0.008338158224964422
+            ]
+          ],
+          "method": "sparse"
+        }
+      ],
+      "samples": [
+        {
+          "repeat": 0,
+          "backend": "cpu",
+          "public_seconds": 1.972579899998891,
+          "eigen_seconds": 0.4522616000012931,
+          "dofs": 15083,
+          "eigen_dimension": 30166,
+          "nnz": 300088,
+          "residual": 5.464085616729573e-13,
+          "neff": [
+            [
+              1.1993056176438202,
+              -0.008338158224964472
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 0,
+          "backend": "gpu",
+          "public_seconds": 2.2264995999994426,
+          "eigen_seconds": 0.5677725000005012,
+          "dofs": 15083,
+          "eigen_dimension": 30166,
+          "nnz": 300088,
+          "residual": 5.677658839323882e-13,
+          "neff": [
+            [
+              1.1993056176438266,
+              -0.00833815822496438
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 1,
+          "backend": "gpu",
+          "public_seconds": 2.0263992000000144,
+          "eigen_seconds": 0.45852819999890926,
+          "dofs": 15083,
+          "eigen_dimension": 30166,
+          "nnz": 300088,
+          "residual": 5.679679384704565e-13,
+          "neff": [
+            [
+              1.199305617643826,
+              -0.008338158224964377
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 1,
+          "backend": "cpu",
+          "public_seconds": 2.0095206999994843,
+          "eigen_seconds": 0.45352980000097887,
+          "dofs": 15083,
+          "eigen_dimension": 30166,
+          "nnz": 300088,
+          "residual": 5.464085616729573e-13,
+          "neff": [
+            [
+              1.1993056176438202,
+              -0.008338158224964472
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 2,
+          "backend": "cpu",
+          "public_seconds": 2.0794134000007034,
+          "eigen_seconds": 0.47257230000104755,
+          "dofs": 15083,
+          "eigen_dimension": 30166,
+          "nnz": 300088,
+          "residual": 5.464085616729573e-13,
+          "neff": [
+            [
+              1.1993056176438202,
+              -0.008338158224964472
+            ]
+          ],
+          "method": "sparse"
+        },
+        {
+          "repeat": 2,
+          "backend": "gpu",
+          "public_seconds": 2.3779630999997607,
+          "eigen_seconds": 0.5998573000015313,
+          "dofs": 15083,
+          "eigen_dimension": 30166,
+          "nnz": 300088,
+          "residual": 5.647026330842397e-13,
+          "neff": [
+            [
+              1.1993056176438242,
+              -0.00833815822496446
+            ]
+          ],
+          "method": "sparse"
+        }
+      ],
+      "mesh_plus_warm_solve_speedup": 0.9277366847056178
+    },
+    {
+      "package": "FEM",
+      "family": "periodic_3d",
+      "case": "iris_pec",
+      "size": 1.6,
+      "id": "FEM_periodic_3d_iris_pec_1.6",
+      "dofs": 8774,
+      "eigen_dimension": 17548,
+      "assembly_seconds": 0.9202726000003167,
+      "cpu_seconds": 3.019120099999782,
+      "gpu_seconds": 0.7149609000007331,
+      "cpu_eigen_seconds": 1.000743999999031,
+      "gpu_eigen_seconds": 0.519437700000708,
+      "speedup": 4.222776518263706,
+      "eigen_speedup": 1.9265910040754974,
+      "total_speedup": 1.7601298277865012,
+      "first_solve_speedup": 2.3085641001138044,
+      "max_relative_neff_difference": 4.711244251239369e-15,
+      "max_residual": 2.09467104398932e-13,
+      "first": [
+        {
+          "backend": "cpu",
+          "public_seconds": 2.9445681999986846,
+          "eigen_seconds": 0.9536232999998902,
+          "dofs": 8774,
+          "eigen_dimension": 17548,
+          "nnz": 362544,
+          "residual": 4.105677492807765e-14,
+          "neff": [
+            [
+              0.6905947076699991,
+              -3.3881317890172014e-21
+            ]
+          ],
+          "method": "sparse-shift-invert"
+        },
+        {
+          "backend": "gpu",
+          "public_seconds": 1.2754977000004146,
+          "eigen_seconds": 0.7500937000004342,
+          "dofs": 8774,
+          "eigen_dimension": 17548,
+          "nnz": 362544,
+          "residual": 1.3526788968425372e-13,
+          "neff": [
+            [
+              0.6905947076699986,
+              6.820000124265879e-16
+            ]
+          ],
+          "method": "cuda-resident-refined-arnoldi"
+        }
+      ],
+      "samples": [
+        {
+          "repeat": 0,
+          "backend": "cpu",
+          "public_seconds": 3.0162532000013016,
+          "eigen_seconds": 1.000743999999031,
+          "dofs": 8774,
+          "eigen_dimension": 17548,
+          "nnz": 362544,
+          "residual": 4.105677492807765e-14,
+          "neff": [
+            [
+              0.6905947076699991,
+              -3.3881317890172014e-21
+            ]
+          ],
+          "method": "sparse-shift-invert"
+        },
+        {
+          "repeat": 0,
+          "backend": "gpu",
+          "public_seconds": 0.8781997000005504,
+          "eigen_seconds": 0.7351660000003903,
+          "dofs": 8774,
+          "eigen_dimension": 17548,
+          "nnz": 362544,
+          "residual": 1.1362903272337662e-13,
+          "neff": [
+            [
+              0.690594707670002,
+              -3.472411567269004e-17
+            ]
+          ],
+          "method": "cuda-resident-refined-arnoldi"
+        },
+        {
+          "repeat": 1,
+          "backend": "gpu",
+          "public_seconds": 0.5318370999993931,
+          "eigen_seconds": 0.47626730000047246,
+          "dofs": 8774,
+          "eigen_dimension": 17548,
+          "nnz": 362544,
+          "residual": 1.147318327082602e-13,
+          "neff": [
+            [
+              0.6905947076699996,
+              1.3929437759355656e-15
+            ]
+          ],
+          "method": "cuda-resident-refined-arnoldi"
+        },
+        {
+          "repeat": 1,
+          "backend": "cpu",
+          "public_seconds": 3.019120099999782,
+          "eigen_seconds": 1.0240778000006685,
+          "dofs": 8774,
+          "eigen_dimension": 17548,
+          "nnz": 362544,
+          "residual": 4.105677492807765e-14,
+          "neff": [
+            [
+              0.6905947076699991,
+              -3.3881317890172014e-21
+            ]
+          ],
+          "method": "sparse-shift-invert"
+        },
+        {
+          "repeat": 2,
+          "backend": "cpu",
+          "public_seconds": 3.0525897000006808,
+          "eigen_seconds": 0.9935986000000412,
+          "dofs": 8774,
+          "eigen_dimension": 17548,
+          "nnz": 362544,
+          "residual": 4.105677492807765e-14,
+          "neff": [
+            [
+              0.6905947076699991,
+              -3.3881317890172014e-21
+            ]
+          ],
+          "method": "sparse-shift-invert"
+        },
+        {
+          "repeat": 2,
+          "backend": "gpu",
+          "public_seconds": 0.7149609000007331,
+          "eigen_seconds": 0.519437700000708,
+          "dofs": 8774,
+          "eigen_dimension": 17548,
+          "nnz": 362544,
+          "residual": 2.09467104398932e-13,
+          "neff": [
+            [
+              0.6905947076699969,
+              2.3780786689761016e-15
+            ]
+          ],
+          "method": "cuda-resident-refined-arnoldi"
+        }
+      ],
+      "mesh_plus_warm_solve_speedup": 2.409070447735794
+    },
+    {
+      "package": "FEM",
+      "family": "periodic_3d",
+      "case": "iris_pec",
+      "size": 0.9,
+      "id": "FEM_periodic_3d_iris_pec_0.9",
+      "dofs": 31353,
+      "eigen_dimension": 62706,
+      "assembly_seconds": 3.175399900001139,
+      "cpu_seconds": 21.739934900000662,
+      "gpu_seconds": 1.8507965999997396,
+      "cpu_eigen_seconds": 7.764338700000735,
+      "gpu_eigen_seconds": 1.2222617999996146,
+      "speedup": 11.746258286839149,
+      "eigen_speedup": 6.352435051151221,
+      "total_speedup": 3.655031839744028,
+      "first_solve_speedup": 5.9878911290163614,
+      "max_relative_neff_difference": 5.801559524040634e-15,
+      "max_residual": 1.373421182957701e-13,
+      "first": [
+        {
+          "backend": "cpu",
+          "public_seconds": 21.639813400001003,
+          "eigen_seconds": 7.501650000000154,
+          "dofs": 31353,
+          "eigen_dimension": 62706,
+          "nnz": 1350024,
+          "residual": 1.373421182957701e-13,
+          "neff": [
+            [
+              0.6948492579347851,
+              1.0622428433279367e-17
+            ]
+          ],
+          "method": "sparse-shift-invert"
+        },
+        {
+          "backend": "gpu",
+          "public_seconds": 3.613929000001008,
+          "eigen_seconds": 0.86043939999945,
+          "dofs": 31353,
+          "eigen_dimension": 62706,
+          "nnz": 1350024,
+          "residual": 1.1088477874525496e-13,
+          "neff": [
+            [
+              0.6948492579347811,
+              5.361843493479441e-16
+            ]
+          ],
+          "method": "cuda-resident-refined-arnoldi"
+        }
+      ],
+      "samples": [
+        {
+          "repeat": 0,
+          "backend": "cpu",
+          "public_seconds": 21.678229099999953,
+          "eigen_seconds": 7.793064100000265,
+          "dofs": 31353,
+          "eigen_dimension": 62706,
+          "nnz": 1350024,
+          "residual": 1.373421182957701e-13,
+          "neff": [
+            [
+              0.6948492579347851,
+              1.0622428433279367e-17
+            ]
+          ],
+          "method": "sparse-shift-invert"
+        },
+        {
+          "repeat": 0,
+          "backend": "gpu",
+          "public_seconds": 1.8507965999997396,
+          "eigen_seconds": 1.2222617999996146,
+          "dofs": 31353,
+          "eigen_dimension": 62706,
+          "nnz": 1350024,
+          "residual": 1.057649893379308e-13,
+          "neff": [
+            [
+              0.6948492579347839,
+              4.0151691040458785e-17
+            ]
+          ],
+          "method": "cuda-resident-refined-arnoldi"
+        },
+        {
+          "repeat": 1,
+          "backend": "gpu",
+          "public_seconds": 0.9573674999992363,
+          "eigen_seconds": 0.8578183000008721,
+          "dofs": 31353,
+          "eigen_dimension": 62706,
+          "nnz": 1350024,
+          "residual": 1.0924998540281667e-13,
+          "neff": [
+            [
+              0.6948492579347818,
+              2.9822187776163637e-16
+            ]
+          ],
+          "method": "cuda-resident-refined-arnoldi"
+        },
+        {
+          "repeat": 1,
+          "backend": "cpu",
+          "public_seconds": 21.98456729999998,
+          "eigen_seconds": 7.764338700000735,
+          "dofs": 31353,
+          "eigen_dimension": 62706,
+          "nnz": 1350024,
+          "residual": 1.373421182957701e-13,
+          "neff": [
+            [
+              0.6948492579347851,
+              1.0622428433279367e-17
+            ]
+          ],
+          "method": "sparse-shift-invert"
+        },
+        {
+          "repeat": 2,
+          "backend": "cpu",
+          "public_seconds": 21.739934900000662,
+          "eigen_seconds": 7.749973600000885,
+          "dofs": 31353,
+          "eigen_dimension": 62706,
+          "nnz": 1350024,
+          "residual": 1.373421182957701e-13,
+          "neff": [
+            [
+              0.6948492579347851,
+              1.0622428433279367e-17
+            ]
+          ],
+          "method": "sparse-shift-invert"
+        },
+        {
+          "repeat": 2,
+          "backend": "gpu",
+          "public_seconds": 2.1848902000001544,
+          "eigen_seconds": 1.2462555000001885,
+          "dofs": 31353,
+          "eigen_dimension": 62706,
+          "nnz": 1350024,
+          "residual": 9.905883489112124e-14,
+          "neff": [
+            [
+              0.6948492579347825,
+              4.1254040893839213e-16
+            ]
+          ],
+          "method": "cuda-resident-refined-arnoldi"
+        }
+      ],
+      "mesh_plus_warm_solve_speedup": 4.957095250851702
+    },
+    {
+      "package": "FEM",
+      "family": "periodic_3d",
+      "case": "iris_pec",
+      "size": 0.6,
+      "id": "FEM_periodic_3d_iris_pec_0.6",
+      "dofs": 82081,
+      "eigen_dimension": 164162,
+      "assembly_seconds": 8.029260900000736,
+      "cpu_seconds": 151.9334276999998,
+      "gpu_seconds": 3.239520700000867,
+      "cpu_eigen_seconds": 68.17916359999981,
+      "gpu_eigen_seconds": 2.1654621999987285,
+      "speedup": 46.899971251907466,
+      "eigen_speedup": 31.484808924413386,
+      "total_speedup": 10.669532251950201,
+      "first_solve_speedup": 22.436341155692855,
+      "max_relative_neff_difference": 4.944550817863939e-15,
+      "max_residual": 3.4507452495518417e-13,
+      "first": [
+        {
+          "backend": "cpu",
+          "public_seconds": 148.03839599999992,
+          "eigen_seconds": 67.00083760000052,
+          "dofs": 82081,
+          "eigen_dimension": 164162,
+          "nnz": 3627728,
+          "residual": 3.4507452495518417e-13,
+          "neff": [
+            [
+              0.696423544185836,
+              -4.405990105909013e-17
+            ]
+          ],
+          "method": "sparse-shift-invert"
+        },
+        {
+          "backend": "gpu",
+          "public_seconds": 6.5981522999991284,
+          "eigen_seconds": 2.072195200000351,
+          "dofs": 82081,
+          "eigen_dimension": 164162,
+          "nnz": 3627728,
+          "residual": 2.937225269316261e-13,
+          "neff": [
+            [
+              0.6964235441858394,
+              -1.5570117284781186e-16
+            ]
+          ],
+          "method": "cuda-resident-refined-arnoldi"
+        }
+      ],
+      "samples": [
+        {
+          "repeat": 0,
+          "backend": "cpu",
+          "public_seconds": 148.86740850000024,
+          "eigen_seconds": 67.85788769999999,
+          "dofs": 82081,
+          "eigen_dimension": 164162,
+          "nnz": 3627728,
+          "residual": 3.4507452495518417e-13,
+          "neff": [
+            [
+              0.696423544185836,
+              -4.405990105909013e-17
+            ]
+          ],
+          "method": "sparse-shift-invert"
+        },
+        {
+          "repeat": 0,
+          "backend": "gpu",
+          "public_seconds": 3.239520700000867,
+          "eigen_seconds": 2.1654621999987285,
+          "dofs": 82081,
+          "eigen_dimension": 164162,
+          "nnz": 3627728,
+          "residual": 2.280823668542904e-13,
+          "neff": [
+            [
+              0.6964235441858388,
+              2.6883766954667425e-17
+            ]
+          ],
+          "method": "cuda-resident-refined-arnoldi"
+        },
+        {
+          "repeat": 1,
+          "backend": "gpu",
+          "public_seconds": 2.230738399999609,
+          "eigen_seconds": 2.0072744000008242,
+          "dofs": 82081,
+          "eigen_dimension": 164162,
+          "nnz": 3627728,
+          "residual": 2.392117791595338e-13,
+          "neff": [
+            [
+              0.6964235441858391,
+              -7.163145876692804e-17
+            ]
+          ],
+          "method": "cuda-resident-refined-arnoldi"
+        },
+        {
+          "repeat": 1,
+          "backend": "cpu",
+          "public_seconds": 151.9334276999998,
+          "eigen_seconds": 68.17916359999981,
+          "dofs": 82081,
+          "eigen_dimension": 164162,
+          "nnz": 3627728,
+          "residual": 3.4507452495518417e-13,
+          "neff": [
+            [
+              0.696423544185836,
+              -4.405990105909013e-17
+            ]
+          ],
+          "method": "sparse-shift-invert"
+        },
+        {
+          "repeat": 2,
+          "backend": "cpu",
+          "public_seconds": 152.1222848999987,
+          "eigen_seconds": 69.0938333999984,
+          "dofs": 82081,
+          "eigen_dimension": 164162,
+          "nnz": 3627728,
+          "residual": 3.4507452495518417e-13,
+          "neff": [
+            [
+              0.696423544185836,
+              -4.405990105909013e-17
+            ]
+          ],
+          "method": "sparse-shift-invert"
+        },
+        {
+          "repeat": 2,
+          "backend": "gpu",
+          "public_seconds": 3.29585600000064,
+          "eigen_seconds": 2.2175632000016776,
+          "dofs": 82081,
+          "eigen_dimension": 164162,
+          "nnz": 3627728,
+          "residual": 2.922101483876386e-13,
+          "neff": [
+            [
+              0.6964235441858387,
+              9.248138652182946e-17
+            ]
+          ],
+          "method": "cuda-resident-refined-arnoldi"
+        }
+      ],
+      "mesh_plus_warm_solve_speedup": 14.195207102068407
+    },
+    {
+      "package": "FEM",
+      "family": "periodic_3d",
+      "case": "iris_lossy",
+      "size": 0.9,
+      "id": "FEM_periodic_3d_iris_lossy_0.9",
+      "dofs": 31353,
+      "eigen_dimension": 62706,
+      "assembly_seconds": 3.1325816000007762,
+      "cpu_seconds": 21.539013699999487,
+      "gpu_seconds": 2.1578045999995084,
+      "cpu_eigen_seconds": 7.72566469999947,
+      "gpu_eigen_seconds": 1.2109701999997924,
+      "speedup": 9.981911105391282,
+      "eigen_speedup": 6.379731474813166,
+      "total_speedup": 3.5967695232595807,
+      "first_solve_speedup": 5.856317962587552,
+      "max_relative_neff_difference": 3.7138740366556223e-16,
+      "max_residual": 4.946802812976331e-14,
+      "first": [
+        {
+          "backend": "cpu",
+          "public_seconds": 21.08330980000028,
+          "eigen_seconds": 7.35067379999964,
+          "dofs": 31353,
+          "eigen_dimension": 62706,
+          "nnz": 1350024,
+          "residual": 4.946802812976331e-14,
+          "neff": [
+            [
+              1.2260339815412271,
+              -0.008398618044817799
+            ]
+          ],
+          "method": "sparse-shift-invert"
+        },
+        {
+          "backend": "gpu",
+          "public_seconds": 3.6000965000002907,
+          "eigen_seconds": 0.865712299999359,
+          "dofs": 31353,
+          "eigen_dimension": 62706,
+          "nnz": 1350024,
+          "residual": 4.0616553533299744e-14,
+          "neff": [
+            [
+              1.2260339815412271,
+              -0.008398618044817736
+            ]
+          ],
+          "method": "cuda-resident-refined-arnoldi"
+        }
+      ],
+      "samples": [
+        {
+          "repeat": 0,
+          "backend": "cpu",
+          "public_seconds": 21.251583699999173,
+          "eigen_seconds": 7.498674700000265,
+          "dofs": 31353,
+          "eigen_dimension": 62706,
+          "nnz": 1350024,
+          "residual": 4.946802812976331e-14,
+          "neff": [
+            [
+              1.2260339815412271,
+              -0.008398618044817799
+            ]
+          ],
+          "method": "sparse-shift-invert"
+        },
+        {
+          "repeat": 0,
+          "backend": "gpu",
+          "public_seconds": 2.1578045999995084,
+          "eigen_seconds": 1.2109701999997924,
+          "dofs": 31353,
+          "eigen_dimension": 62706,
+          "nnz": 1350024,
+          "residual": 4.247802707494557e-14,
+          "neff": [
+            [
+              1.2260339815412271,
+              -0.008398618044817629
+            ]
+          ],
+          "method": "cuda-resident-refined-arnoldi"
+        },
+        {
+          "repeat": 1,
+          "backend": "gpu",
+          "public_seconds": 0.9475216999999247,
+          "eigen_seconds": 0.84812840000086,
+          "dofs": 31353,
+          "eigen_dimension": 62706,
+          "nnz": 1350024,
+          "residual": 4.71311552866678e-14,
+          "neff": [
+            [
+              1.2260339815412271,
+              -0.0083986180448177
+            ]
+          ],
+          "method": "cuda-resident-refined-arnoldi"
+        },
+        {
+          "repeat": 1,
+          "backend": "cpu",
+          "public_seconds": 21.83354330000111,
+          "eigen_seconds": 7.772474400000647,
+          "dofs": 31353,
+          "eigen_dimension": 62706,
+          "nnz": 1350024,
+          "residual": 4.946802812976331e-14,
+          "neff": [
+            [
+              1.2260339815412271,
+              -0.008398618044817799
+            ]
+          ],
+          "method": "sparse-shift-invert"
+        },
+        {
+          "repeat": 2,
+          "backend": "cpu",
+          "public_seconds": 21.539013699999487,
+          "eigen_seconds": 7.72566469999947,
+          "dofs": 31353,
+          "eigen_dimension": 62706,
+          "nnz": 1350024,
+          "residual": 4.946802812976331e-14,
+          "neff": [
+            [
+              1.2260339815412271,
+              -0.008398618044817799
+            ]
+          ],
+          "method": "sparse-shift-invert"
+        },
+        {
+          "repeat": 2,
+          "backend": "gpu",
+          "public_seconds": 2.1763757999997324,
+          "eigen_seconds": 1.2267011999992974,
+          "dofs": 31353,
+          "eigen_dimension": 62706,
+          "nnz": 1350024,
+          "residual": 4.444877182084392e-14,
+          "neff": [
+            [
+              1.2260339815412276,
+              -0.008398618044817698
+            ]
+          ],
+          "method": "cuda-resident-refined-arnoldi"
+        }
+      ],
+      "mesh_plus_warm_solve_speedup": 4.663477176769994
+    }
+  ],
+  "failures": []
+}

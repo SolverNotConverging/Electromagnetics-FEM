@@ -175,3 +175,9 @@ those devices; architecture-policy unit tests do not replace that testing.
 - [NVIDIA cuDSS architecture and operating-system support](https://docs.nvidia.com/cuda/cudss/index.html)
 - [NVIDIA CUDA 13 architecture transition](https://developer.nvidia.com/blog/navigating-gpu-architecture-support-a-guide-for-nvidia-cuda-developers)
 - [CuPy runtime compilation and caching](https://docs.cupy.dev/en/stable/user_guide/performance.html)
+
+## Measured CUDA versus SciPy performance
+
+See the [RTX 4070 Laptop / i9 benchmark](benchmarks/cuda_vs_scipy.rst) for
+current eigenvalue-stage, complete-solve and first-mesh timings, numerical checks
+and the recorded measurement data.

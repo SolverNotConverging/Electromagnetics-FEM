@@ -83,6 +83,7 @@ terminal: `fem view result.h5`, `fem inspect result.h5`, `fem info`.
 
 - [Getting started](docs/getting_started.md) and [conventions](docs/conventions.md)
 - [Materials and shapes](docs/materials_and_shapes.rst), [adaptivity](docs/adaptivity.rst), [CPU/GPU acceleration](docs/acceleration.md)
+- [CUDA versus SciPy benchmarks: RTX 4070 Laptop / i9](docs/benchmarks/cuda_vs_scipy.rst)
 - API reference in [docs/api](docs/api/), [changelog](CHANGELOG.md)
 - [Contributing](CONTRIBUTING.md), [tests](tests/README.rst), [analytical benchmarks](benchmarks/README.md)
 

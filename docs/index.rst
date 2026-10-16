@@ -46,6 +46,7 @@ Finite-element electromagnetic solvers with one workflow for every problem type:
    materials_and_shapes
    adaptivity
    acceleration
+   benchmarks/cuda_vs_scipy
 
 .. toctree::
    :maxdepth: 2

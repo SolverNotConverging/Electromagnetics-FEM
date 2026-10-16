@@ -11,7 +11,33 @@ python benchmarks/analytical/uniform_periodic_medium.py --check
 
 Reports are written to ignored `outputs/benchmarks/analytical/`.
 
-## 2D waveguide GPU scaling
+## Current CUDA versus SciPy modal solvers (FEM and FDFD)
+
+The current [RTX 4070 Laptop / i9 CUDA versus SciPy benchmark](../docs/benchmarks/cuda_vs_scipy.rst)
+contains project-specific results, plots, timing boundaries and downloadable data.
+
+With the sibling FDFD checkout available and FEM's CUDA-enabled Python environment:
+
+```powershell
+uv pip install --python .venv/Scripts/python.exe threadpoolctl
+python benchmarks/cuda_vs_scipy.py
+python benchmarks/report_cuda_vs_scipy.py outputs/benchmarks/cuda_vs_scipy_20261016
+```
+
+Use the optional CUDA runtime described in the [acceleration guide](../docs/acceleration.md).
+The driver sets
+single-thread BLAS/OpenMP execution and verifies the loaded thread pools. It
+compares each project's current public CUDA path with SciPy ARPACK/SuperLU on
+identical meshes, checks mode agreement and residuals, and records medians of
+three alternating paired repeats after per-case warmup. Every solve performs a
+fresh factorization. Mesh time, first solve, eigenvalue-stage time and complete
+public solve time are recorded separately; warm FEM 3D repeats reuse static
+resident geometry. Waveguide Krylov settings retain production defaults;
+FDFD periodic 2D and FEM periodic 3D use `ncv=96` on both backends. FDFD periodic
+3D is excluded. Results checkpoint to JSON and completed cases are skipped on
+resume. `--ids` selects individual configuration IDs from `configurations()`.
+
+## Additional 2D waveguide runner
 
 `gpu_waveguide_2d.py` compares explicit CPU and GPU backends on the same
 assembled mesh, with no adaptive remeshing. It requires the `cuda12` or `cuda13`
@@ -59,7 +85,7 @@ CPU/GPU mode sets are matched by minimum effective-index distance and must agree
 within 1e-6 relative error; each returned mode also passes solver residual and
 Gauss-law validation. This checks backend agreement, not mesh convergence.
 
-## 3D periodic GPU scaling
+## Additional 3D periodic runner
 
 `gpu_periodic_3d.py` applies the same warmup, alternating backend order and
 three-repeat median protocol to first-order tetrahedral Nedelec elements:
