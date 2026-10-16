@@ -672,7 +672,7 @@ Returns: the initial mesh stored in ``mesh_data``.
      - ``str``
      - Optional
      - ``'auto'``
-     - Execution backend: auto (default) selects GPU when available, otherwise SciPy CPU; cpu and gpu force the selected backend.
+     - Execution backend: auto (default) selects hybrid GPU Arnoldi/CPU Ritz when available, otherwise warns and selects SciPy CPU; hybrid, gpu (resident CUDA Ritz), and cpu explicitly select a backend.
    * - ``side``
      - ``Literal['left', 'right']``
      - Optional
@@ -792,7 +792,7 @@ Solve without saving or opening a viewer.
      - ``str``
      - Optional
      - ``'auto'``
-     - Execution backend: auto (default) selects GPU when available, otherwise SciPy CPU; cpu and gpu force the selected backend.
+     - Execution backend: auto (default) selects hybrid GPU Arnoldi/CPU Ritz when available, otherwise warns and selects SciPy CPU; hybrid, gpu (resident CUDA Ritz), and cpu explicitly select a backend.
 
 Returns: the physics-specific result stored in ``result``.
 
@@ -823,7 +823,7 @@ Solve independent points on an increasing ordinary-frequency grid.
      - ``str``
      - Optional
      - ``'auto'``
-     - Execution backend: auto (default) selects GPU when available, otherwise SciPy CPU; cpu and gpu force the selected backend.
+     - Execution backend: auto (default) selects hybrid GPU Arnoldi/CPU Ritz when available, otherwise warns and selects SciPy CPU; hybrid, gpu (resident CUDA Ritz), and cpu explicitly select a backend.
    * - ``linear_solver``
      - ``Literal['direct']``
      - Optional
@@ -1320,8 +1320,9 @@ correct a launch failure. Saving and loading do not require an active GUI.
 Backend selection
 -----------------
 
-``backend="auto"`` selects GPU when available, otherwise SciPy CPU. ``backend="gpu"`` requests
-CuPy/cuDSS explicitly. See the solver guide for supported algorithms.
+``backend="auto"`` tries hybrid GPU Arnoldi/CPU Ritz, then warns before SciPy CPU fallback.
+``hybrid`` explicitly selects that path; ``gpu`` explicitly requires resident CUDA Ritz.
+Both accelerated choices use cuDSS for direct scattering solves.
 
 ``sweep(backend="gpu")`` selects both device and lead-mode solves;
 ``mode_options["backend"]`` overrides the lead-mode backend.

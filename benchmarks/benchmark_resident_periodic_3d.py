@@ -5,8 +5,6 @@ estimation and final host result export. Assembly is excluded; resident setup
 and first-use solve times are recorded separately. Neither path reuses factors.
 """
 import argparse
-from contextlib import ExitStack
-from unittest.mock import patch
 import csv
 import gc
 import json
@@ -22,19 +20,8 @@ from gpu_periodic_3d import make_solver
 
 
 def solve_path(solver, resident, **options):
-    """Select the former hybrid implementation only inside the benchmark."""
-    from fem.common._gpu_arnoldi import iterate_hybrid
-
-    def hybrid(operator, target, shift, count, tolerance, ncv, max_iterations, random_seed,
-               *, vector_rows=None):
-        return iterate_hybrid(operator, target, shift, count, tolerance, ncv,
-                              max_iterations, random_seed)
-
-    with ExitStack() as selection:
-        if not resident:
-            selection.enter_context(patch('fem.common._gpu_resident_arnoldi.is_available', return_value=False))
-            selection.enter_context(patch('fem.common._gpu_arnoldi.iterate', hybrid))
-        return solver.solve(**options)
+    """Compare hybrid and resident Ritz with the same GPU postprocessing."""
+    return solver.solve(**(options | dict(backend='gpu' if resident else 'hybrid')))
 
 
 def main():

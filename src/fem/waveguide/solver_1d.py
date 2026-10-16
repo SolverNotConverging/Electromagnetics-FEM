@@ -539,7 +539,7 @@ class ModeSolver1D(WaveguideScene1D, ElectromagneticSolverMixin):
     ) -> tuple[ComplexArray, ComplexArray, str]:
         size = system.A.shape[0]
         candidate_count = min(size, max(2 * requested + 6, 10))
-        if backend == "gpu":
+        if backend in ("gpu", "hybrid"):
             from fem.common.linalg import generalized_eigenpairs
             return generalized_eigenpairs(system.A, system.B, target=sigma,
                 count=candidate_count, tolerance=tolerance, backend=backend)

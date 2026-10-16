@@ -8,7 +8,7 @@ from fem.common.errors import BackendCapabilityError, ConfigurationError
 
 _REAL_IS_AVAILABLE = gpu.is_available
 
-@pytest.mark.parametrize("available, expected", [(True, "gpu"), (False, "cpu")])
+@pytest.mark.parametrize("available, expected", [(True, "hybrid"), (False, "cpu")])
 def test_auto_selects_runtime(monkeypatch, available, expected):
     monkeypatch.setattr(gpu, "is_available", lambda: available)
     if available:
@@ -55,6 +55,8 @@ def test_auto_does_not_hide_numerical_failure(monkeypatch):
     monkeypatch.setattr(gpu, "is_available", lambda: True)
     from fem.common import _gpu_resident_arnoldi as resident
     monkeypatch.setattr(resident, "probe_resident_available", lambda: None)
+    from fem.common import _gpu_arnoldi as hybrid
+    monkeypatch.setattr(hybrid, "probe_hybrid_available", lambda: None)
     @contextmanager
     def failed_factorization(*args):
         raise RuntimeError("Numerical factorization failed")
@@ -72,8 +74,9 @@ def test_missing_resident_step_warns_for_auto_and_errors_for_gpu(monkeypatch, fa
     def unavailable():
         raise RuntimeError(failure)
     monkeypatch.setattr(resident, 'probe_resident_available', unavailable)
-    with pytest.warns(RuntimeWarning, match=failure):
-        assert resolve_eigen_backend('auto') == 'cpu'
+    from fem.common import _gpu_arnoldi as hybrid
+    monkeypatch.setattr(hybrid, 'probe_hybrid_available', lambda: None)
+    assert resolve_eigen_backend('auto') == 'hybrid'
     with pytest.raises(BackendCapabilityError, match=failure):
         resolve_eigen_backend('gpu')
 

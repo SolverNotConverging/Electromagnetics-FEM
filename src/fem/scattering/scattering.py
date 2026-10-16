@@ -108,8 +108,8 @@ class _SolverOptions:
         validate_controls(self.max_refinements, self.adaptive_tolerance, ConfigurationError)
         if isinstance(self.element_order, (bool, np.bool_)) or self.element_order not in (1, 2):
             raise ConfigurationError("element_order must be 1 or 2.")
-        if self.backend not in ("auto", "cpu", "gpu"):
-            raise ConfigurationError("backend must be 'auto', 'cpu' or 'gpu'.")
+        if self.backend not in ("auto", "cpu", "hybrid", "gpu"):
+            raise ConfigurationError("backend must be 'auto', 'cpu', 'hybrid' or 'gpu'.")
         if self.linear_solver != "direct":
             raise ConfigurationError("The initial solver supports linear_solver='direct' only.")
         if not np.isfinite(self.tolerance) or self.tolerance <= 0.0:

@@ -1,4 +1,4 @@
-"""Opt-in resident 3D periodic solve: CUDA iteration, filters, fields and estimator.
+"""GPU 3D periodic filters, fields and estimator with hybrid or resident iteration.
 
 Geometry callbacks and scikit-fem trace geometry are prepared once on CPU.
 All mode-dependent numerics then run on CUDA; host result objects are exported
@@ -15,6 +15,7 @@ from fem.adaptivity.policy import cell_geometry
 from fem.common.gpu import _runtime, quadratic_operator
 from fem.common.constants import ETA_0
 from fem.common._gpu_resident_arnoldi import iterate_device, check_resident_available
+from fem.common._gpu_arnoldi import iterate_hybrid_device, probe_hybrid_available
 from .assembly_3d import evaluate_material_3d
 from .exceptions import SolverError
 from .results import PeriodicMode, PeriodicModeSet, PeriodicSampledFields
@@ -159,13 +160,14 @@ class ResidentSystem3D:
 
     def solve(self, *, target, requested, direction, eigensolver_tolerance, residual_tolerance,
               divergence_tolerance, propagation_ratio_tolerance, pml_limit, ncv,
-              max_iterations, random_seed, prepare_seconds):
+              max_iterations, random_seed, prepare_seconds, backend="gpu"):
         import cupy as cp
         system, solver = self.system, self.solver
         count = min(max(4*requested, requested+12), 2*system.ndofs-2)
         shift = target+1e-6j*max(1., abs(target))
         with quadratic_operator(self.a0, self.a1, self.a2, shift) as operator:
-            values, companion, iteration_residuals, execution = iterate_device(
+            iteration = iterate_device if backend == "gpu" else iterate_hybrid_device
+            values, companion, iteration_residuals, execution = iteration(
                 operator, target, shift, count, eigensolver_tolerance, ncv, max_iterations, random_seed)
             vectors = companion[:system.ndofs]
             vectors /= cp.linalg.norm(vectors, axis=0)[None]
@@ -246,12 +248,12 @@ class ResidentSystem3D:
                 normalization='unit-power' if prop.real else 'energy-like', residual=float(residual.real),
                 gauss_residual=float(gauss_residual.real), pml_fraction=float(pml.real),
                 metadata=dict(classification='propagating' if prop.real else 'evanescent',
-                              eigensolver='cuda-resident-refined-arnoldi')))
+                              eigensolver='cuda-resident-refined-arnoldi' if backend == 'gpu' else 'cuda-hybrid-refined-arnoldi')))
         execution.update(device_index=self.device_index, prepare_seconds=prepare_seconds, final_numeric_download_bytes=(
             metadata_host.nbytes+coefficients_host.nbytes+fields_host.nbytes+16))
         result = PeriodicModeSet(modes, frequency=solver.frequency, period=solver.period,
-            dimension=3, metadata=dict(backend='gpu', eigensolver='cuda-resident-refined-arnoldi',
-                gpu_resident=True, gpu_execution=execution, neff_guess=target, requested_direction=direction,
+            dimension=3, metadata=dict(backend=backend, eigensolver='cuda-resident-refined-arnoldi' if backend == 'gpu' else 'cuda-hybrid-refined-arnoldi',
+                gpu_resident=backend == "gpu", gpu_postprocessing=True, gpu_execution=execution, neff_guess=target, requested_direction=direction,
                 mesh=asdict(solver.mesh_data.info), mesh_element_tags=solver.mesh_data.element_tags,
                 periodic_node_pairs=solver.mesh_data.periodic_node_pairs,
                 periodic_edge_pairs=solver.mesh_data.periodic_edge_pairs, edge_nodes=solver.mesh_data.edge_nodes,
@@ -268,7 +270,7 @@ class ResidentSystem3D:
 
 def solve_resident(solver, system, **options):
     import cupy as cp
-    check_resident_available()
+    (check_resident_available if options.get("backend", "gpu") == "gpu" else probe_hybrid_available)()
     session = getattr(solver, '_gpu_resident_session', None)
     prepared = 0.
     if session is None or session.system is not system or session.device_index != cp.cuda.Device().id:

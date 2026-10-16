@@ -542,7 +542,7 @@ def solve_qep_candidates(
     n = system.ndofs
     size = 2 * n
 
-    if backend == "gpu":
+    if backend in ("gpu", "hybrid"):
         from fem.common.linalg import quadratic_eigenpairs
         return quadratic_eigenpairs(system.A0, system.A1, system.A2, target=target,
             count=max(2*candidate_count, 8), tolerance=tolerance, backend=backend)

@@ -25,7 +25,7 @@ def qualify():
     devices = []
     for index in range(count):
         with cp.cuda.Device(index):
-            assert resolve_backend() == "gpu", "Automatic GPU readiness probe failed"
+            assert resolve_backend() == "hybrid", "Automatic GPU readiness probe failed"
             n = 32
             a = diags((-.2j, np.arange(1., n+1)+1j, .1), (-1, 0, 1), shape=(n, n), format="csc")
             rhs = np.arange(n)+.5j

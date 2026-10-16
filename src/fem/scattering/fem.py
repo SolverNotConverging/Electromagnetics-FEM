@@ -527,7 +527,7 @@ def solve_prescribed_pec(
             reduced, reduced_rhs, coefficients, free_dofs = condense(
                 system.matrix, rhs, x=prescribed, D=constrained,
             )
-            if backend == "gpu":
+            if backend in ("gpu", "hybrid"):
                 from fem.common.gpu import solve_sparse
                 coefficients = coefficients.copy()
                 if len(free_dofs):
@@ -561,8 +561,8 @@ def solve_prescribed_pec(
         basis=system.basis,
         coefficients=coefficients,
         solve_info={
-            "method": "cudss-direct" if backend == "gpu" else "scipy-direct",
-            "backend": "gpu" if backend == "gpu" else "cpu",
+            "method": "cudss-direct" if backend in ("gpu", "hybrid") else "scipy-direct",
+            "backend": backend,
             "relative_residual": relative_residual,
             "prescribed_pec_dof_count": int(np.count_nonzero(prescribed[constrained])),
         },

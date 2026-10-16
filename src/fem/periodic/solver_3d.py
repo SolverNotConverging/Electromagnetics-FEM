@@ -497,13 +497,12 @@ class PeriodicModeSolver3D(PeriodicScene3D, ElectromagneticSolverMixin):
         )
         resolved_method = method
         if method == "auto":
-            resolved_method = "dense" if backend != "gpu" and 2 * system.ndofs <= int(dense_linearization_limit) else "sparse"
-        if resolved_method == "dense" and backend == "gpu":
+            resolved_method = "dense" if backend == "cpu" and 2 * system.ndofs <= int(dense_linearization_limit) else "sparse"
+        if resolved_method == "dense" and backend in ("gpu", "hybrid"):
             raise ConfigurationError("The gpu backend supports sparse eigensolving; choose eigensolver='sparse' or 'auto'.")
-        from fem.common._gpu_resident_arnoldi import is_available as resident_available
-        if backend == 'gpu' and resident_available():
+        if backend in ('gpu', 'hybrid'):
             from ._gpu_resident import solve_resident
-            return solve_resident(self, system, target=target, requested=requested, direction=direction,
+            return solve_resident(self, system, backend=backend, target=target, requested=requested, direction=direction,
                 eigensolver_tolerance=eigensolver_tolerance, residual_tolerance=residual_tolerance,
                 divergence_tolerance=divergence_tolerance,
                 propagation_ratio_tolerance=propagation_ratio_tolerance, pml_limit=pml_limit,

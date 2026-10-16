@@ -9,6 +9,7 @@ class _DeviceOperator:
     shape: tuple[int, int]
     matvec: object
     residual: object
+    backend: str = "gpu"
 
 
 def _check_architecture(compute_capability, runtime_version):

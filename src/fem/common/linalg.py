@@ -1,4 +1,4 @@
-"""CPU ARPACK or device-resident GPU refined shift-invert Arnoldi."""
+"""CPU ARPACK, hybrid GPU Arnoldi/CPU Ritz, or explicit resident GPU Arnoldi."""
 from contextlib import contextmanager
 import warnings
 
@@ -12,8 +12,8 @@ from .validation import finite_complex, positive_integer, positive_real
 
 def validate_backend(backend):
     """Validate the public execution backend."""
-    if not isinstance(backend, str) or backend not in ("auto", "cpu", "gpu"):
-        raise ConfigurationError("backend must be 'auto', 'cpu' or 'gpu'.")
+    if not isinstance(backend, str) or backend not in ("auto", "cpu", "hybrid", "gpu"):
+        raise ConfigurationError("backend must be 'auto', 'cpu', 'hybrid' or 'gpu'.")
     return backend
 
 
@@ -32,39 +32,41 @@ def resolve_backend(backend="auto"):
         return "cpu"
     from .gpu import is_available, require_available
     if backend == "auto":
-        return "gpu" if is_available() else _cpu_fallback("the CUDA/cuDSS runtime is unavailable")
+        return "hybrid" if is_available() else _cpu_fallback("the CUDA/cuDSS runtime is unavailable")
     try:
         require_available()
     except Exception as exc:
-        raise BackendCapabilityError(f"backend='gpu' requested but CUDA/cuDSS is unavailable: {exc}") from exc
-    return "gpu"
+        raise BackendCapabilityError(f"backend='{backend}' requested but CUDA/cuDSS is unavailable: {exc}") from exc
+    return backend
 
 
 def resolve_eigen_backend(backend="auto"):
-    """Require resident CUDA Arnoldi/Ritz support for every GPU eigenproblem.
+    """Select hybrid for auto; require resident CUDA Ritz only for explicit gpu.
 
     Availability failures may select CPU only for auto. Numerical calls after
-    selection propagate their errors and never retry with CPU or hybrid Ritz.
+    selection propagate their errors without switching implementations.
     """
     selected = resolve_backend(backend)
     if selected == "cpu":
         return selected
     from ._gpu_resident_arnoldi import probe_resident_available
+    from ._gpu_arnoldi import probe_hybrid_available
     try:
-        probe_resident_available()
+        (probe_resident_available if selected == "gpu" else probe_hybrid_available)()
     except Exception as exc:
-        reason = f"the resident CUDA eigensolver is unavailable: {exc}"
+        reason = f"the {'resident CUDA' if selected == 'gpu' else 'hybrid'} eigensolver is unavailable: {exc}"
         if backend == "auto":
             return _cpu_fallback(reason)
-        raise BackendCapabilityError(f"backend='gpu' requested but {reason}") from exc
-    return "gpu"
+        raise BackendCapabilityError(f"backend='{backend}' requested but {reason}") from exc
+    return selected
 
 
 @contextmanager
 def _generalized_operator(a, b, shift, backend):
-    if backend == "gpu":
+    if backend in ("gpu", "hybrid"):
         from .gpu import generalized_operator
         with generalized_operator(a, b, shift) as operator:
+            operator.backend = backend
             yield operator
     else:
         factor = splu(csc_matrix(a - shift * b))
@@ -73,9 +75,10 @@ def _generalized_operator(a, b, shift, backend):
 
 @contextmanager
 def _quadratic_operator(a0, a1, a2, shift, backend):
-    if backend == "gpu":
+    if backend in ("gpu", "hybrid"):
         from .gpu import quadratic_operator
         with quadratic_operator(a0, a1, a2, shift) as operator:
+            operator.backend = backend
             yield operator
     else:
         n = a0.shape[0]
@@ -93,8 +96,9 @@ def _iterate(operator, target, shift, count, tolerance, ncv, max_iterations, ran
              vector_rows=None):
     from .gpu import _DeviceOperator
     if isinstance(operator, _DeviceOperator):
-        from ._gpu_arnoldi import iterate
-        return iterate(operator, target, shift, count, tolerance, ncv, max_iterations, random_seed,
+        from ._gpu_arnoldi import iterate, iterate_hybrid
+        implementation = iterate_hybrid if operator.backend == "hybrid" else iterate
+        return implementation(operator, target, shift, count, tolerance, ncv, max_iterations, random_seed,
                        vector_rows=vector_rows)
     size = operator.shape[0]
     if size < 3:
@@ -138,7 +142,7 @@ def generalized_eigenpairs(a, b, *, target, count, tolerance=1e-10, backend="aut
     with _generalized_operator(a, b, shift, backend) as operator:
         values, vectors = _iterate(operator, target, shift, count, tolerance,
                                    ncv, max_iterations, random_seed)
-    return values, vectors, "cudss-shift-invert" if backend == "gpu" else "sparse-shift-invert"
+    return values, vectors, "cudss-hybrid-shift-invert" if backend == "hybrid" else "cudss-shift-invert" if backend == "gpu" else "sparse-shift-invert"
 
 
 def quadratic_eigenpairs(a0, a1, a2, *, target, count, tolerance=1e-10, backend="auto",
@@ -157,4 +161,4 @@ def quadratic_eigenpairs(a0, a1, a2, *, target, count, tolerance=1e-10, backend=
     with _quadratic_operator(a0, a1, a2, shift, backend) as operator:
         values, vectors = _iterate(operator, target, shift, count, tolerance,
                                    ncv, max_iterations, random_seed, vector_rows=a0.shape[0])
-    return values, vectors[:a0.shape[0]], "cudss-shift-invert" if backend == "gpu" else "sparse-shift-invert"
+    return values, vectors[:a0.shape[0]], "cudss-hybrid-shift-invert" if backend == "hybrid" else "cudss-shift-invert" if backend == "gpu" else "sparse-shift-invert"

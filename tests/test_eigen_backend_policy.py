@@ -3,7 +3,7 @@ import numpy as np
 import pytest
 from scipy.constants import c
 
-from fem.common import gpu, _gpu_resident_arnoldi as resident
+from fem.common import gpu, _gpu_arnoldi as hybrid
 from fem.common.errors import BackendCapabilityError
 
 
@@ -44,11 +44,13 @@ def unavailable(monkeypatch, missing):
         raise ImportError(missing)
     monkeypatch.setattr(gpu, 'is_available', lambda: missing != 'cuDSS')
     monkeypatch.setattr(gpu, 'require_available', failure if missing == 'cuDSS' else lambda: None)
+    monkeypatch.setattr(hybrid, 'probe_hybrid_available', failure)
+    from fem.common import _gpu_resident_arnoldi as resident
     monkeypatch.setattr(resident, 'probe_resident_available', failure)
 
 
 @pytest.mark.parametrize('family', FAMILIES)
-@pytest.mark.parametrize('missing', ['cuDSS', 'CUDA Ritz'])
+@pytest.mark.parametrize('missing', ['cuDSS', 'kernel compilation'])
 def test_explicit_gpu_fails_before_meshing_or_cpu_calculation(monkeypatch, family, missing):
     unavailable(monkeypatch, missing)
     solver, solve, options = make_solver(family, mesh=False)
@@ -58,7 +60,7 @@ def test_explicit_gpu_fails_before_meshing_or_cpu_calculation(monkeypatch, famil
 
 
 @pytest.mark.parametrize('family', FAMILIES)
-@pytest.mark.parametrize('missing', ['cuDSS', 'CUDA Ritz'])
+@pytest.mark.parametrize('missing', ['cuDSS', 'kernel compilation'])
 def test_auto_warns_and_completes_cpu_eigenproblem(monkeypatch, family, missing):
     unavailable(monkeypatch, missing)
     solver, solve, options = make_solver(family, mesh=True)

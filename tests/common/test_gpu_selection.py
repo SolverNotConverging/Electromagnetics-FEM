@@ -33,8 +33,8 @@ def test_unsupported_cuda_geev_key_never_uses_hybrid(monkeypatch):
     monkeypatch.setitem(sys.modules, 'cupyx.cusolver', SimpleNamespace(check_availability=unavailable))
     monkeypatch.setattr(gpu, 'is_available', lambda: True)
     monkeypatch.setattr(gpu, 'require_available', lambda: None)
-    with pytest.warns(RuntimeWarning, match='resident CUDA eigensolver'):
-        assert resolve_eigen_backend('auto') == 'cpu'
+    monkeypatch.setattr(arnoldi, 'probe_hybrid_available', lambda: None)
+    assert resolve_eigen_backend('auto') == 'hybrid'
     with pytest.raises(BackendCapabilityError, match='CUDA geev'):
         resolve_eigen_backend('gpu')
 

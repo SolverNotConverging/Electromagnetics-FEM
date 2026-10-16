@@ -1,56 +1,56 @@
 # CPU and GPU acceleration
 
-Every solver defaults to `backend="auto"`. It checks that CuPy, an NVIDIA GPU and
-cuDSS can complete a small sparse solve, then selects GPU if available or SciPy CPU
-otherwise. Automatic CPU fallback emits a `RuntimeWarning`. `backend="cpu"` forces
-CPU execution without probing CUDA or warning; `backend="gpu"` raises
-`BackendCapabilityError` if its required CUDA facilities are unavailable.
-Numerical failures after selection propagate without silently retrying.
+Every solver accepts `backend="cpu"`, `"hybrid"`, `"gpu"` and `"auto"`.
 
-Periodic eigensolvers accept `eigensolver="auto"`, `"dense"` or `"sparse"`. Dense
-eigensolving requires `backend="cpu"`; GPU uses sparse shift-invert. Mesh assembly
-stays on the CPU. The shared implementation is in `fem.common.linalg`,
-`fem.common.gpu` and `fem.common._cudss`.
+| Backend | Sparse factorization and Arnoldi | Small Ritz eigenproblem / SVD |
+|---|---|---|
+| `cpu` | SciPy ARPACK / SuperLU | CPU |
+| `hybrid` | cuDSS and custom FP64 CUDA kernels | SciPy on CPU |
+| `gpu` | cuDSS and custom FP64 CUDA kernels | CUDA geev / SVD |
+| `auto` (default) | Try hybrid, then CPU | Follows selected backend |
 
-By default, GPU eigenproblems use device-resident refined Arnoldi with custom complex FP64
-projection and subtraction kernels, restored from commit `3402f85`. The large
-Arnoldi basis, orthogonalization, sparse products, original-pencil residuals,
-and restart vectors stay on the GPU. GPU eigenproblems require CUDA `geev` and
-SVD for dense Ritz extraction. Before selection, a small readiness check compiles
-the custom kernels and exercises CUDA eigensolving and SVD, in addition to the
-cuDSS sparse readiness solve. This resident core serves generalized and quadratic
-eigenproblems in 1D/2D waveguides, 2D/3D periodic modes and scattering port modes.
-Only a two-byte control packet is read per restart cycle; converged eigenpairs
-are downloaded once for family-specific result handling. If any required facility
-is unavailable, `auto` warns and selects CPU, and explicit `gpu` raises an error.
-There is no automatic hybrid CPU Ritz fallback. The historical hybrid extraction
-is retained only for explicitly selected benchmark controls.
-CPU eigenproblems continue to use SciPy ARPACK. Outside the complete 3D periodic
-path below, physical filters and field reconstruction still run on CPU.
+`auto` checks a real cuDSS solve, custom-kernel compilation and CPU Ritz extraction.
+It selects `hybrid` when ready and emits a `RuntimeWarning` before CPU fallback.
+It never tries the resident GPU eigensolver. Explicit `hybrid` and `gpu` requests
+raise `BackendCapabilityError` if their required facilities are unavailable.
+Numerical failures after selection propagate without retrying another backend.
+CPU execution does not probe CUDA. CUDA installation remains completely optional.
 
-Quadratic problems retain block elimination: cuDSS factors the reduced
-`Q(shift)` matrix, rather than a companion matrix twice its size. Singular
-quadratic mass blocks remain supported. Each solve performs fresh analysis and
-factorization and reuses that factor throughout Arnoldi and its restarts.
+Hybrid retains the large Arnoldi basis, sparse products, orthogonalization,
+normalization and original-pencil residual evaluation on GPU. Each Arnoldi step
+reads a norm scalar; each restart transfers the small Hessenberg matrix and
+residuals to CPU and refined Ritz coefficients back to GPU. SciPy handles the
+small dense eigenvalue/SVD extraction. CUDA geev/SVD is required only by explicit
+`gpu`. Resident GPU iteration transfers two status bytes per cycle and exports
+converged eigenpairs for family-specific processing.
 
-Resident GPU `ncv` defaults to `min(size, max(96, 6*count + 16))`. Here `count` includes
-the extra candidates requested by the FEM solver's physical filters. An explicit
-`ncv` is respected. GPU `max_iterations` limits operator applications; its default
-is thirteen cycles of the selected subspace size. CPU `max_iterations` retains
-SciPy's ARPACK iteration semantics. When a budget expires, only converged
-original-pencil eigenpairs are returned; an empty converged set raises an error.
+These paths serve 1D/2D waveguides, 2D/3D periodic modes and scattering port modes.
+Periodic sparse eigensolving supports both accelerated backends; dense QZ requires
+CPU. Mesh assembly stays on CPU. Outside the 3D periodic path below, physical
+filters and field reconstruction also run on CPU.
+
+Quadratic problems factor the physical-size `Q(shift)` matrix through block
+elimination, including singular mass blocks. Every solve performs fresh sparse
+analysis/factorization; the factor is reused within Arnoldi and restarts.
+Hybrid `ncv` defaults to `min(size, max(80, 4*count + 8))`; resident GPU uses
+`min(size, max(96, 6*count + 16))`. `count` includes extra physical-mode candidates.
+Explicit `ncv` is respected where the public solver exposes it. GPU/hybrid
+`max_iterations` counts operator applications; the default permits thirteen
+cycles. CPU keeps SciPy ARPACK iteration semantics. Only converged eigenpairs
+pass the independent original-pencil checks.
 
 ## Resident 3D periodic solve
 
-For `PeriodicModeSolver3D`, CUDA Ritz availability also enables the complete
-resident numerical solve automatically:
+For `PeriodicModeSolver3D`, both accelerated backends preserve GPU physical filters,
+fields, normalization and the jump estimator. Explicit `gpu` uses CUDA Ritz;
+`hybrid` and `auto` use CPU Ritz extraction:
 
 ```python
 modes = solver.solve(backend="gpu", num_modes=2,
                      ncv=96, eigensolver_tolerance=1e-8, max_refinements=0)
 ```
 
-This path uses CUDA for the nonsymmetric Ritz eigenproblem (`cuSOLVER geev`),
+The explicit `gpu` path uses CUDA for the nonsymmetric Ritz eigenproblem (`cuSOLVER geev`),
 batched refined-vector SVDs, Arnoldi normalization/orthogonalization, polynomial
 and weak-Gauss checks, duplicate/direction/PML filtering, field reconstruction
 and normalization, and the interface-jump adaptive estimator. Large numerical
@@ -74,9 +74,10 @@ respected. CPU refinement/remeshing remains outside the device numerical solve.
 
 CuDSS still performs host-side symbolic analysis; CUDA `geev` uses library-owned
 pinned host workspace. Thus this is not literally a CPU-free or universally
-zero-transfer vendor-library execution. CuPy/cuSOLVER must support CUDA `geev`;
-configurations without it warn and select CPU for `auto`, and raise an error
-for explicit `gpu`. No additional public solver flag is required.
+zero-transfer vendor-library execution. Explicit `gpu` requires CUDA `geev` and
+SVD; `hybrid` and `auto` use CPU Ritz extraction and keep GPU postprocessing.
+Metadata distinguishes `gpu_resident` from `gpu_postprocessing`, reports
+`ritz_backend`, and records hybrid scalar/Hessenberg/residual downloads.
 
 Run `benchmarks/benchmark_resident_periodic_3d.py` for complete-solve timings and
 `benchmarks/benchmark_resident_cached_cpu.py` for a control using identical
@@ -141,9 +142,9 @@ install the matching CuPy, CUDA toolkit and cuDSS build on each machine.
 This table describes runtime requirements, not a hardware test matrix. A toolkit
 must support the exact GPU model, and its driver and cuDSS build must be compatible.
 FEM rejects pre-Pascal devices and Pascal/Volta with CUDA 13 before GPU allocation.
-`backend="auto"` warns and falls back to SciPy CPU if the device/runtime probe
-fails; `backend="gpu"` reports an error. Eigenvalue solves additionally require
-the resident Ritz/kernel readiness check above. macOS uses CPU.
+`backend="auto"` selects hybrid, or warns and falls back to SciPy CPU if its readiness probe
+fails. Explicit `hybrid` or `gpu` reports an error. Only `gpu` requires the
+resident Ritz readiness check. macOS uses CPU.
 
 Install exactly one of the `cuda12` and `cuda13` extras; each includes CuPy and the
 matching cuDSS runtime wheel (see above). Set `CUDSS_LIBRARY`

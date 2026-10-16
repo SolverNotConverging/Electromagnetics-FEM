@@ -119,8 +119,8 @@ python benchmarks/benchmark_resident_cached_cpu.py --sizes-mm 0.9 0.6 --repeats 
 ```
 
 Use the single-thread BLAS/OpenMP environment above and run these sequentially.
-The benchmark uses a private availability override to reproduce the former path;
-no public solver flag is added. The first compares complete former hybrid and automatically resident GPU solves, including
+The benchmark compares public ``hybrid`` and ``gpu`` selections with the same
+GPU postprocessing. The first compares complete hybrid and resident GPU solves, including
 physical filters, field export and the jump estimator. It records first-solve
 and warmed timings separately and requires matching effective indices,
 normalized coefficients and adaptive residuals. The second controls for the

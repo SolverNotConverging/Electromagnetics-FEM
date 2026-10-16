@@ -24,10 +24,13 @@ def cuda_ritz(monkeypatch):
         calls.append(hbar.shape)
         return result
 
-    def forbidden(*args, **kwargs):
-        pytest.fail('A supported resident solve must not invoke the older hybrid iteration')
+    original_cpu = arnoldi.refined_coefficients
+    def cpu_track(hbar, shift, count):
+        assert isinstance(hbar, np.ndarray)
+        calls.append(hbar.shape)
+        return original_cpu(hbar, shift, count)
     monkeypatch.setattr(resident, 'refined_gpu', track)
-    monkeypatch.setattr(arnoldi, 'iterate_hybrid', forbidden)
+    monkeypatch.setattr(arnoldi, 'refined_coefficients', cpu_track)
     yield calls
     assert any(shape[1] > 2 for shape in calls), 'The numerical solve did not invoke CUDA Ritz extraction'
 
@@ -46,7 +49,7 @@ def test_electrostatic_cuda(dim):
     assert gpu.residual_norm < 1e-9
 
 @pytest.mark.parametrize("dim", [1, 2])
-@pytest.mark.parametrize("backend", ["gpu", "auto"])
+@pytest.mark.parametrize("backend", ["gpu", "hybrid", "auto"])
 def test_waveguide_cuda(dim, backend, cuda_ritz):
     from fem.waveguide.solver_1d import ModeSolver1D
     from fem.waveguide.solver_2d import ModeSolver2D
@@ -59,7 +62,7 @@ def test_waveguide_cuda(dim, backend, cuda_ritz):
 
 
 @pytest.mark.parametrize("matched_ports", [False, True])
-@pytest.mark.parametrize("backend", ["gpu", "auto"])
+@pytest.mark.parametrize("backend", ["gpu", "hybrid", "auto"])
 def test_scattering_cuda(matched_ports, backend, cuda_ritz):
     from fem.common import materials
     from fem.scattering import ScatteringSolver2D
@@ -77,7 +80,7 @@ def test_scattering_cuda(matched_ports, backend, cuda_ritz):
     gpu_modes = solver.solve_modes(backend=backend, num_modes=1, neff_guess=1.,
         num_elements=32, max_refinements=0)
     np.testing.assert_allclose(gpu_modes[0].neff, cpu_modes[0].neff, rtol=1e-7)
-    assert gpu_modes.solve_info["method"] == "cudss-shift-invert"
+    assert gpu_modes.solve_info["method"] == ("cudss-shift-invert" if backend == "gpu" else "cudss-hybrid-shift-invert")
     assert gpu_modes[0].residual < 1e-8
     # Use identical incident fields to compare the direct solvers independently
     # of eigenvector phase conventions.
@@ -139,7 +142,7 @@ def test_scattering_cuda_oblique_mode_resolution(cuda_ritz):
 
 
 @pytest.mark.parametrize("dim", [2, 3])
-@pytest.mark.parametrize("backend", ["gpu", "auto"])
+@pytest.mark.parametrize("backend", ["gpu", "hybrid", "auto"])
 def test_periodic_cuda(dim, backend, cuda_ritz):
     from fem.common import Material
     from fem.periodic import PeriodicModeSolver2D, PeriodicModeSolver3D
@@ -154,19 +157,19 @@ def test_periodic_cuda(dim, backend, cuda_ritz):
     gpu = solver.solve(num_modes=1, neff_guess=1.3, max_refinements=0,
                        eigensolver="sparse", backend=backend)
     np.testing.assert_allclose(gpu.neff, cpu.neff, rtol=1e-6, atol=1e-8)
-    assert gpu.metadata["backend"] == "gpu"
+    assert gpu.metadata["backend"] == ("gpu" if backend == "gpu" else "hybrid")
     assert gpu[0].residual < 1e-8
 
 
 def test_default_backend_uses_available_gpu(cuda_ritz):
     from fem.common.linalg import resolve_backend
     from fem.waveguide import ModeSolver1D
-    assert resolve_backend() == "gpu"
+    assert resolve_backend() == "hybrid"
     solver = ModeSolver1D(frequency=c, x_range=1.)
     solver.mesh(resolution=24)
     result = solver.solve(num_modes=1, neff_guess=.86, max_refinements=0)
-    assert result.backend == "gpu"
-    assert all(method == "cudss-shift-invert" for method in result.metadata["methods"].values())
+    assert result.backend == "hybrid"
+    assert all(method == "cudss-hybrid-shift-invert" for method in result.metadata["methods"].values())
 
 
 @pytest.mark.parametrize('case', ['pec_lossy', 'pec_sibc', 'pec_sibc_lossy'])
@@ -189,5 +192,5 @@ def test_periodic_tm_cuda(backend, cuda_ritz):
     expected = solver.solve(backend='cpu', num_modes=1, neff_guess=1.5,
                             max_refinements=0, eigensolver='dense')
     result = solver.solve(backend=backend, num_modes=1, neff_guess=1.5, max_refinements=0)
-    assert result.metadata['backend'] == 'gpu'
+    assert result.metadata['backend'] == ('gpu' if backend == 'gpu' else 'hybrid')
     np.testing.assert_allclose(result.neff, expected.neff, atol=1e-8, rtol=1e-7)

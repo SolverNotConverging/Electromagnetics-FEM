@@ -283,8 +283,8 @@ def solve_qep_candidates(
     backend = resolve_eigen_backend(backend)
     size = 2 * system.ndofs
     if method == "auto":
-        method = "dense" if backend != "gpu" and size <= int(dense_linearization_limit) else "sparse"
-    if method == "dense" and backend == "gpu":
+        method = "dense" if backend == "cpu" and size <= int(dense_linearization_limit) else "sparse"
+    if method == "dense" and backend in ("gpu", "hybrid"):
         raise ConfigurationError("The gpu backend supports sparse eigensolving; choose eigensolver='sparse' or 'auto'.")
     if method == "dense":
         return _dense_candidates(system, complex(target), int(candidate_count))

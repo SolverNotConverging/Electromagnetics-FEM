@@ -54,15 +54,26 @@ python -m pip install "electromagnetics-fem[cuda13]"  # optional CUDA 13 support
 ```
 
 Choose the extra matching your NVIDIA CUDA environment. Both extras install
-CuPy and NVIDIA cuDSS for custom GPU-resident eigenvalue solving and accelerated
+CuPy and NVIDIA cuDSS for custom GPU-accelerated eigenvalue solving and accelerated
 direct solves. The universal `py3-none-any` wheel includes the custom CUDA kernel
 source; CuPy compiles it on first GPU use. A CPU installation needs no CUDA
 dependencies or compiler. CUDA execution requires a compatible NVIDIA GPU and
 driver; see [CPU/GPU acceleration](docs/acceleration.md) for requirements.
 
-Select `backend="gpu"` to require GPU execution, or `backend="auto"` to use it
-when available. Automatic CPU fallback emits a warning; an unavailable explicit
-GPU request raises an error.
+Select `backend="hybrid"` for GPU sparse factorization/Arnoldi and CPU Ritz
+extraction, or `backend="gpu"` for resident CUDA Ritz extraction as well.
+`backend="auto"` tries hybrid, then warns and falls back to CPU if unavailable.
+The resident GPU eigensolver is used only when explicitly requested. Unavailable
+explicit `hybrid` or `gpu` requests raise an error; `backend="cpu"` uses SciPy.
+For scattering direct solves, `gpu` and `hybrid` both use cuDSS; the distinction
+applies to port-mode eigenvalue extraction.
+
+In our own [hybrid versus resident GPU benchmark](https://github.com/SolverNotConverging/Electromagnetics-FEM/blob/main/benchmarks/resident_comparison/results/2026-10-16/REPORT.rst), the two paths achieved
+very similar eigenvalue-stage times for the tested small Ritz systems (`ncv=80`).
+The dense Ritz matrix is quick to solve on CPU, so moving that step to GPU gives
+little benefit; hybrid was often faster. This is why `auto` prefers hybrid.
+The comparison used FEM periodic cells on Titan RTX; results depend on the
+problem, subspace size and hardware.
 
 For a source checkout, use `python -m pip install -e .` or
 `python -m pip install -e ".[cuda12]"` (alternatively `cuda13`). Supported Python

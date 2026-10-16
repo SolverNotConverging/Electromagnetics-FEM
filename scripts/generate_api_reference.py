@@ -79,7 +79,7 @@ DESCRIPTIONS = {
 }
 DESCRIPTIONS.update(
     {
-        "backend": "Execution backend: auto (default) selects GPU when available, otherwise SciPy CPU; cpu and gpu force the selected backend.",
+        "backend": "Execution backend: auto (default) selects hybrid GPU Arnoldi/CPU Ritz when available, otherwise warns and selects SciPy CPU; hybrid, gpu (resident CUDA Ritz), and cpu explicitly select a backend.",
         "boundary_refinement": "Boundary mesh-size multiplier in (0, 1]; None disables boundary refinement.",
         "boundary_refinement_width": "Width in metres over which boundary mesh refinement transitions to the bulk size; None selects the mesher default.",
         "interface_refinement": "Material-interface mesh-size multiplier in (0, 1]; None disables interface refinement.",
@@ -278,8 +278,9 @@ def render_references():
         )
         out += section("Backend selection")
         out += (
-            '``backend="auto"`` selects GPU when available, otherwise SciPy CPU. ``backend="gpu"`` requests\n'
-            "CuPy/cuDSS explicitly. See the solver guide for supported algorithms.\n\n"
+            '``backend="auto"`` tries hybrid GPU Arnoldi/CPU Ritz, then warns before SciPy CPU fallback.\n'
+            '``hybrid`` explicitly selects that path; ``gpu`` explicitly requires resident CUDA Ritz.\n'
+            "Both accelerated choices use cuDSS for direct scattering solves.\n\n"
         )
         if package == "fem.scattering":
             out += (

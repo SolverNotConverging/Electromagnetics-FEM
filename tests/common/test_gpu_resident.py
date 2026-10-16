@@ -45,7 +45,7 @@ def test_resident_ritz_and_vectors_stay_on_device(cuda, monkeypatch, repeated):
 
 @pytest.mark.parametrize('lossy', [False, True])
 @pytest.mark.parametrize('direction', ['forward', 'backward'])
-def test_resident_periodic_fields_estimator_and_cache(cuda, monkeypatch, lossy, direction):
+def test_resident_periodic_fields_estimator_and_cache(cuda, monkeypatch, tmp_path, lossy, direction):
     import fem
     mm = 1e-3
     solver = fem.PeriodicModeSolver3D(frequency=12e9, x_range=22.86*mm,
@@ -78,6 +78,16 @@ def test_resident_periodic_fields_estimator_and_cache(cuda, monkeypatch, lossy, 
     from fem.common import gpu
     monkeypatch.setattr(gpu, 'is_available', lambda: True)
     again = solver.solve(backend='auto', **options)
+    assert again.metadata['backend'] == 'hybrid'
+    assert again.metadata['gpu_resident'] is False and again.metadata['gpu_postprocessing'] is True
+    assert again.metadata['gpu_execution']['ritz_backend'] == 'scipy-eigvals-svd'
+    np.testing.assert_allclose(again.neff, reference.neff, rtol=1e-8, atol=1e-9)
+    np.testing.assert_allclose(again[0].coefficients, reference[0].coefficients, rtol=1e-7, atol=1e-8)
+    path = tmp_path/'hybrid.h5'
+    again.save(path)
+    loaded = fem.load(path)
+    assert loaded.metadata['backend'] == 'hybrid'
+    np.testing.assert_allclose(loaded.neff, again.neff)
     assert solver._gpu_resident_session is cached
     assert again.metadata['gpu_execution']['prepare_seconds'] == 0
     solver.set_boundary(material=fem.materials.PMC)

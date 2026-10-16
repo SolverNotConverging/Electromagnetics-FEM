@@ -429,7 +429,7 @@ class ElectrostaticSolver(ElectrostaticSceneMixin, SolverMixin):
                 reduced_rhs = rhs[free] - matrix[free][:, fixed] @ potential[fixed]
                 with warnings.catch_warnings():
                     warnings.simplefilter("error", MatrixRankWarning)
-                    if backend == "gpu":
+                    if backend in ("gpu", "hybrid"):
                         from fem.common.gpu import solve_sparse
                         potential[free] = solve_sparse(matrix[free][:, free], reduced_rhs).real
                     else:

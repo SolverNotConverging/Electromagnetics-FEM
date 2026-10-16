@@ -1035,7 +1035,7 @@ class ModeSolver:
         n = system.ndofs
         size = 2 * n
 
-        if backend != "gpu" and (size <= self.dense_linearization_limit or size <= 3):
+        if backend == "cpu" and (size <= self.dense_linearization_limit or size <= 3):
             identity = eye(n, format="csr", dtype=np.complex128)
             zero = _zero(n, n)
             pencil_a = bmat(
