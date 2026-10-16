@@ -1,0 +1,30 @@
+START perforated_waveguide-xl
+Transforming over 1000 vertices to C_CONTIGUOUS.
+Transforming over 1000 elements to C_CONTIGUOUS.
+  warmup -1 cpu_eigs: 33.7607s valid=True residual=3.67e-14
+  warmup -1 gpu_hybrid: 10.7107s valid=True residual=1.26e-13
+  warmup -1 gpu_resident: 3.2783s valid=True residual=9.59e-14
+  timed 0 cpu_eigs: 34.3565s valid=True residual=3.67e-14
+  timed 0 gpu_hybrid: 0.9639s valid=True residual=1.10e-13
+  timed 0 gpu_resident: 0.9885s valid=True residual=8.52e-14
+  timed 1 gpu_hybrid: 1.1409s valid=True residual=1.27e-13
+  timed 1 gpu_resident: 1.0432s valid=True residual=1.10e-13
+  timed 1 cpu_eigs: 34.1670s valid=True residual=3.67e-14
+  timed 2 gpu_resident: 1.0850s valid=True residual=1.13e-13
+  timed 2 cpu_eigs: 34.3930s valid=True residual=3.67e-14
+  timed 2 gpu_hybrid: 1.0168s valid=True residual=9.51e-14
+START perforated_waveguide-xxl
+Transforming over 1000 vertices to C_CONTIGUOUS.
+Transforming over 1000 elements to C_CONTIGUOUS.
+  warmup -1 cpu_eigs: 117.3909s valid=True residual=5.00e-14
+  warmup -1 gpu_hybrid: 2.0470s valid=True residual=2.20e-13
+  warmup -1 gpu_resident: 2.5062s valid=True residual=2.30e-13
+  timed 0 cpu_eigs: 120.2611s valid=True residual=5.00e-14
+  timed 0 gpu_hybrid: 1.8123s valid=True residual=2.08e-13
+  timed 0 gpu_resident: 1.8377s valid=True residual=2.69e-13
+  timed 1 gpu_hybrid: 1.7042s valid=True residual=2.11e-13
+  timed 1 gpu_resident: 1.8451s valid=True residual=2.00e-13
+  timed 1 cpu_eigs: 118.9676s valid=True residual=5.00e-14
+  timed 2 gpu_resident: 1.9254s valid=True residual=1.80e-13
+  timed 2 cpu_eigs: 116.9461s valid=True residual=5.00e-14
+  timed 2 gpu_hybrid: 1.7782s valid=True residual=2.64e-13

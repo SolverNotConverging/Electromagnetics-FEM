@@ -1,0 +1,17 @@
+{
+  "status": "complete",
+  "total": 2,
+  "completed": [
+    {
+      "case": "perforated_waveguide-xl",
+      "exit_code": 0,
+      "seconds": 173.20564640685916
+    },
+    {
+      "case": "perforated_waveguide-xxl",
+      "exit_code": 0,
+      "seconds": 507.8689477145672
+    }
+  ],
+  "active": null
+}

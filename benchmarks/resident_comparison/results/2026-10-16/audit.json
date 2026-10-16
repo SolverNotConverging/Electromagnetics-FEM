@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "errors": [],
+  "configurations": 19,
+  "timed_samples": 171,
+  "warmups": 57,
+  "max_residual": 2.8341058203314474e-13,
+  "max_magnitude_error": 5.215287505023888e-14
+}

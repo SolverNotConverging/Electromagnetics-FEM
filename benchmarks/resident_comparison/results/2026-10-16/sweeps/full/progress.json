@@ -1,0 +1,87 @@
+{
+  "status": "complete",
+  "total": 16,
+  "completed": [
+    {
+      "case": "iris-coarse",
+      "exit_code": 0,
+      "seconds": 23.769077382981777
+    },
+    {
+      "case": "iris-medium",
+      "exit_code": 0,
+      "seconds": 5.324333291500807
+    },
+    {
+      "case": "iris-fine",
+      "exit_code": 0,
+      "seconds": 9.384701620787382
+    },
+    {
+      "case": "iris-large",
+      "exit_code": 0,
+      "seconds": 23.56628217920661
+    },
+    {
+      "case": "siw-coarse",
+      "exit_code": 0,
+      "seconds": 7.230457212775946
+    },
+    {
+      "case": "siw-medium",
+      "exit_code": 0,
+      "seconds": 9.385424796491861
+    },
+    {
+      "case": "siw-fine",
+      "exit_code": 0,
+      "seconds": 12.200163591653109
+    },
+    {
+      "case": "siw-large",
+      "exit_code": 0,
+      "seconds": 20.659642040729523
+    },
+    {
+      "case": "perforated_waveguide-coarse",
+      "exit_code": 0,
+      "seconds": 14.444097775965929
+    },
+    {
+      "case": "perforated_waveguide-medium",
+      "exit_code": 0,
+      "seconds": 16.047478955239058
+    },
+    {
+      "case": "perforated_waveguide-fine",
+      "exit_code": 0,
+      "seconds": 38.76756865903735
+    },
+    {
+      "case": "perforated_waveguide-large",
+      "exit_code": 0,
+      "seconds": 88.0936307311058
+    },
+    {
+      "case": "dielectric_rod-coarse",
+      "exit_code": 0,
+      "seconds": 6.4275844767689705
+    },
+    {
+      "case": "dielectric_rod-medium",
+      "exit_code": 0,
+      "seconds": 9.394659668207169
+    },
+    {
+      "case": "dielectric_rod-fine",
+      "exit_code": 0,
+      "seconds": 27.480654146522284
+    },
+    {
+      "case": "dielectric_rod-large",
+      "exit_code": 0,
+      "seconds": 68.15470725297928
+    }
+  ],
+  "active": null
+}

@@ -1,0 +1,4 @@
+case,problem,size,field_dofs,pencil_dofs,backend,valid,median_seconds,min_seconds,max_seconds,max_residual,max_magnitude_error
+perforated_waveguide-100k,perforated_waveguide,1.15,108261,216522,cpu_eigs,True,198.4204785451293,197.542586222291,202.31415852159262,5.416233585774426e-14,0.0
+perforated_waveguide-100k,perforated_waveguide,1.15,108261,216522,gpu_hybrid,True,2.2985230833292007,2.227200999855995,2.410766076296568,1.277235532281451e-13,3.552713678800501e-15
+perforated_waveguide-100k,perforated_waveguide,1.15,108261,216522,gpu_resident,True,2.4536057114601135,2.4361109025776386,2.570091024041176,1.4170446052698564e-13,4.440892098500626e-15

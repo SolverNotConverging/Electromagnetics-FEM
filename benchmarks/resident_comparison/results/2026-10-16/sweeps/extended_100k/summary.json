@@ -1,0 +1,44 @@
+[
+  {
+    "case": "perforated_waveguide-100k",
+    "problem": "perforated_waveguide",
+    "size": 1.15,
+    "field_dofs": 108261,
+    "pencil_dofs": 216522,
+    "backend": "cpu_eigs",
+    "valid": true,
+    "median_seconds": 198.4204785451293,
+    "min_seconds": 197.542586222291,
+    "max_seconds": 202.31415852159262,
+    "max_residual": 5.416233585774426e-14,
+    "max_magnitude_error": 0.0
+  },
+  {
+    "case": "perforated_waveguide-100k",
+    "problem": "perforated_waveguide",
+    "size": 1.15,
+    "field_dofs": 108261,
+    "pencil_dofs": 216522,
+    "backend": "gpu_hybrid",
+    "valid": true,
+    "median_seconds": 2.2985230833292007,
+    "min_seconds": 2.227200999855995,
+    "max_seconds": 2.410766076296568,
+    "max_residual": 1.277235532281451e-13,
+    "max_magnitude_error": 3.552713678800501e-15
+  },
+  {
+    "case": "perforated_waveguide-100k",
+    "problem": "perforated_waveguide",
+    "size": 1.15,
+    "field_dofs": 108261,
+    "pencil_dofs": 216522,
+    "backend": "gpu_resident",
+    "valid": true,
+    "median_seconds": 2.4536057114601135,
+    "min_seconds": 2.4361109025776386,
+    "max_seconds": 2.570091024041176,
+    "max_residual": 1.4170446052698564e-13,
+    "max_magnitude_error": 4.440892098500626e-15
+  }
+]

@@ -1,0 +1,137 @@
+{
+  "commit": "5bd9fd1ef46da5c025d820955474333978acf288",
+  "command": [
+    "benchmarks/resident_comparison/run.py",
+    "--output",
+    "outputs/benchmarks/resident_comparison_20261016/full",
+    "--repeats",
+    "3"
+  ],
+  "python": "3.13.12 | packaged by Anaconda, Inc. | (main, Feb 24 2026, 16:13:31) [GCC 14.3.0]",
+  "platform": "Linux-5.14.0-611.36.1.el9_7.x86_64-x86_64-with-glibc2.34",
+  "cpu": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           46 bits physical, 48 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  40\nOn-line CPU(s) list:                     0-39\nVendor ID:                               GenuineIntel\nModel name:                              Intel(R) Xeon(R) Silver 4210 CPU @ 2.20GHz\nCPU family:                              6\nModel:                                   85\nThread(s) per core:                      2\nCore(s) per socket:                      10\nSocket(s):                               2\nStepping:                                7\nCPU(s) scaling MHz:                      90%\nCPU max MHz:                             3200.0000\nCPU min MHz:                             1000.0000\nBogoMIPS:                                4400.00\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault epb cat_l3 cdp_l3 intel_ppin ssbd mba ibrs ibpb stibp ibrs_enhanced tpr_shadow flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm mpx rdt_a avx512f avx512dq rdseed adx smap clflushopt clwb intel_pt avx512cd avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local dtherm ida arat pln pts vnmi pku ospke avx512_vnni md_clear flush_l1d arch_capabilities\nVirtualization:                          VT-x\nL1d cache:                               640 KiB (20 instances)\nL1i cache:                               640 KiB (20 instances)\nL2 cache:                                20 MiB (20 instances)\nL3 cache:                                27.5 MiB (2 instances)\nNUMA node(s):                            2\nNUMA node0 CPU(s):                       0-9,20-29\nNUMA node1 CPU(s):                       10-19,30-39\nVulnerability Gather data sampling:      Mitigation; Microcode\nVulnerability Indirect target selection: Mitigation; Aligned branch/return thunks\nVulnerability Itlb multihit:             KVM: Mitigation: Split huge pages\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Mitigation; Clear CPU buffers; SMT vulnerable\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Mitigation; Enhanced IBRS\nVulnerability Spec rstack overflow:      Not affected\nVulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Enhanced / Automatic IBRS; IBPB conditional; PBRSB-eIBRS SW sequence; BHI SW loop, KVM SW loop\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Not affected\nVulnerability Tsx async abort:           Mitigation; TSX disabled\nVulnerability Vmscape:                   Mitigation; IBPB before exit to userspace\n",
+  "memory": "MemTotal:       114588676 kB\nMemFree:         2395916 kB\nMemAvailable:   87804444 kB\nBuffers:            2180 kB\nCached:         82042252 kB\nSwapCached:       444408 kB\nActive:         18448084 kB\nInactive:       80214968 kB\nActive(anon):   15143052 kB\nInactive(anon):  3817956 kB\nActive(file):    3305032 kB\nInactive(file): 76397012 kB\nUnevictable:        9312 kB\nMlocked:              96 kB\nSwapTotal:      25165820 kB\nSwapFree:       14184860 kB\nZswap:                 0 kB\nZswapped:              0 kB\nDirty:             12464 kB\nWriteback:            12 kB\nAnonPages:      16224728 kB\nMapped:          3693740 kB\nShmem:           2342448 kB\nKReclaimable:    6640048 kB\nSlab:            8992028 kB\nSReclaimable:    6640048 kB\nSUnreclaim:      2351980 kB\nKernelStack:       79216 kB\nPageTables:       195560 kB\nSecPageTables:      8224 kB\nNFS_Unstable:          0 kB\nBounce:                0 kB\nWritebackTmp:          0 kB\nCommitLimit:    82460156 kB\nCommitted_AS:   64288156 kB\nVmallocTotal:   34359738367 kB\nVmallocUsed:      417196 kB\nVmallocChunk:          0 kB\nPercpu:           101952 kB\nHardwareCorrupted:     0 kB\nAnonHugePages:  10094592 kB\nShmemHugePages:        0 kB\nShmemPmdMapped:        0 kB\nFileHugePages:         0 kB\nFilePmdMapped:         0 kB\nCmaTotal:              0 kB\nCmaFree:               0 kB\nUnaccepted:            0 kB\nHugePages_Total:       0\nHugePages_Free:        0\nHugePages_Rsvd:        0\nHugePages_Surp:        0\nHugepagesize:       2048 kB\nHugetlb:               0 kB\nDirectMap4k:    30391248 kB\nDirectMap2M:    85635072 kB\nDirectMap1G:     3145728 kB\n",
+  "gpu_before": "Fri Oct 16 18:07:10 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 595.45.04              Driver Version: 595.45.04      CUDA Version: 13.2     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  NVIDIA TITAN RTX               Off |   00000000:18:00.0 Off |                  N/A |\n| 53%   73C    P2             98W /  280W |     414MiB /  24576MiB |     29%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n|   1  NVIDIA TITAN RTX               Off |   00000000:3B:00.0 Off |                  N/A |\n| 40%   57C    P8             24W /  280W |      85MiB /  24576MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n|   2  NVIDIA TITAN RTX               Off |   00000000:86:00.0 Off |                  N/A |\n| 41%   45C    P8              2W /  280W |       8MiB /  24576MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n|   3  NVIDIA TITAN RTX               Off |   00000000:AF:00.0 Off |                  N/A |\n| 41%   47C    P8              6W /  280W |       8MiB /  24576MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|    0   N/A  N/A            2105      G   /usr/bin/gnome-shell                      3MiB |\n|    0   N/A  N/A          239355      C   ...ojects/ML_GD/.venv/bin/python        406MiB |\n|    1   N/A  N/A            2105      G   /usr/bin/gnome-shell                     67MiB |\n|    1   N/A  N/A            2218      G   /usr/bin/Xwayland                         3MiB |\n|    2   N/A  N/A            2105      G   /usr/bin/gnome-shell                      3MiB |\n|    3   N/A  N/A            2105      G   /usr/bin/gnome-shell                      3MiB |\n+-----------------------------------------------------------------------------------------+\n",
+  "gpu_selection": "3",
+  "packages": "cmake==4.4.4\ncontourpy==1.4.0\ncuda-pathfinder==1.8.3\ncuda-toolkit==13.4.2\ncupy-cuda13x==14.2.0\ncycler==0.12.1\nCython==3.3.0\ncython-cmake==0.3.0\n-e git+https://github.com/SolverNotConverging/Electromagnetics-FEM.git@5bd9fd1ef46da5c025d820955474333978acf288#egg=electromagnetics_fem\nfonttools==4.66.1\ngmsh==4.15.2\nh5py==3.16.0\niniconfig==2.3.1\nkiwisolver==1.5.1\nmarkdown-it-py==4.2.0\nmatplotlib==3.11.2\nmdurl==0.1.2\nmeshio==5.3.5\nnumpy==2.5.4\nnvidia-cublas==13.8.0.4\nnvidia-cuda-nvrtc==13.4.92\nnvidia-cudss-cu13==0.8.0.10\npackaging==26.3\npathspec==1.1.1\npillow==12.3.0\npluggy==1.6.0\nPygments==2.21.0\npyparsing==3.3.3\npytest==9.1.1\npython-dateutil==2.9.0.post0\nrich==15.0.0\nscikit-fem==12.0.2\nscikit_build_core==1.1.1\nscipy==1.18.1\nsix==1.17.0\nthreadpoolctl==3.7.0\ntqdm==4.70.1\n",
+  "cases": [
+    {
+      "name": "iris-coarse",
+      "problem": "iris",
+      "size": 4.0
+    },
+    {
+      "name": "iris-medium",
+      "problem": "iris",
+      "size": 3.0
+    },
+    {
+      "name": "iris-fine",
+      "problem": "iris",
+      "size": 2.0
+    },
+    {
+      "name": "iris-large",
+      "problem": "iris",
+      "size": 1.4
+    },
+    {
+      "name": "siw-coarse",
+      "problem": "siw",
+      "size": 2.0
+    },
+    {
+      "name": "siw-medium",
+      "problem": "siw",
+      "size": 1.4
+    },
+    {
+      "name": "siw-fine",
+      "problem": "siw",
+      "size": 1.0
+    },
+    {
+      "name": "siw-large",
+      "problem": "siw",
+      "size": 0.75
+    },
+    {
+      "name": "perforated_waveguide-coarse",
+      "problem": "perforated_waveguide",
+      "size": 5.0
+    },
+    {
+      "name": "perforated_waveguide-medium",
+      "problem": "perforated_waveguide",
+      "size": 3.5
+    },
+    {
+      "name": "perforated_waveguide-fine",
+      "problem": "perforated_waveguide",
+      "size": 2.5
+    },
+    {
+      "name": "perforated_waveguide-large",
+      "problem": "perforated_waveguide",
+      "size": 2.0
+    },
+    {
+      "name": "dielectric_rod-coarse",
+      "problem": "dielectric_rod",
+      "size": 4.0
+    },
+    {
+      "name": "dielectric_rod-medium",
+      "problem": "dielectric_rod",
+      "size": 3.0
+    },
+    {
+      "name": "dielectric_rod-fine",
+      "problem": "dielectric_rod",
+      "size": 2.0
+    },
+    {
+      "name": "dielectric_rod-large",
+      "problem": "dielectric_rod",
+      "size": 1.7
+    }
+  ],
+  "repeats": 3,
+  "source_sha256": {
+    "src/fem/common/__init__.py": "7c4f92dd4ab8a2522368a56fb6a469bbe55cfcb4e1d002919abdb621617da9db",
+    "src/fem/common/_arnoldi.cu": "edcfb640a163f07533b84a84b13626ac06a50611623687d57c417ff466dd9672",
+    "src/fem/common/_cudss.py": "a5049228cb10262f6370d107c49880d574cc14b294e64076c386ceeff7fc3f3b",
+    "src/fem/common/_gpu_arnoldi.py": "e3c881061836a159d4e482230a8476f0fa2f5fe625bcb6241a73c62ebd5b421a",
+    "src/fem/common/_gpu_resident_arnoldi.py": "9f03880ee0c2b4f9d39d890710b1db799c41942e367bd7972258cda4a8362cc2",
+    "src/fem/common/_occ.py": "c661fc842a4d57e99fedf6e5691fdb15227f4efea4d55b0f67331a2eb27385ae",
+    "src/fem/common/_refined_ritz.py": "08ec143055773e5067c39a0e48774a4c815fc03c6e671fdc936e0ab4bc3165d4",
+    "src/fem/common/_shape_adapter.py": "cb8e5c2db3e40144cb47a6b2f0831c597e0a25150afe9f86f4bf1b11d3ce0e76",
+    "src/fem/common/constants.py": "debe5669651d3c78908b3f7c88b06e9a5fde385cb050c4b7dc63107b5373e20f",
+    "src/fem/common/contracts.py": "3b1c8515fce00a5168a99139d29be00bd945e7942c9e327cb491d73da311fe73",
+    "src/fem/common/diagonal.py": "746b53ee7cb215e19ba71e682cdf5b089170fd3a60575968862ab650a9f1e3bf",
+    "src/fem/common/dispersion.py": "d8f18d156e692b24fdaf8d177e27efb55875eaefe101c2268f50834699f94576",
+    "src/fem/common/errors.py": "a74e1d1e96ad915b1a6b6c328ff5851a2376c5e18c5b12c62cbd68a903bef871",
+    "src/fem/common/gpu.py": "0ae8736526796e3064ab0ee7788bdd47dcb950934a8e897b761257bd4125d4c9",
+    "src/fem/common/linalg.py": "6cec3a4b1d659370e96c3ee7bbe94cd3dec9b6903865dd2414057fbec6ffaac7",
+    "src/fem/common/materials.py": "c73fe5eb013c63d1b8e1e3b9db90dbc4a7fe21093648f8260a0e2e3c5070d745",
+    "src/fem/common/persistence.py": "a143f61fedab918f39dae3913062c02454fcff847e04636d5f3f2a1f7f9bf6c8",
+    "src/fem/common/scene.py": "f56c3ee0010fc74d5129be140e2e5059753779414909b055c799695dd23b73cb",
+    "src/fem/common/shapes.py": "01a88744a95d0f20ade0d33906ca09162f2a9eda5a66c3ab962ae54eae2e2782",
+    "src/fem/common/validation.py": "3553ab1092e79afb5c94b74221a2895dba854383cb19491d34160ec0bc0ac2ee",
+    "src/fem/common/viewer.py": "a0a71c7f211010518654bc294297d23229423ca343fe821c1a490d5aaa3356d5",
+    "benchmarks/resident_comparison/geometries.py": "3e6db266c114b8eb4d59315b453cc09a2f51fc194eb69981cd8fad8e85049339",
+    "benchmarks/resident_comparison/run.py": "5f71565f9ed8ab70fb83cfb51a63c99e58a570b978f8121dca9d8faa710ea825"
+  },
+  "methodology": "Current reduced-QEP CPU / hybrid CUDA / resident CUDA comparison.\n\nFour historical 3D cells, four mesh densities, identical assembled operators.\nFresh factors per call; ncv=80, four roots, one CPU thread, three timed repeats.\nMagnitude matching accepts the symmetry partners requested for this benchmark.\nThis measures the eigenvalue stage, before physical filtering/reconstruction.\n",
+  "load_before": [
+    19.83,
+    15.26,
+    14.52
+  ],
+  "gpu_after": "Fri Oct 16 18:13:31 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 595.45.04              Driver Version: 595.45.04      CUDA Version: 13.2     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  NVIDIA TITAN RTX               Off |   00000000:18:00.0 Off |                  N/A |\n| 52%   70C    P2             74W /  280W |     414MiB /  24576MiB |     14%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n|   1  NVIDIA TITAN RTX               Off |   00000000:3B:00.0 Off |                  N/A |\n| 41%   56C    P8             24W /  280W |      85MiB /  24576MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n|   2  NVIDIA TITAN RTX               Off |   00000000:86:00.0 Off |                  N/A |\n| 41%   46C    P8              3W /  280W |       8MiB /  24576MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n|   3  NVIDIA TITAN RTX               Off |   00000000:AF:00.0 Off |                  N/A |\n| 48%   71C    P0            109W /  280W |       8MiB /  24576MiB |     22%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|    0   N/A  N/A            2105      G   /usr/bin/gnome-shell                      3MiB |\n|    0   N/A  N/A          239355      C   ...ojects/ML_GD/.venv/bin/python        406MiB |\n|    1   N/A  N/A            2105      G   /usr/bin/gnome-shell                     67MiB |\n|    1   N/A  N/A            2218      G   /usr/bin/Xwayland                         3MiB |\n|    2   N/A  N/A            2105      G   /usr/bin/gnome-shell                      3MiB |\n|    3   N/A  N/A            2105      G   /usr/bin/gnome-shell                      3MiB |\n+-----------------------------------------------------------------------------------------+\n",
+  "load_after": [
+    12.99,
+    15.46,
+    14.96
+  ]
+}

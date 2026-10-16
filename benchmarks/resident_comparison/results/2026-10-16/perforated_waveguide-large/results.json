@@ -1,0 +1,545 @@
+{
+  "case": {
+    "name": "perforated_waveguide-large",
+    "problem": "perforated_waveguide",
+    "size": 2.0
+  },
+  "status": "complete",
+  "samples": [
+    {
+      "backend": "cpu_eigs",
+      "phase": "timed",
+      "repeat": 0,
+      "seconds": 18.647385116666555,
+      "eigenvalues": [
+        [
+          0.9458775990170114,
+          -4.31517941215636e-05
+        ],
+        [
+          0.9048266254075582,
+          -0.05886256677287593
+        ],
+        [
+          0.8348904336350499,
+          0.0002580226498044031
+        ],
+        [
+          0.9681478530254526,
+          -0.02921957633841304
+        ]
+      ],
+      "residuals": [
+        3.389353097630076e-14,
+        2.5135796299103908e-14,
+        2.2810088545139873e-14,
+        2.7476384469394678e-14
+      ],
+      "max_residual": 3.389353097630076e-14,
+      "magnitude_error": 0.0,
+      "execution": [],
+      "valid": true
+    },
+    {
+      "backend": "gpu_hybrid",
+      "phase": "timed",
+      "repeat": 0,
+      "seconds": 0.7349307239055634,
+      "eigenvalues": [
+        [
+          0.9458775990170118,
+          -4.315179412195738e-05
+        ],
+        [
+          0.9048266254075589,
+          -0.058862566772875415
+        ],
+        [
+          0.8348904336350464,
+          0.0002580226498084138
+        ],
+        [
+          0.9681478530254531,
+          -0.029219576338413135
+        ]
+      ],
+      "residuals": [
+        1.47304538509636e-13,
+        9.697216381458503e-14,
+        6.180709475238551e-14,
+        1.0092760759962779e-13
+      ],
+      "max_residual": 1.47304538509636e-13,
+      "magnitude_error": 3.4416913763379853e-15,
+      "execution": [],
+      "valid": true
+    },
+    {
+      "backend": "gpu_resident",
+      "phase": "timed",
+      "repeat": 0,
+      "seconds": 0.7042814269661903,
+      "eigenvalues": [
+        [
+          0.9458775990170115,
+          -4.315179412237545e-05
+        ],
+        [
+          0.9048266254075588,
+          -0.05886256677287566
+        ],
+        [
+          0.8348904336350499,
+          0.00025802264980867747
+        ],
+        [
+          0.9681478530254526,
+          -0.02921957633841298
+        ]
+      ],
+      "residuals": [
+        7.276200034762551e-14,
+        5.972479073172363e-14,
+        5.445944846339224e-14,
+        4.8043044424119836e-14
+      ],
+      "max_residual": 7.276200034762551e-14,
+      "magnitude_error": 5.551115123125783e-16,
+      "execution": [
+        {
+          "steps": 80,
+          "cycles": 1,
+          "application_control_download_bytes": 2,
+          "ritz_backend": "cusolver-geev-svd"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "backend": "gpu_hybrid",
+      "phase": "timed",
+      "repeat": 1,
+      "seconds": 0.6609799414873123,
+      "eigenvalues": [
+        [
+          0.945877599017012,
+          -4.315179412267903e-05
+        ],
+        [
+          0.9048266254075589,
+          -0.058862566772875796
+        ],
+        [
+          0.8348904336350466,
+          0.00025802264980763316
+        ],
+        [
+          0.9681478530254529,
+          -0.02921957633841313
+        ]
+      ],
+      "residuals": [
+        1.0445483312619964e-13,
+        7.41291027166568e-14,
+        8.657808743931413e-14,
+        9.749104895944388e-14
+      ],
+      "max_residual": 1.0445483312619964e-13,
+      "magnitude_error": 3.3306690738754696e-15,
+      "execution": [],
+      "valid": true
+    },
+    {
+      "backend": "gpu_resident",
+      "phase": "timed",
+      "repeat": 1,
+      "seconds": 0.7143817655742168,
+      "eigenvalues": [
+        [
+          0.9458775990170114,
+          -4.315179412158962e-05
+        ],
+        [
+          0.9048266254075588,
+          -0.05886256677287564
+        ],
+        [
+          0.8348904336350469,
+          0.0002580226498060303
+        ],
+        [
+          0.9681478530254528,
+          -0.029219576338413118
+        ]
+      ],
+      "residuals": [
+        7.893630927965441e-14,
+        5.964064336407169e-14,
+        4.921015062714056e-14,
+        4.5433012994598974e-14
+      ],
+      "max_residual": 7.893630927965441e-14,
+      "magnitude_error": 2.9976021664879227e-15,
+      "execution": [
+        {
+          "steps": 80,
+          "cycles": 1,
+          "application_control_download_bytes": 2,
+          "ritz_backend": "cusolver-geev-svd"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "backend": "cpu_eigs",
+      "phase": "timed",
+      "repeat": 1,
+      "seconds": 18.386975701898336,
+      "eigenvalues": [
+        [
+          0.9458775990170114,
+          -4.31517941215636e-05
+        ],
+        [
+          0.9048266254075582,
+          -0.05886256677287593
+        ],
+        [
+          0.8348904336350499,
+          0.0002580226498044031
+        ],
+        [
+          0.9681478530254526,
+          -0.02921957633841304
+        ]
+      ],
+      "residuals": [
+        3.389353097630076e-14,
+        2.5135796299103908e-14,
+        2.2810088545139873e-14,
+        2.7476384469394678e-14
+      ],
+      "max_residual": 3.389353097630076e-14,
+      "magnitude_error": 0.0,
+      "execution": [],
+      "valid": true
+    },
+    {
+      "backend": "gpu_resident",
+      "phase": "timed",
+      "repeat": 2,
+      "seconds": 0.7665652669966221,
+      "eigenvalues": [
+        [
+          0.9458775990170114,
+          -4.3151794121679826e-05
+        ],
+        [
+          0.9048266254075588,
+          -0.058862566772875595
+        ],
+        [
+          0.8348904336350442,
+          0.0002580226498078587
+        ],
+        [
+          0.9681478530254531,
+          -0.02921957633841316
+        ]
+      ],
+      "residuals": [
+        1.249622394449127e-13,
+        6.464561875265406e-14,
+        7.091615906237228e-14,
+        9.592909520638924e-14
+      ],
+      "max_residual": 1.249622394449127e-13,
+      "magnitude_error": 5.662137425588298e-15,
+      "execution": [
+        {
+          "steps": 80,
+          "cycles": 1,
+          "application_control_download_bytes": 2,
+          "ritz_backend": "cusolver-geev-svd"
+        }
+      ],
+      "valid": true
+    },
+    {
+      "backend": "cpu_eigs",
+      "phase": "timed",
+      "repeat": 2,
+      "seconds": 18.450447723269463,
+      "eigenvalues": [
+        [
+          0.9458775990170114,
+          -4.31517941215636e-05
+        ],
+        [
+          0.9048266254075582,
+          -0.05886256677287593
+        ],
+        [
+          0.8348904336350499,
+          0.0002580226498044031
+        ],
+        [
+          0.9681478530254526,
+          -0.02921957633841304
+        ]
+      ],
+      "residuals": [
+        3.389353097630076e-14,
+        2.5135796299103908e-14,
+        2.2810088545139873e-14,
+        2.7476384469394678e-14
+      ],
+      "max_residual": 3.389353097630076e-14,
+      "magnitude_error": 0.0,
+      "execution": [],
+      "valid": true
+    },
+    {
+      "backend": "gpu_hybrid",
+      "phase": "timed",
+      "repeat": 2,
+      "seconds": 0.7215474396944046,
+      "eigenvalues": [
+        [
+          0.9458775990170112,
+          -4.315179412179432e-05
+        ],
+        [
+          0.904826625407559,
+          -0.05886256677287593
+        ],
+        [
+          0.8348904336350474,
+          0.0002580226498062662
+        ],
+        [
+          0.9681478530254531,
+          -0.02921957633841313
+        ]
+      ],
+      "residuals": [
+        6.645150876053068e-14,
+        4.631709030525549e-14,
+        9.534181197050504e-14,
+        4.684255594574605e-14
+      ],
+      "max_residual": 9.534181197050504e-14,
+      "magnitude_error": 2.4424906541753444e-15,
+      "execution": [],
+      "valid": true
+    }
+  ],
+  "warmups": [
+    {
+      "backend": "cpu_eigs",
+      "phase": "warmup",
+      "repeat": -1,
+      "seconds": 19.48890820145607,
+      "eigenvalues": [
+        [
+          0.9458775990170114,
+          -4.31517941215636e-05
+        ],
+        [
+          0.9048266254075582,
+          -0.05886256677287593
+        ],
+        [
+          0.8348904336350499,
+          0.0002580226498044031
+        ],
+        [
+          0.9681478530254526,
+          -0.02921957633841304
+        ]
+      ],
+      "residuals": [
+        3.389353097630076e-14,
+        2.5135796299103908e-14,
+        2.2810088545139873e-14,
+        2.7476384469394678e-14
+      ],
+      "max_residual": 3.389353097630076e-14,
+      "magnitude_error": 0.0,
+      "execution": [],
+      "valid": true
+    },
+    {
+      "backend": "gpu_hybrid",
+      "phase": "warmup",
+      "repeat": -1,
+      "seconds": 0.8503893576562405,
+      "eigenvalues": [
+        [
+          0.9458775990170115,
+          -4.3151794122406675e-05
+        ],
+        [
+          0.9048266254075588,
+          -0.05886256677287582
+        ],
+        [
+          0.8348904336350474,
+          0.00025802264980707285
+        ],
+        [
+          0.968147853025453,
+          -0.029219576338413194
+        ]
+      ],
+      "residuals": [
+        9.173974151464737e-14,
+        6.167635567375922e-14,
+        6.36863896724458e-14,
+        5.0367087580553725e-14
+      ],
+      "max_residual": 9.173974151464737e-14,
+      "magnitude_error": 2.4424906541753444e-15,
+      "execution": [],
+      "valid": true
+    },
+    {
+      "backend": "gpu_resident",
+      "phase": "warmup",
+      "repeat": -1,
+      "seconds": 0.77857930585742,
+      "eigenvalues": [
+        [
+          0.9458775990170113,
+          -4.3151794122104833e-05
+        ],
+        [
+          0.904826625407559,
+          -0.05886256677287575
+        ],
+        [
+          0.8348904336350488,
+          0.00025802264980544394
+        ],
+        [
+          0.9681478530254533,
+          -0.029219576338413298
+        ]
+      ],
+      "residuals": [
+        1.2196079593468083e-13,
+        7.757972817438926e-14,
+        5.538962409508286e-14,
+        5.454652587884156e-14
+      ],
+      "max_residual": 1.2196079593468083e-13,
+      "magnitude_error": 1.1102230246251565e-15,
+      "execution": [
+        {
+          "steps": 80,
+          "cycles": 1,
+          "application_control_download_bytes": 2,
+          "ritz_backend": "cusolver-geev-svd"
+        }
+      ],
+      "valid": true
+    }
+  ],
+  "errors": [],
+  "assembly_seconds": 5.304089955985546,
+  "geometry": {
+    "frequency_hz": 20000000000.0,
+    "period_mm": 15.0,
+    "description": "WR-90 cavity under a 0.5 mm PEC top wall with one 4 mm diameter hole per 15 mm cell, offset x=4 mm. Air above the wall; x and y+ PML 3 mm.",
+    "field_dofs": 32161,
+    "mesh_mm": 2.0,
+    "mesh_nodes": 8069,
+    "mesh_tetrahedra": 32882
+  },
+  "field_dofs": 32161,
+  "pencil_dofs": 64322,
+  "matrix_sha256": "77ec39b7df0a2b8ae1ab0e4b90e43270f6c43dd463af71f6a8b2dcff92dd0fab",
+  "nnz": [
+    465069,
+    436745,
+    465025
+  ],
+  "target": [
+    0.9,
+    -0.01
+  ],
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "cupy": "14.2.0",
+  "threadpools": [
+    {
+      "user_api": "blas",
+      "internal_api": "openblas",
+      "num_threads": 1,
+      "prefix": "libscipy_openblas",
+      "filepath": "/home/s2307298/projects/FEM/Electromagnetics-FEM/.venv/lib/python3.13/site-packages/scipy.libs/libscipy_openblas-5f890258.so",
+      "version": "0.3.31.dev",
+      "threading_layer": "pthreads",
+      "architecture": "SkylakeX"
+    },
+    {
+      "user_api": "blas",
+      "internal_api": "openblas",
+      "num_threads": 1,
+      "prefix": "libscipy_openblas",
+      "filepath": "/home/s2307298/projects/FEM/Electromagnetics-FEM/.venv/lib/python3.13/site-packages/numpy.libs/libscipy_openblas64_-f48b354e.so",
+      "version": "0.3.34.106.0",
+      "threading_layer": "pthreads",
+      "architecture": "SkylakeX"
+    },
+    {
+      "user_api": "openmp",
+      "internal_api": "openmp",
+      "num_threads": 1,
+      "prefix": "libgomp",
+      "filepath": "/usr/lib64/libgomp.so.1.0.0",
+      "version": null
+    }
+  ],
+  "ncv": 80,
+  "modes": 4,
+  "eigen_tolerance": 1e-08,
+  "residual_tolerance": 1e-08,
+  "max_operator_applications": 2000,
+  "gpu": {
+    "name": "NVIDIA TITAN RTX",
+    "vram": 25189679104,
+    "runtime": 13020,
+    "driver": 13020
+  },
+  "active": null,
+  "summaries": [
+    {
+      "backend": "cpu_eigs",
+      "valid": true,
+      "median_seconds": 18.450447723269463,
+      "min_seconds": 18.386975701898336,
+      "max_seconds": 18.647385116666555,
+      "max_residual": 3.389353097630076e-14,
+      "max_magnitude_error": 0.0
+    },
+    {
+      "backend": "gpu_hybrid",
+      "valid": true,
+      "median_seconds": 0.7215474396944046,
+      "min_seconds": 0.6609799414873123,
+      "max_seconds": 0.7349307239055634,
+      "max_residual": 1.47304538509636e-13,
+      "max_magnitude_error": 3.4416913763379853e-15
+    },
+    {
+      "backend": "gpu_resident",
+      "valid": true,
+      "median_seconds": 0.7143817655742168,
+      "min_seconds": 0.7042814269661903,
+      "max_seconds": 0.7665652669966221,
+      "max_residual": 1.249622394449127e-13,
+      "max_magnitude_error": 5.662137425588298e-15
+    }
+  ]
+}

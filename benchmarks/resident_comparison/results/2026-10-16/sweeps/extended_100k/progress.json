@@ -1,0 +1,12 @@
+{
+  "status": "complete",
+  "total": 1,
+  "completed": [
+    {
+      "case": "perforated_waveguide-100k",
+      "exit_code": 0,
+      "seconds": 847.6963894069195
+    }
+  ],
+  "active": null
+}
