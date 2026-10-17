@@ -6,6 +6,50 @@ import fem
 from fem.common.viewer import ResultViewer, cell_materials
 
 
+@pytest.mark.parametrize("material", [False, True])
+def test_3d_material_toggle_includes_boundary_surfaces(material):
+    from types import SimpleNamespace
+    from fem.common.contracts import MeshSnapshot
+    from fem.common.viewer import populate_3d
+
+    pv = pytest.importorskip("pyvista")
+    points = np.array([[0., 0., 0.], [1., 0., 0.], [0., 1., 0.], [0., 0., 1.]])
+    mesh = MeshSnapshot(points, np.array([[0, 1, 2, 3]]), ("x", "y", "z"), {}, {
+        "element_tags": np.array([1]), "physical_names": {1: "background"},
+        "boundary_facets": {
+            "pec": np.array([[0, 1, 2]]), "outer_pec": np.array([[0, 1, 3]]),
+            "sibc": np.array([[0, 2, 3]]), "periodic_master": np.array([[1, 2, 3]]),
+        },
+    })
+    fields = SimpleNamespace(coordinates=points, quantity=lambda *_: np.ones(4))
+    plotter = pv.Plotter(off_screen=True)
+    try:
+        assert populate_3d(plotter, SimpleNamespace(fields=fields), mesh, "Ex", "real",
+                           material=material) == ""
+        assert ("boundary_pec" in plotter.actors) == material
+        assert ("boundary_sibc" in plotter.actors) == material
+        if material:
+            assert plotter.actors["boundary_pec"].mapper.dataset.n_cells == 2
+            assert plotter.actors["boundary_sibc"].mapper.dataset.n_cells == 1
+            labels = [plotter.legend.GetEntryString(i)
+                      for i in range(plotter.legend.GetNumberOfEntries())]
+            assert labels == ["background", "PEC", "SIBC"]
+    finally:
+        plotter.close()
+
+
+def test_3d_mesh_snapshot_records_boundary_triangles():
+    from types import SimpleNamespace
+    from skfem import MeshTet
+    from fem.common.contracts import mesh_snapshot
+
+    native = MeshTet()
+    indices = native.boundary_facets()
+    snapshot = mesh_snapshot(SimpleNamespace(mesh=native, boundary_facets={"pec": indices}))
+    np.testing.assert_array_equal(snapshot.metadata["boundary_facets"]["pec"],
+                                  native.facets[:, indices].T)
+
+
 @pytest.fixture(scope="module")
 def slab_modes():
     solver = fem.ModeSolver1D(frequency=200e12, x_range=(-1e-6, 1e-6),

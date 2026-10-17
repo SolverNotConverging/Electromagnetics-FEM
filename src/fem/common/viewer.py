@@ -447,7 +447,8 @@ class ResultViewer:
 
         plotter = QtInteractor(self._window)
         message = populate_3d(plotter, mode, self._source.mesh_data(case), component, quantity,
-                              mesh_overlay=self._mesh.isChecked(), material=self._material.isChecked())
+                              mesh_overlay=self._mesh.isChecked(), material=self._material.isChecked(),
+                              boundary_facets=case.metadata.get("boundary_facets"))
         self._plotter = plotter
         return plotter.interactor, message
 
@@ -588,11 +589,13 @@ def _transverse_overlays(ax, source, mesh, mesh_overlay, material):
 
 
 def populate_3d(plotter: Any, mode: Any, mesh: Any, component: str, quantity: str, *,
-                mesh_overlay: bool = False, material: bool = False) -> str:
+                mesh_overlay: bool = False, material: bool = False,
+                boundary_facets: Any = None) -> str:
     """Draw one 3D periodic mode into a PyVista plotter; return a status message.
 
     ``E``/``H`` and transverse ``Et``/``Ht`` are arrows; Cartesian components are coloured points.
-    The mesh is a wireframe and material regions are translucent coloured cells.
+    The mesh is a wireframe; Material shows translucent regions and boundary surfaces.
+    Boundary facets contain triangle node indices, grouped by boundary kind.
     """
     import pyvista as pv
 
@@ -619,13 +622,13 @@ def populate_3d(plotter: Any, mode: Any, mesh: Any, component: str, quantity: st
     if mesh is not None and (mesh_overlay or material):
         grid = _tetra_grid(mesh)
         if material:
+            legend = []
             regions = cell_materials(mesh)
             if regions is None:
                 message = "This result records no material regions."
             else:
                 index, labels = regions
                 colours = _region_colours(labels)
-                legend = []
                 labels = [label.replace("εr", "eps_r") for label in labels]  # VTK fonts lack Greek
                 for region, (label, colour) in enumerate(zip(labels, colours)):
                     if label.split(" (")[0] in ("background", "exterior"):
@@ -635,6 +638,21 @@ def populate_3d(plotter: Any, mode: Any, mesh: Any, component: str, quantity: st
                     cells = grid.extract_cells(np.flatnonzero(index == region))
                     plotter.add_mesh(cells, color=_hex(colour), opacity=0.35, show_edges=False)
                 plotter.add_mesh(grid.extract_surface(), style="wireframe", color="grey", opacity=0.3)
+            boundaries = (mesh.metadata.get("boundary_facets", {})
+                          if boundary_facets is None else boundary_facets)
+            for kind, colour in (("pec", "#666666"), ("pmc", "#9467bd"), ("sibc", "#b87333")):
+                groups = [np.asarray(boundaries[name], dtype=np.int64).reshape(-1, 3)
+                          for name in (kind, f"outer_{kind}")
+                          if name in boundaries and np.asarray(boundaries[name]).size]
+                if not groups:
+                    continue
+                triangles = np.concatenate(groups)
+                faces = np.column_stack((np.full(len(triangles), 3), triangles))
+                surface = pv.PolyData(np.asarray(mesh.coordinates, dtype=float), faces.ravel())
+                plotter.add_mesh(surface, name=f"boundary_{kind}", color=colour,
+                                 opacity=0.45, show_edges=False)
+                legend.append([kind.upper(), colour])
+            if legend:
                 plotter.add_legend(legend, bcolor="white", face="rectangle", loc="upper left",
                                    size=(0.45, 0.05 * len(legend) + 0.02))
         if mesh_overlay:

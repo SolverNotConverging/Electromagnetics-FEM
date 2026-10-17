@@ -74,6 +74,11 @@ def mesh_snapshot(mesh, *, axes=None):
         value = getattr(mesh, name, None)
         if value is not None:
             metadata[name] = value
+    if dimension == 3 and "boundary_facets" in metadata and hasattr(native, "facets"):
+        metadata["boundary_facets"] = {
+            name: np.asarray(native.facets[:, indices].T, dtype=np.int64)
+            for name, indices in metadata["boundary_facets"].items()
+        }
     return MeshSnapshot(points, cells, tuple(axes or ("x", "y", "z")[:dimension]), info, metadata)
 
 
