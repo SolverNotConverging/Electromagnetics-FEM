@@ -989,9 +989,9 @@ Returns: the initial mesh stored in ``mesh_data``.
 
 .. code-block:: python
 
-    ModeSolver2D.solve(*, neff_guess: 'complex | None' = None, num_modes: 'int' = 4, direction: 'Direction' = 'forward', eigensolver_tolerance: 'float' = 1e-10, residual_tolerance: 'float' = 1e-08, divergence_tolerance: 'float' = 1e-07, propagation_ratio_tolerance: 'float' = 0.001, dense_linearization_limit: 'int' = 700, backend: 'str' = 'auto', max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05)
+    ModeSolver2D.solve(*, neff_guess: 'complex | None' = None, num_modes: 'int' = 4, direction: 'Direction' = 'forward', eigensolver_tolerance: 'float' = 1e-10, residual_tolerance: 'float' = 1e-08, divergence_tolerance: 'float' = 1e-07, propagation_ratio_tolerance: 'float' = 0.001, dense_linearization_limit: 'int' = 700, backend: 'str' = 'auto', max_refinements: 'int' = 2, adaptive_tolerance: 'float' = 0.05, track_modes: 'bool' = False, track_options: 'Mapping[str, Any] | None' = None)
 
-Solve and return modes with separate algebraic and adaptive controls.
+Solve modes, optionally identifying symmetry sectors and tracking fields.
 
 .. list-table:: Arguments
    :header-rows: 1
@@ -1057,6 +1057,16 @@ Solve and return modes with separate algebraic and adaptive controls.
      - Optional
      - ``0.05``
      - Relative discretization-residual stopping threshold.
+   * - ``track_modes``
+     - ``bool``
+     - Optional
+     - ``False``
+     - Retain overlap-matched mode IDs and phases across 2D waveguide solves and remeshing; physical scene changes reset the reference.
+   * - ``track_options``
+     - ``Mapping[str, Any] | None``
+     - Optional
+     - ``None``
+     - Optional partial tracking configuration: symmetry (auto), degeneracy_tolerance (1e-5), overlap_threshold (0.5, squared overlap), and symmetry_tolerance (0.25). Omitted keys use defaults; track_modes=False disables tracking.
 
 Returns: the physics-specific result stored in ``result``.
 
@@ -1223,6 +1233,86 @@ Returns: the selected mode.
      - TE, TM, or both for the 2D periodic solver; result filtering selects the named polarization.
 
 Returns: the selected data or diagnostic report.
+
+ModeSolver2D tracking options
+-----------------------------
+
+``ModeSolver2D.solve(track_modes=True)`` enables symmetry identification,
+degenerate-subspace handling, and overlap matching using the defaults below.
+``track_options`` is optional: omit it, pass ``None`` or ``{}``, or supply a
+mapping containing only the settings to override. The mapping is not modified.
+
+.. list-table:: Supported track_options keys
+   :header-rows: 1
+   :widths: 24 16 60
+
+   * - Key
+     - Default
+     - Meaning and allowed values
+   * - ``symmetry``
+     - ``"auto"``
+     - Sample the continuous scene for a centred Cnv subgroup with coordinate-aligned mirrors (n=1..8). Use ``None`` for overlap tracking without symmetry, or declare ``"C1v"`` through ``"C8v"``; declared groups are also verified.
+   * - ``degeneracy_tolerance``
+     - ``1e-5``
+     - Finite positive cluster diameter in effective index, scaled by max(1, abs(neff)). This groups candidate modes; it does not replace eigenproblem accuracy tolerances.
+   * - ``overlap_threshold``
+     - ``0.5``
+     - Minimum squared individual or principal-angle overlap in (0, 1] for retaining mode IDs and aligning modal subspaces. Unmatched modes receive new IDs.
+   * - ``symmetry_tolerance``
+     - ``0.25``
+     - Finite positive upper bound on the sampled symmetry-subspace residual for assigning a resolved irrep and mirror partner. Unresolved labels remain ``None``.
+
+.. code-block:: python
+
+    # Defaults; no track_options argument is required.
+    modes = solver.solve(num_modes=24, track_modes=True)
+
+    # Partial configuration; all other tracking settings keep their defaults.
+    modes = solver.solve(num_modes=24, track_modes=True, track_options={
+        "symmetry": "C4v",
+        "degeneracy_tolerance": 1e-4,
+        "overlap_threshold": 0.8,
+    })
+
+    # Disable identification and clear the tracking reference.
+    modes = solver.solve(num_modes=24, track_modes=False)
+
+``track_modes=False`` disables tracking even if ``track_options`` is supplied.
+Options are still validated; unknown keys, invalid values, or non-mapping
+configurations raise ``ConfigurationError``. Effective settings are stored in
+``result.metadata["track_options"]`` when tracking is enabled.
+
+Reuse the same solver to retain mode IDs and phases across remeshing and adaptive
+passes. Geometry changes reset the reference. Loading an archive restores its
+diagnostics, not a live tracking session. Each tracked mode records ``mode_id``,
+``symmetry_irrep``, ``symmetry_partner``, ``tracking_overlap``, ``subspace_overlap``,
+and longitudinal electric/magnetic fractions in ``mode.metadata``.
+Multidimensional irreps retain their common label and separate mirror partners.
+
+Rotated eigenvectors must pass the ordinary ``residual_tolerance`` and
+``divergence_tolerance`` arguments to ``solve()``. Otherwise valid eigenvectors
+are retained and ``symmetry_projection="residual_rejected"`` is recorded.
+See the `waveguide guide <../solvers/waveguide.rst>`_ for detector and sampling
+limits and the meaning of unresolved or truncated multiplets.
+
+Transverse vector views
+-----------------------
+
+In the interactive viewer opened by ``show()``, select ``Et`` for (Ex, Ey)
+or ``Ht`` for (Hx, Hy). Transverse means perpendicular to propagation along z;
+the longitudinal Ez/Hz components are excluded from arrow directions and colours.
+These are viewer selections; Cartesian components remain available as scalar plots.
+
+``real`` and ``imag`` draw the selected phasor part. ``magnitude`` applies one
+global phase rotation to make the largest transverse component real, then draws
+that real vector field. All arrows are coloured by the complex transverse norm;
+their lengths are scaled together within each view. Phase is not offered as a
+vector quantity. Mesh and material overlays leave the transverse arrows visible.
+
+Waveguide views show x/y arrows (1D samples lie on y=0). A 2D periodic cell is
+displayed in xyz so its transverse y arrows are visible outside the xz sample
+plane. Three-dimensional periodic modes use PyVista arrows with zero z component.
+The same selections work for loaded archives and individual sweep cases.
 
 Result data and diagnostics
 ---------------------------

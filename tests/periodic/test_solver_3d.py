@@ -291,7 +291,7 @@ def test_3d_viewer_draws_e_and_h_arrows_with_mesh_and_material(guide, guide_mode
     pv = pytest.importorskip("pyvista")
     from fem.common.viewer import populate_3d
 
-    for component in ("E", "H", "Ex"):
+    for component in ("E", "H", "Et", "Ht", "Ex"):
         plotter = pv.Plotter(off_screen=True)
         message = populate_3d(plotter, guide_modes[0], guide_modes.mesh_data, component, "real",
                               mesh_overlay=True, material=True)

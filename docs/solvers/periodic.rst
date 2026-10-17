@@ -67,6 +67,12 @@ The example uses a fixed mesh for reproducibility. Geometry edits invalidate
 ``show()`` opens the interactive PyVista/Qt viewer (``fem view result.h5`` opens saved
 archives). Saving and loading work without a display.
 
+Select ``Et`` or ``Ht`` for transverse (Ex, Ey) or (Hx, Hy) vector arrows,
+excluding Ez/Hz. A 2D xz cell uses an xyz arrow view to retain the out-of-plane y
+direction; 3D modes use PyVista arrows. ``real``/``imag`` show the selected phasor
+part, while ``magnitude`` uses a global phase alignment and colours by transverse
+magnitude. Mesh and material overlays remain available with the arrows.
+
 Electromagnetic fields use ``exp(+i*omega*t)`` and guided propagation
 ``exp(-i*beta*z)``. Passive constitutive values have nonpositive imaginary
 parts; forward attenuation is ``-Im(beta)``.

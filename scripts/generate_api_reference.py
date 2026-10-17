@@ -91,6 +91,10 @@ DESCRIPTIONS.update(
         "polarization": "TE, TM, or both for the 2D periodic solver; result filtering selects the named polarization.",
         "transition_width": "Distance in metres over which local mesh sizing transitions to the background size.",
         "propagation_ratio_tolerance": "Minimum real-power fraction used to classify a mode as propagating.",
+        "symmetry": "2D waveguide mode identification: None disables symmetry, auto detects a sampled Cnv subgroup (n=1..8), or declare a verified group such as C4v about the domain centre.",
+        "degeneracy_tolerance": "Relative effective-index diameter of a candidate modal cluster, scaled by max(1, abs(neff)); basis rotations must also pass the original residual and divergence checks.",
+        "track_modes": "Retain overlap-matched mode IDs and phases across 2D waveguide solves and remeshing; physical scene changes reset the reference.",
+        "track_options": "Optional partial tracking configuration: symmetry (auto), degeneracy_tolerance (1e-5), overlap_threshold (0.5, squared overlap), and symmetry_tolerance (0.25). Omitted keys use defaults; track_modes=False disables tracking.",
         "max_pml_fraction": "Maximum permitted modal PML fraction; None disables PML-mode filtering.",
         "ncv": "Arnoldi subspace dimension; None lets the eigensolver choose.",
         "max_iterations": "CPU: maximum ARPACK iterations. GPU: maximum Arnoldi operator applications; None allows thirteen subspace cycles.",
@@ -251,6 +255,86 @@ def render_references():
                         "conductor_charge": "conductor charge in coulombs (per metre for a 2D cross-section)",
                     }.get(method, "the selected data or diagnostic report"),
                 )
+        if package == "fem.waveguide":
+            out += section("ModeSolver2D tracking options")
+            out += """``ModeSolver2D.solve(track_modes=True)`` enables symmetry identification,
+degenerate-subspace handling, and overlap matching using the defaults below.
+``track_options`` is optional: omit it, pass ``None`` or ``{}``, or supply a
+mapping containing only the settings to override. The mapping is not modified.
+
+.. list-table:: Supported track_options keys
+   :header-rows: 1
+   :widths: 24 16 60
+
+   * - Key
+     - Default
+     - Meaning and allowed values
+   * - ``symmetry``
+     - ``"auto"``
+     - Sample the continuous scene for a centred Cnv subgroup with coordinate-aligned mirrors (n=1..8). Use ``None`` for overlap tracking without symmetry, or declare ``"C1v"`` through ``"C8v"``; declared groups are also verified.
+   * - ``degeneracy_tolerance``
+     - ``1e-5``
+     - Finite positive cluster diameter in effective index, scaled by max(1, abs(neff)). This groups candidate modes; it does not replace eigenproblem accuracy tolerances.
+   * - ``overlap_threshold``
+     - ``0.5``
+     - Minimum squared individual or principal-angle overlap in (0, 1] for retaining mode IDs and aligning modal subspaces. Unmatched modes receive new IDs.
+   * - ``symmetry_tolerance``
+     - ``0.25``
+     - Finite positive upper bound on the sampled symmetry-subspace residual for assigning a resolved irrep and mirror partner. Unresolved labels remain ``None``.
+
+.. code-block:: python
+
+    # Defaults; no track_options argument is required.
+    modes = solver.solve(num_modes=24, track_modes=True)
+
+    # Partial configuration; all other tracking settings keep their defaults.
+    modes = solver.solve(num_modes=24, track_modes=True, track_options={
+        "symmetry": "C4v",
+        "degeneracy_tolerance": 1e-4,
+        "overlap_threshold": 0.8,
+    })
+
+    # Disable identification and clear the tracking reference.
+    modes = solver.solve(num_modes=24, track_modes=False)
+
+``track_modes=False`` disables tracking even if ``track_options`` is supplied.
+Options are still validated; unknown keys, invalid values, or non-mapping
+configurations raise ``ConfigurationError``. Effective settings are stored in
+``result.metadata["track_options"]`` when tracking is enabled.
+
+Reuse the same solver to retain mode IDs and phases across remeshing and adaptive
+passes. Geometry changes reset the reference. Loading an archive restores its
+diagnostics, not a live tracking session. Each tracked mode records ``mode_id``,
+``symmetry_irrep``, ``symmetry_partner``, ``tracking_overlap``, ``subspace_overlap``,
+and longitudinal electric/magnetic fractions in ``mode.metadata``.
+Multidimensional irreps retain their common label and separate mirror partners.
+
+Rotated eigenvectors must pass the ordinary ``residual_tolerance`` and
+``divergence_tolerance`` arguments to ``solve()``. Otherwise valid eigenvectors
+are retained and ``symmetry_projection="residual_rejected"`` is recorded.
+See the `waveguide guide <../solvers/waveguide.rst>`_ for detector and sampling
+limits and the meaning of unresolved or truncated multiplets.
+
+"""
+        if package in ('fem.waveguide', 'fem.periodic'):
+            out += section("Transverse vector views")
+            out += """In the interactive viewer opened by ``show()``, select ``Et`` for (Ex, Ey)
+or ``Ht`` for (Hx, Hy). Transverse means perpendicular to propagation along z;
+the longitudinal Ez/Hz components are excluded from arrow directions and colours.
+These are viewer selections; Cartesian components remain available as scalar plots.
+
+``real`` and ``imag`` draw the selected phasor part. ``magnitude`` applies one
+global phase rotation to make the largest transverse component real, then draws
+that real vector field. All arrows are coloured by the complex transverse norm;
+their lengths are scaled together within each view. Phase is not offered as a
+vector quantity. Mesh and material overlays leave the transverse arrows visible.
+
+Waveguide views show x/y arrows (1D samples lie on y=0). A 2D periodic cell is
+displayed in xyz so its transverse y arrows are visible outside the xz sample
+plane. Three-dimensional periodic modes use PyVista arrows with zero z component.
+The same selections work for loaded archives and individual sweep cases.
+
+"""
         out += section("Result data and diagnostics")
         out += "``mesh_data.coordinates`` stores physical nodes in metres; ``elements`` stores\nzero-based connectivity. ``axes`` identifies physical coordinate order.\n``mesh_data.metadata['context']`` records material and boundary configuration.\nThe result is an inspection snapshot; editing it cannot restart a solver.\n\n"
         if package == "fem.electrostatics":

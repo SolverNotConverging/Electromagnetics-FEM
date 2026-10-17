@@ -25,6 +25,32 @@ Run a script from this directory, or pass its path from the repository root.
 Scripts that save results use
 ``outputs/<example>/`` next to the scripts.
 
+Higher-order modes and symmetry
+--------------------------------
+
+These are simple geometry / mesh / solve / show scripts. Each solves 24 modes
+at 60 GHz and prints the effective index, polarization, irrep, and mirror partner.
+Use the viewer's mode selector to inspect each mode and its field components.
+
+* `2d_square_waveguide.py <2d_square_waveguide.py>`_ solves a 20 mm square PEC
+  guide with ``track_modes=True`` and the default tracking options.
+* `2d_cylindrical_waveguide.py <2d_cylindrical_waveguide.py>`_ solves a circular
+  PEC guide of radius 10 mm. A clipped conductor fills the model corners. It
+  demonstrates a partial ``track_options={"degeneracy_tolerance": 1e-3}``
+  configuration; omitted settings keep their defaults.
+
+From the repository folder::
+
+    python examples/waveguide/2d_square_waveguide.py
+    python examples/waveguide/2d_cylindrical_waveguide.py
+
+Change ``num_modes`` to request more or fewer modes. Both examples use
+second-order elements and one fixed mesh. The detected C8v subgroup in the
+circular example is a finite subgroup of the circle's continuous symmetry.
+The `tracking API reference <../../docs/api/waveguide.rst>`_ documents every
+``track_options`` key and its default. Set ``track_modes=False`` to disable
+tracking, or omit ``show()`` for a headless run.
+
 Dispersion sweeps
 -----------------
 

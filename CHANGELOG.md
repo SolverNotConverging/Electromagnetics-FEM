@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- Add Et/Ht transverse-vector arrow selections to all waveguide and periodic
+  mode viewers, including mesh/material overlays and saved results.
+- Add opt-in continuous-scene Cnv symmetry identification and residual-checked
+  degenerate-subspace basis selection to `ModeSolver2D`.
+- Track modal subspaces, mode IDs, and phases across remeshing; preserve TE/TM
+  sectors and expose longitudinal fractions and identification diagnostics.
+
 ## 2.0.2 — 2026-10-16
 
 - Add explicit CPU, hybrid GPU Arnoldi/CPU Ritz, and resident GPU eigenvalue backends.

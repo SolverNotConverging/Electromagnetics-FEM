@@ -18,8 +18,8 @@ from .scene import WaveguideScene2D
 
 from fem.common.contracts import ElectromagneticSolverMixin
 
-from collections.abc import Sequence
-from dataclasses import asdict
+from collections.abc import Mapping, Sequence
+from dataclasses import asdict, replace
 from typing import Any, Literal
 
 import numpy as np
@@ -125,6 +125,8 @@ class ModeSolver2D(WaveguideScene2D, ElectromagneticSolverMixin):
         self._discretized_revision: int | None = None
         self._result: ModeSet | None = None
         self._discretization_settings: dict[str, object] | None = None
+        self._mode_reference = None
+        self._symmetry_cache = None
         self._invalidate_solution()
         self.geometry.add_change_listener(self._geometry_changed)
 
@@ -150,6 +152,8 @@ class ModeSolver2D(WaveguideScene2D, ElectromagneticSolverMixin):
         self._invalidate_solution()
 
     def _geometry_changed(self) -> None:
+        self._mode_reference = None
+        self._symmetry_cache = None
         self._invalidate_discretization()
 
     @staticmethod
@@ -772,6 +776,7 @@ class ModeSolver2D(WaveguideScene2D, ElectromagneticSolverMixin):
         propagation_ratio_tolerance: float,
         method: str,
         index: int,
+        preserve_phase: bool = False,
     ) -> tuple[Mode, ComplexArray, str]:
         full = system.expand(reduced_vector)
         data = self._field_data(system, full, neff)
@@ -802,7 +807,7 @@ class ModeSolver2D(WaveguideScene2D, ElectromagneticSolverMixin):
 
         full = np.asarray(full * scale, dtype=np.complex128)
         pivot = full[int(np.argmax(np.abs(full)))]
-        if abs(pivot) > 0.0:
+        if not preserve_phase and abs(pivot) > 0.0:
             full *= np.exp(-1j * np.angle(pivot))
         data = self._field_data(system, full, neff)
         values = np.asarray(data["fields"], dtype=np.complex128)
@@ -869,12 +874,21 @@ class ModeSolver2D(WaveguideScene2D, ElectromagneticSolverMixin):
             return direction in ("forward", "right-decaying")
         return direction in ("backward", "left-decaying")
 
-    def solve(self, *, neff_guess: complex | None=None, num_modes: int=4, direction: Direction='forward', eigensolver_tolerance: float=1e-10, residual_tolerance: float=1e-08, divergence_tolerance: float=1e-07, propagation_ratio_tolerance: float=0.001, dense_linearization_limit: int=700, backend: str="auto", max_refinements: int=2, adaptive_tolerance: float=0.05):
-        """Solve and return modes with separate algebraic and adaptive controls."""
+    def solve(self, *, neff_guess: complex | None=None, num_modes: int=4, direction: Direction='forward', eigensolver_tolerance: float=1e-10, residual_tolerance: float=1e-08, divergence_tolerance: float=1e-07, propagation_ratio_tolerance: float=0.001, dense_linearization_limit: int=700, backend: str="auto", max_refinements: int=2, adaptive_tolerance: float=0.05, track_modes: bool=False, track_options: Mapping[str, Any] | None=None):
+        """Solve modes, optionally identifying symmetry sectors and tracking fields.
+
+        ``track_modes=True`` retains identities across solves/remeshing until
+        the geometry changes, using automatic symmetry detection by default.
+        Optional ``track_options`` overrides symmetry, degeneracy_tolerance,
+        overlap_threshold, and symmetry_tolerance. Omitted keys use defaults.
+        Basis rotations must pass the original residual and divergence checks.
+        """
+        from ._mode_identity import tracking_options
+        tracking = tracking_options(track_modes, track_options)
         from fem.common.linalg import resolve_eigen_backend
         backend = resolve_eigen_backend(backend)
         from .adaptive import solve_2d
-        options = {'neff_guess': neff_guess, 'num_modes': num_modes, 'direction': direction, 'eigensolver_tolerance': eigensolver_tolerance, 'residual_tolerance': residual_tolerance, 'divergence_tolerance': divergence_tolerance, 'propagation_ratio_tolerance': propagation_ratio_tolerance, 'dense_linearization_limit': dense_linearization_limit, 'backend': backend}
+        options = {'neff_guess': neff_guess, 'num_modes': num_modes, 'direction': direction, 'eigensolver_tolerance': eigensolver_tolerance, 'residual_tolerance': residual_tolerance, 'divergence_tolerance': divergence_tolerance, 'propagation_ratio_tolerance': propagation_ratio_tolerance, 'dense_linearization_limit': dense_linearization_limit, 'backend': backend, 'track_modes': track_modes, **tracking}
         return self._finish_result(solve_2d(self, (), options, max_refinements, adaptive_tolerance))
 
 
@@ -890,10 +904,27 @@ class ModeSolver2D(WaveguideScene2D, ElectromagneticSolverMixin):
         propagation_ratio_tolerance: float = 1e-3,
         dense_linearization_limit: int = 700,
         backend: str = "auto",
+        symmetry: str | None = None,
+        degeneracy_tolerance: float = 1e-5,
+        track_modes: bool = False,
+        overlap_threshold: float = .5,
+        symmetry_tolerance: float = .25,
     ) -> ModeSet:
         """Solve the assembled QEP and return validated full-vector modes."""
 
         system = self._require_current_system()
+        from ._mode_identity import detect_symmetry, identify_modes
+        _positive_real(degeneracy_tolerance, 'degeneracy_tolerance')
+        if not isinstance(track_modes, (bool, np.bool_)):
+            raise ConfigurationError('track_modes must be boolean.')
+        group = detect_symmetry(self, symmetry)
+        identify = symmetry is not None or track_modes
+        reference_key = (self.geometry.revision, self.frequency, symmetry, direction)
+        previous = self._mode_reference
+        if not track_modes or previous is None or previous[0] != reference_key:
+            previous = None
+        else:
+            previous = previous[1]
         requested = _positive_integer(
             num_modes, "num_modes"
         )
@@ -931,6 +962,10 @@ class ModeSolver2D(WaveguideScene2D, ElectromagneticSolverMixin):
         rejected_divergence = 0
         rejected_direction = 0
         for neff, raw_vector in zip(values, vectors.T, strict=True):
+            if identify and len(accepted) >= requested:
+                radius = abs(accepted[requested-1].neff-target)
+                if abs(neff-target) > radius + degeneracy_tolerance*max(1., abs(neff)):
+                    break
             vector_norm = float(np.linalg.norm(raw_vector))
             if not np.isfinite(neff) or vector_norm <= np.finfo(float).tiny:
                 continue
@@ -977,7 +1012,7 @@ class ModeSolver2D(WaveguideScene2D, ElectromagneticSolverMixin):
             accepted.append(mode)
             coefficients.append(coefficient)
             accepted_reduced.append(vector)
-            if len(accepted) == requested:
+            if len(accepted) == requested and not identify:
                 break
 
         if len(accepted) < requested:
@@ -989,6 +1024,53 @@ class ModeSolver2D(WaveguideScene2D, ElectromagneticSolverMixin):
                 "or direction='all'."
             )
 
+        identity_metadata = {}
+        next_reference = None
+        if identify:
+            stable_values, stable_vectors, identities, next_reference = identify_modes(
+                self, system, [mode.neff for mode in accepted], np.column_stack(accepted_reduced),
+                symmetry=group, tolerance=float(degeneracy_tolerance),
+                residual_tolerance=float(residual_tolerance), divergence_tolerance=float(divergence_tolerance),
+                track=bool(track_modes), reference=previous,
+                directions=[mode.metadata['direction'] for mode in accepted],
+                overlap_threshold=overlap_threshold, symmetry_tolerance=symmetry_tolerance)
+            accepted, coefficients, accepted_reduced = [], [], []
+            for index, (value, vector, identity) in enumerate(zip(
+                    stable_values[:requested], stable_vectors.T[:requested], identities[:requested], strict=True)):
+                mode, coefficient, mode_direction = self._make_mode(
+                    system, vector, value, system.relative_residual(vector, value),
+                    system.divergence_residual(system.expand(vector), value),
+                    propagation_ratio_tolerance=float(propagation_ratio_tolerance),
+                    method=method, index=index, preserve_phase=True)
+                if not self._direction_matches(mode_direction, direction):
+                    raise SolverError('A modal subspace rotation changed the requested propagation direction.')
+                data = self._field_data(system, coefficient, value)
+                fields = data['fields']
+                weights = system.basis.dx*self._physical_integration_mask(data['coordinates'])
+                electric = np.sum(weights[..., None]*abs(fields[..., :3])**2, axis=(0, 1))
+                magnetic = np.sum(weights[..., None]*abs(fields[..., 3:])**2, axis=(0, 1))
+                identity.update(longitudinal_electric_fraction=float(electric[2]/max(electric.sum(), 1e-300)),
+                                longitudinal_magnetic_fraction=float(magnetic[2]/max(magnetic.sum(), 1e-300)))
+                accepted.append(replace(mode, metadata={**mode.metadata, **identity}))
+                coefficients.append(coefficient)
+                accepted_reduced.append(vector)
+            selected_clusters = [item['degenerate_cluster'] for item in identities[:requested]]
+            identity_metadata = dict(symmetry_group=group.name,
+                symmetry_detection='sampled-continuous-scene' if symmetry is not None else 'disabled',
+                degeneracy_tolerance=float(degeneracy_tolerance), track_modes=bool(track_modes),
+                track_options=dict(symmetry=symmetry, degeneracy_tolerance=float(degeneracy_tolerance),
+                                   overlap_threshold=overlap_threshold, symmetry_tolerance=symmetry_tolerance),
+                identity_candidates=len(identities),
+                truncated_degenerate_cluster=any(item['degenerate_cluster'] in selected_clusters
+                                                 for item in identities[requested:]))
+            # Keep only returned identities: unrequested look-ahead candidates
+            # must not claim mode IDs or reorder a later refinement.
+            next_reference = {**next_reference, 'samples': next_reference['samples'][:, :requested],
+                'labels': next_reference['labels'][:requested],
+                'polarizations': next_reference['polarizations'][:requested],
+                'clusters': next_reference['clusters'][:requested],
+                'mode_ids': next_reference['mode_ids'][:requested]}
+
         mesh_info = asdict(self.mesh_data.info)
         result = ModeSet(
             tuple(accepted),
@@ -997,6 +1079,7 @@ class ModeSolver2D(WaveguideScene2D, ElectromagneticSolverMixin):
             dimension=2,
             backend=backend,
             metadata={
+                **identity_metadata,
                 "method": method,
                 "candidate_count": int(values.size),
                 "neff_guess": target,
@@ -1009,6 +1092,10 @@ class ModeSolver2D(WaveguideScene2D, ElectromagneticSolverMixin):
             },
         )
         self._result = result
+        if identify and track_modes:
+            self._mode_reference = (reference_key, next_reference)
+        elif not track_modes:
+            self._mode_reference = None
         self.modes = result
         self.neff = result.neff
         self.beta = result.beta
